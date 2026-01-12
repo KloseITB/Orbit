@@ -35,7 +35,7 @@ public class Library {
 	
 	public void getOwnedGames() {
 
-		// SQL query
+		// get game infos through SQL query
 	}
 
 }

@@ -28,8 +28,8 @@ public class Publisher extends User {
 	
 	// Class Methods
 	
-	public void publishGame (String name, double basePrice, ArrayList<String> tags) {
-		Game game = new Game(name, basePrice, tags);
+	public void publishGame (String name, double basePrice, String genre) {
+		Game game = new Game(name, basePrice, genre);
 		gameArrayList.add(game);
 		// add game to the DB
 		

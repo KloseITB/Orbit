@@ -16,13 +16,20 @@ public class Admin extends User {
 	
 	// Class Methods
 	
-	public void tempBanPlayer (int minutes, User user) {
+	public void tempBanUser (int minutes, User user) {
 		// set the user's isBanned boolean to true and start a timer based on the minutes
 		
 	}
 	
-	public void permaBanPlayer (User user) {
-		// set the user's isBanned boolean to true
+	public void permaBanUser (User user) {
+		user.setBanned(true);
+	}
+	
+	// created a different method do underline the difference between banning a normal user and a publisher who -
+	// doesn't respect the platform's TOS
+	public void permaBanPublisher (Publisher publisher) {
+		publisher.setBanned(true);
+		// delete all the games published by the banned publisher from the database
 	}
 
 	// Getters & Setters
