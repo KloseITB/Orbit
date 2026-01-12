@@ -34,9 +34,8 @@ public class Library {
 	}
 	
 	public void getOwnedGames() {
-		for (Integer id : gamesLinkedList) {
-			// sends the ID of the game to the DB and prints out the name related to that ID
-		}
+
+		// SQL query
 	}
 
 }

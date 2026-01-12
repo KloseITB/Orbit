@@ -1,10 +1,14 @@
 package it.unipv.posfw.orbit.main;
 
+import it.unipv.posfw.orbit.account.SingletonAccountManager;
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		SingletonAccountManager accountManager = SingletonAccountManager.getInstance();
+		
+		
 	}
 
 }

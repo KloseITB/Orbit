@@ -1,7 +1,6 @@
 package it.unipv.posfw.orbit.game;
 
-import java.util.ArrayList;
-
+import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.discount.Discount;
 
 public class Game {
@@ -9,18 +8,18 @@ public class Game {
 	// Parameters
 	
 	private int id;
-	private String name;
+	private String title;
 	private double basePrice;
 	private double currentPrice;
-	private ArrayList<String> tagArrayList;
+	private String genre;
 	
 	// Constructors
 	
-	public Game(String name, double price, ArrayList<String> tags) {
+	public Game(String name, double price, String tags) {
 		// this.id = method that generates the game's ID based on how many games already exist
 		this.basePrice = price;
 		this.currentPrice = this.basePrice;
-		this.tagArrayList = tags;
+		this.genre = tags;
 	}
 	
 	// Class Methods
@@ -32,23 +31,20 @@ public class Game {
 		currentPrice = tmp;
 	}
 	
-	public void addTag(String tag) {
-		if (!tagArrayList.contains(tag)) {
-			tagArrayList.add(tag);
-		}
-		else {
-			// error: the tag already exists
-		}
-	}
-	
-	public void removeTag(String tag) {
-		if (tagArrayList.contains(tag)) {
-			tagArrayList.remove(tag);
-		}
-		else {
-			// error: the tag doesn't exist	
-		}
-		
+	public <T extends User> void buy(T user) {
+		/*
+		 if ( user.balance < currentPrice)
+		 	float missingAmount = currentPrice - user.balance
+		  	ask to add funds to the user's account via User Interface
+		  		if(user agrees to add funds) {
+		  			PaymentOption methodChosen = ask for the payment method via User Interface and store it
+		  			user.addFunds(missingAmount, methodChosen);
+		  		}
+		  else {
+		 	 user.removeFunds(currentPrice);
+		 	 add game to the user's library inside the Database
+		  }
+		 */
 	}
 	
 	// Getters & Setters
