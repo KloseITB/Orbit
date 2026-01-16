@@ -3,6 +3,7 @@ package it.unipv.posfw.orbit.account;
 public class SingletonAccountManager {
 	
 	private static SingletonAccountManager uniqueInstance;
+	
 	// Constructors
 	
 	private SingletonAccountManager() {}

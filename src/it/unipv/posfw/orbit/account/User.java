@@ -1,6 +1,8 @@
 package it.unipv.posfw.orbit.account;
 
+import it.unipv.posfw.orbit.exceptions.*;
 import it.unipv.posfw.orbit.library.Library;
+import it.unipv.posfw.orbit.payment.*;
 
 public class User {
 	
@@ -12,7 +14,7 @@ public class User {
 	private boolean isLoggedIn;
 	
 	protected Library library;
-	private float balance;
+	private double balance;
 	
 	// Constructors 
 
@@ -22,16 +24,25 @@ public class User {
 		this.library = new Library();
 		isBanned = false;
 		isLoggedIn = false;
-		balance = 0f;
+		balance = 0;
 	}
 	
 	// Class Methods
 	
-	public void addFunds(float amount) {
-		balance += amount;
+	public void addFunds(double amount, PaymentOptions paymentChosen) {
+		SingletonPaymentManager paymentManager = SingletonPaymentManager.getInstance();
+		try {
+			balance += paymentManager.Pay(amount, paymentChosen);
+		}
+		catch(AmountNotValidException ave) {
+			// say via UI that the inserted amount isn't valid
+		}
+		catch(PaymentMethodNotValidException pmve) {
+			// say via UI that the payment method isn't valid
+		}
 	}
 	
-	public void removeFunds(float amount) {
+	public void removeFunds(double amount) {
 		balance -= amount;
 	}
 	

@@ -1,7 +1,8 @@
 package it.unipv.posfw.orbit.game;
 
 import it.unipv.posfw.orbit.account.*;
-import it.unipv.posfw.orbit.discount.Discount;
+import it.unipv.posfw.orbit.discount.DiscountManager;
+import it.unipv.posfw.orbit.exceptions.AmountNotValidException;
 
 public class Game {
 
@@ -24,10 +25,16 @@ public class Game {
 	
 	// Class Methods
 	
-	public void discount(int percentage) {
-		// i used a temp variable to avoid any kind of errors related to the pre-discount price of the game
+	public void discount(double percentage) {
+		// i used a temporary variable to avoid any kind of errors related to the pre-discount price of the game
 		double tmp = currentPrice;
-		tmp = new Discount(percentage).calculateDiscount(tmp);
+		DiscountManager discountManager =  new DiscountManager();
+		try {
+			tmp = discountManager.calculateDiscount(tmp, percentage);
+		}
+		catch (AmountNotValidException ave) {
+			// say via UI that the amount isn't acceptable and that it will be clamped into a number between 1% and 100%
+		}
 		currentPrice = tmp;
 	}
 	
@@ -37,7 +44,7 @@ public class Game {
 		 	float missingAmount = currentPrice - user.balance
 		  	ask to add funds to the user's account via User Interface
 		  		if(user agrees to add funds) {
-		  			PaymentOption methodChosen = ask for the payment method via User Interface and store it
+		  			PaymentOptions methodChosen = ask for the payment method via User Interface and store it
 		  			user.addFunds(missingAmount, methodChosen);
 		  		}
 		  else {
