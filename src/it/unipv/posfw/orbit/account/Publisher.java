@@ -8,13 +8,14 @@ import it.unipv.posfw.orbit.library.Library;
 public class Publisher extends User {
 	
 	// Parameters
-	
+	private boolean hasLicense;
 	ArrayList<Game> publishedGames;
 	
 	// Constructors
 
 	public Publisher(String nickname, String password) {
 		super(nickname, password);
+		hasLicense = false;
 		super.library = new Library();
 		publishedGames = new ArrayList<Game>();
 	}
@@ -28,7 +29,9 @@ public class Publisher extends User {
 		
 	}
 	
-	
+	public void buyLicense() {
+		// to-do
+	}
 	
 	// Getters & Setters
 }

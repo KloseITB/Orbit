@@ -12,7 +12,6 @@ public class User {
 	private String password;
 	private boolean isBanned;
 	private boolean isLoggedIn;
-	
 	protected Library library;
 	private double balance;
 	

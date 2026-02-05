@@ -9,7 +9,7 @@ public class DiscountManager{
 	
 	public double calculateDiscount (double currentPrice, double percentage) throws AmountNotValidException{
 		
-		if(currentPrice <MINPERCENTAGEVALUE || currentPrice > MAXPERCENTAGEVALUE) {
+		if(currentPrice < MINPERCENTAGEVALUE || currentPrice > MAXPERCENTAGEVALUE) {
 			throw new AmountNotValidException();
 		}
 		
