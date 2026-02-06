@@ -1,22 +1,25 @@
 package it.unipv.posfw.orbit.account;
 
 import java.util.ArrayList;
-
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.library.Library;
 
 public class Publisher extends User {
 	
 	// Parameters
-	private boolean hasLicense;
+	
 	ArrayList<Game> publishedGames;
 	
 	// Constructors
-
+	
+	//costruttore nuovi publisher (libreria tolta perchè se la porta dietro da user)
 	public Publisher(String nickname, String password) {
 		super(nickname, password);
-		hasLicense = false;
-		super.library = new Library();
+		this.publishedGames = new ArrayList<Game>();
+	}
+	//costruttore publisher già presenti nel db
+	public Publisher(int id, String nickname, String password, double balance) { //AGGIUNTA ID
+		super(id, nickname, password, balance);
 		publishedGames = new ArrayList<Game>();
 	}
 	
@@ -29,9 +32,7 @@ public class Publisher extends User {
 		
 	}
 	
-	public void buyLicense() {
-		// to-do
-	}
+	
 	
 	// Getters & Setters
 }

@@ -8,10 +8,16 @@ public class Admin extends User {
 	
 	// Constructors
 
-	
-	public Admin(String nickname, String password) {
+	//costruttore per nuovi admin (id e balance verranno creati dal db)
+	public Admin(String nickname, String password) { 
 		super(nickname, password);
 		this.repScore = 100;
+	}
+	
+	//costruttore per admin già esistenti nel db
+	public Admin(int id, String nickname, String password, double balance) {
+		super(id, nickname, password, balance);
+		this.repScore= 100;
 	}
 	
 	// Class Methods

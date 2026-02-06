@@ -16,8 +16,8 @@ public class Game {
 	
 	// Constructors
 	
-	public Game(String name, double price, String tags) {
-		// this.id = method that generates the game's ID based on how many games already exist
+	public Game(int id, String name, double price, String tags) {
+		this.id = id; //AGGIUNTO method that generates the game's ID based on how many games already exist
 		this.basePrice = price;
 		this.currentPrice = this.basePrice;
 		this.genre = tags;
@@ -39,6 +39,21 @@ public class Game {
 	}
 	
 	public <T extends User> void buy(T user) {
+		
+		if (user.getBalance() < this.currentPrice) {
+			double missing= this.currentPrice - user.getBalance();
+			System.out.println("Mancano " + missing +" fondi.");
+			//logica UI per chiedere se si vuole ricaricare?
+			
+			return;
+		}
+		try {
+			it.unipv.posfw.orbit.Database.DatabaseHelper.getInstance().executePurchase(user, this);
+			System.out.println("Gioco acquistato: " + this.title);
+		}catch (Exception e) {
+			System.out.println("Errore durante l'acquisto: " + e.getMessage());
+		}
+		
 		/*
 		 if ( user.balance < currentPrice)
 		 	float missingAmount = currentPrice - user.balance
@@ -59,6 +74,28 @@ public class Game {
 	public double getCurrentPrice() {
 		return currentPrice;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public double getBasePrice() {
+		return basePrice;
+	}
+
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
+	}
+
+	public void setCurrentPrice(double currentPrice) {
+		this.currentPrice = currentPrice;
+	}
+	
+	
 	
 	
 }
