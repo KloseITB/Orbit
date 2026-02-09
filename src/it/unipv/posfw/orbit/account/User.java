@@ -43,17 +43,22 @@ public class User {
 	
 	// Class Methods
 	
-	public void addFunds(double amount, PaymentOptions paymentChosen) {
-		SingletonPaymentManager paymentManager = SingletonPaymentManager.getInstance();
+	// adding funds via a classic payment method
+	public <E extends IPaymentMethod> void addFunds(double amount, E paymentMethod) {
+
 		try {
-			balance += paymentManager.Pay(amount, paymentChosen);
+			balance += PaymentManager.Pay(amount, paymentMethod);
 		}
-		catch(AmountNotValidException ave) {
-			// say via UI that the inserted amount isn't valid
+		catch(AmountNotValidException anve) {
+			// say via UI that the operation failed
 		}
-		catch(PaymentMethodNotValidException pmve) {
-			// say via UI that the payment method isn't valid
-		}
+	}
+	
+	// adding funds via gift card
+	public void addFunds (String giftCardCode) {
+		// checks the DB to see if the code exits
+		// if it exists, it removes the code from the DB since has been used
+		// int amount = the amount corresponding to that code (5$, 10$, 20$, 50$)
 	}
 	
 	public void removeFunds(double amount) {

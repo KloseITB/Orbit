@@ -16,8 +16,8 @@ public class Game {
 	
 	// Constructors
 	
-	public Game(int id, String name, double price, String tags) {
-		this.id = id; //AGGIUNTO method that generates the game's ID based on how many games already exist
+	public Game(String name, double price, String tags) {
+		this.id = id; //TO-DO method that generates and returns the id to assign to the game
 		this.basePrice = price;
 		this.currentPrice = this.basePrice;
 		this.genre = tags;
