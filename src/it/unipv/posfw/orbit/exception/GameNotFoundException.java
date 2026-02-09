@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.exceptions;
+package it.unipv.posfw.orbit.exception;
 
 public class GameNotFoundException extends Exception{
 	

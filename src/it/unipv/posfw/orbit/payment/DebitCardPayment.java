@@ -1,6 +1,6 @@
 package it.unipv.posfw.orbit.payment;
 
-import it.unipv.posfw.orbit.exceptions.PaymentFailedException;
+import it.unipv.posfw.orbit.exception.PaymentFailedException;
 
 public class DebitCardPayment implements IPaymentMethod {
 

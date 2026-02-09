@@ -1,6 +1,6 @@
 package it.unipv.posfw.orbit.payment;
 
-import it.unipv.posfw.orbit.exceptions.*;
+import it.unipv.posfw.orbit.exception.*;
 
 public class PaymentManager {
 	

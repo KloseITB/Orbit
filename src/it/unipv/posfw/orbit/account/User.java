@@ -1,6 +1,6 @@
 package it.unipv.posfw.orbit.account;
 
-import it.unipv.posfw.orbit.exceptions.*;
+import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.library.Library;
 import it.unipv.posfw.orbit.payment.*;
 

@@ -1,6 +1,6 @@
 package it.unipv.posfw.orbit.discount;
 
-import it.unipv.posfw.orbit.exceptions.AmountNotValidException;
+import it.unipv.posfw.orbit.exception.AmountNotValidException;
 
 public class DiscountManager{
 	

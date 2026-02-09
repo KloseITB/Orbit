@@ -2,7 +2,7 @@ package it.unipv.posfw.orbit.game;
 
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.discount.DiscountManager;
-import it.unipv.posfw.orbit.exceptions.AmountNotValidException;
+import it.unipv.posfw.orbit.exception.AmountNotValidException;
 
 public class Game {
 
@@ -48,7 +48,7 @@ public class Game {
 			return;
 		}
 		try {
-			it.unipv.posfw.orbit.Database.DatabaseHelper.getInstance().executePurchase(user, this);
+			it.unipv.posfw.orbit.database.DatabaseHelper.getInstance().executePurchase(user, this);
 			System.out.println("Gioco acquistato: " + this.title);
 		}catch (Exception e) {
 			System.out.println("Errore durante l'acquisto: " + e.getMessage());

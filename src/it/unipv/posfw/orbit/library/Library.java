@@ -2,7 +2,7 @@ package it.unipv.posfw.orbit.library;
 
 import java.util.LinkedList;
 
-import it.unipv.posfw.orbit.exceptions.GameNotFoundException;
+import it.unipv.posfw.orbit.exception.GameNotFoundException;
 
 public class Library {
 	
