@@ -9,11 +9,11 @@ public class Res {
 	
 	// COLORS
 	
-	public final static Color FRAME_BG = new Color(30, 30, 35);           // main Background Color
+	public final static Color FRAME_BG = new Color(20, 18, 23);           // main Background Color
 	public final static Color HEADER = new Color(40, 35, 50);             // header color
-	public final static Color PANEL_BG = new Color(60, 60, 60);           // secondary background color
+	public final static Color PANEL_BG = new Color(66, 61, 71);          // secondary background color
 	public final static Color BUTTON_PURPLE = new Color(180, 160, 220);  // buttons color
-	private final Color ACCENT_YELLOW = new Color(255, 200, 0);          // underlining color
+	public final static Color ACCENT_YELLOW = new Color(255, 200, 0);    // underlining color
 	
     // IMAGES
     
