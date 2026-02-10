@@ -23,7 +23,7 @@ public class SingletonAccountManager {
 	}
 	
 	public void login(String nickname, String password) {
-		User foundUser = it.unipv.posfw.orbit.database.SingletonDatabaseHelper.getInstance().login(nickname, password);
+		User foundUser = it.unipv.posfw.orbit.database.FacadeDB.getInstance().login(nickname, password);
 		
 		if (foundUser != null){
 			System.out.println("Login effettuato con successo: " + foundUser.getNickname());

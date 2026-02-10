@@ -56,22 +56,23 @@ public class User {
 	
 	// adding funds via gift card
 	public void addFunds (String giftCardCode) {
-		var db = it.unipv.posfw.orbit.database.SingletonDatabaseHelper.getInstance();
+		
+		it.unipv.posfw.orbit.database.FacadeDB facade = it.unipv.posfw.orbit.database.FacadeDB.getInstance();	    
 	    
-	    try {
+		try {
 	        // check the gift card's existence
-	        if (db.checkGiftCard(giftCardCode)) {
+	        if (facade.checkGiftCard(giftCardCode)) {
 	            
 	            // take the gift card value
-	            double amount = db.getGiftCardValue(giftCardCode);
+	            double amount = facade.getGiftCardValue(giftCardCode);
 	            
 	            this.balance += amount;
 	            
 	            // update the db with the new balance and removal of the card
-	            db.updateUserBalance(this);
-	            db.discardGiftCard(giftCardCode);
+	            facade.updateUserBalance(this);
+	            facade.discardGiftCard(giftCardCode);
 	           
-	            System.out.println("Riscattati " + amount + " euro.");
+	            System.out.println("Riscattati " + amount + " euro. Nuovo saldo: " + this.balance);
 	        }
 	    } catch (CodeNotFoundException e) {
 	        // exception if card doesn't exist

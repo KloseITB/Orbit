@@ -30,7 +30,7 @@ public class Publisher extends User {
 		Game game = new Game(name, basePrice, genre); // create the new game in memory with temporary id set to 0
 		
 		// we connect to db to save the new game and to get the id, the id logged will be saved in this.id
-	    it.unipv.posfw.orbit.database.SingletonDatabaseHelper.getInstance().registerGame(game, this.id);
+	    it.unipv.posfw.orbit.database.FacadeDB.getInstance().registerGame(game, this.id);
 	    
 	    // we add it to the java memory now that we have the final id
 	    if (game.getId() != 0) {

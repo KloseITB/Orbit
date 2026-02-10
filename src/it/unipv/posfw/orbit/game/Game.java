@@ -49,7 +49,7 @@ public class Game {
 			return;
 		}
 		try {
-			it.unipv.posfw.orbit.database.SingletonDatabaseHelper.getInstance().executePurchase(user, this);
+			it.unipv.posfw.orbit.database.FacadeDB.getInstance().purchaseGame(user, this);
 			System.out.println("Gioco acquistato: " + this.title);
 		}catch (Exception e) {
 			System.out.println("Errore durante l'acquisto: " + e.getMessage());
