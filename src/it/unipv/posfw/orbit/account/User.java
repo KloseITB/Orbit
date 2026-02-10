@@ -8,7 +8,7 @@ public class User {
 	
 	// Parameters
 	
-	protected int id; //protected perchè è la Primary Key nel db
+	protected int id; //protected because it is a Primary Key in the db
 	private String nickname;
 	private String password;
 	private boolean isBanned;
@@ -19,7 +19,7 @@ public class User {
 	
 	// Constructors 
 	
-	//costruttore nuovi user
+	// constructor new user
 	public User(String nickname, String password) {
 		this.nickname = nickname;
 		this.password = password;
@@ -29,7 +29,7 @@ public class User {
 		balance = 0;
 	}
 	
-	//costruttore per user importati dal db-->AGGIUNTA ID E BALANCE
+	// constructor imported users from db (already have id and balance)
 	public User(int id,String nickname, String password, double balance) {
 		this.id = id;                                     
 		this.nickname = nickname;
@@ -56,9 +56,27 @@ public class User {
 	
 	// adding funds via gift card
 	public void addFunds (String giftCardCode) {
-		// checks the DB to see if the code exits
-		// if it exists, it removes the code from the DB since has been used
-		// int amount = the amount corresponding to that code (5$, 10$, 20$, 50$)
+		var db = it.unipv.posfw.orbit.database.SingletonDatabaseHelper.getInstance();
+	    
+	    try {
+	        // check the gift card's existence
+	        if (db.checkGiftCard(giftCardCode)) {
+	            
+	            // take the gift card value
+	            double amount = db.getGiftCardValue(giftCardCode);
+	            
+	            this.balance += amount;
+	            
+	            // update the db with the new balance and removal of the card
+	            db.updateUserBalance(this);
+	            db.discardGiftCard(giftCardCode);
+	           
+	            System.out.println("Riscattati " + amount + " euro.");
+	        }
+	    } catch (CodeNotFoundException e) {
+	        // exception if card doesn't exist
+	        System.out.println(e.getMessage());
+	    }
 	}
 	
 	public void removeFunds(double amount) {
