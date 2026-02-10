@@ -12,13 +12,13 @@ public class Publisher extends User {
 	
 	// Constructors
 	
-	//costruttore nuovi publisher (libreria tolta perchè se la porta dietro da user)
+	// constructor of new publisher (no library because is brought by the user)
 	public Publisher(String nickname, String password) {
 		super(nickname, password);
 		this.publishedGames = new ArrayList<Game>();
 	}
-	//costruttore publisher già presenti nel db
-	public Publisher(int id, String nickname, String password, double balance) { //AGGIUNTA ID
+	// constructor publisher already existing in the db
+	public Publisher(int id, String nickname, String password, double balance) {
 		super(id, nickname, password, balance);
 		publishedGames = new ArrayList<Game>();
 	}
@@ -26,10 +26,19 @@ public class Publisher extends User {
 	// Class Methods
 	
 	public void publishGame (String name, double basePrice, String genre) {
-		Game game = new Game(name, basePrice, genre);
-		publishedGames.add(game);
-		// add game to the DB
 		
+		Game game = new Game(name, basePrice, genre); // create the new game in memory with temporary id set to 0
+		
+		// we connect to db to save the new game and to get the id, the id logged will be saved in this.id
+	    it.unipv.posfw.orbit.database.FacadeDB.getInstance().registerGame(game, this.id);
+	    
+	    // we add it to the java memory now that we have the final id
+	    if (game.getId() != 0) {
+	        publishedGames.add(game);
+	        System.out.println("Gioco aggiunto alla lista locale del publisher.");
+	    } else {
+	        System.out.println("Errore nel salvataggio del gioco.");
+	    }
 	}
 	
 	

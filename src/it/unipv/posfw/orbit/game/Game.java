@@ -17,7 +17,8 @@ public class Game {
 	// Constructors
 	
 	public Game(String name, double price, String tags) {
-		this.id = id; //TO-DO method that generates and returns the id to assign to the game
+		this.id = 0; // temporary id, the final one will be given by the db 
+		this.title = name;
 		this.basePrice = price;
 		this.currentPrice = this.basePrice;
 		this.genre = tags;
@@ -43,12 +44,12 @@ public class Game {
 		if (user.getBalance() < this.currentPrice) {
 			double missing= this.currentPrice - user.getBalance();
 			System.out.println("Mancano " + missing +" fondi.");
-			//logica UI per chiedere se si vuole ricaricare?
+			// UI asking if you want to add balance
 			
 			return;
 		}
 		try {
-			it.unipv.posfw.orbit.database.DatabaseHelper.getInstance().executePurchase(user, this);
+			it.unipv.posfw.orbit.database.FacadeDB.getInstance().purchaseGame(user, this);
 			System.out.println("Gioco acquistato: " + this.title);
 		}catch (Exception e) {
 			System.out.println("Errore durante l'acquisto: " + e.getMessage());
@@ -73,6 +74,14 @@ public class Game {
 	
 	public double getCurrentPrice() {
 		return currentPrice;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getGenre() {
+		return genre;
 	}
 
 	public int getId() {
