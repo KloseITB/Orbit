@@ -19,9 +19,10 @@ public class Res {
     
 	public final URL ORBIT_LOGO = getClass().getResource("/images/orbit_logo.png");
 	public final URL ORBIT_ICON = getClass().getResource("/images/orbit_icon_only.png");
+	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/game_placeholder.png");
     
     // FONT
     
-	public final static String FONT_NAME = "MV Boli"; // placeholder font
+	public final static String FONT_NAME = "Arial"; // placeholder font
     
 }

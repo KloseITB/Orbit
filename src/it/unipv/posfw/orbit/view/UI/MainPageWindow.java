@@ -2,10 +2,9 @@ package it.unipv.posfw.orbit.view.UI;
 
 import java.awt.*;
 import javax.swing.*;
-
-
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
+import it.unipv.posfw.orbit.main.SessionManager;
 
 public class MainPageWindow {
 	
@@ -13,7 +12,9 @@ public class MainPageWindow {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
+	private String userNickname = new SessionManager().getCurrentUser().getNickname().toUpperCase();
 	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", WINDOW_WIDTH, WINDOW_HEIGHT);
+	private ImageIcon gamePlaceholderImage = new ImageIcon(new Res().GAME_PLACEHOLDER);
 	
 	
 	public MainPageWindow() {
@@ -32,32 +33,34 @@ public class MainPageWindow {
 			centerPanel.setBackground(Res.FRAME_BG);
 		
 				// NEWS CONTAINER
-				JPanel newsPanel = new JPanel(new BorderLayout());
-				newsPanel.setBackground(Color.ORANGE); // placeholder color
-				newsPanel.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
+				JPanel leftPanel = new JPanel(new BorderLayout());
+				leftPanel.setOpaque(false);
+				leftPanel.setBorder(BorderFactory.createEmptyBorder(6, 90, 0, 0));
 				JLabel newsLabel = new JLabel("NEWS");
 				newsLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
-				newsLabel.setHorizontalAlignment(JLabel.CENTER);
+				newsLabel.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
+				newsLabel.setHorizontalAlignment(JLabel.LEFT);
 				newsLabel.setVerticalAlignment(JLabel.TOP);
 				newsLabel.setForeground(Color.WHITE);
 				
-					JPanel innerNewsPanel = new JPanel(new GridLayout(3, 1, 2, 0));
-				
+					JPanel innerNewsPanel = new JPanel();
 					innerNewsPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-					innerNewsPanel.setBackground(Color.MAGENTA);
-					innerNewsPanel.add(newsLabel);
+					innerNewsPanel.setOpaque(false);
+					innerNewsPanel.add(gameNewsPanel("GOONING", "We added gooning to the game", gamePlaceholderImage));
+					innerNewsPanel.add(gameNewsPanel("MEOW", "We added cats", gamePlaceholderImage));
+					innerNewsPanel.add(gameNewsPanel("HELLO", "hi :)", gamePlaceholderImage));
 
-				
-				newsPanel.add(newsLabel, BorderLayout.NORTH);
-				newsPanel.add(innerNewsPanel);
-				
+				leftPanel.add(newsLabel, BorderLayout.NORTH);
+				leftPanel.add(innerNewsPanel);
 				
 				// QUICK PLAY CONTAINER
-				JPanel quickPlayPanel = new JPanel();
-				quickPlayPanel.setBackground(Color.GREEN); // placeholder color
-			
-			centerPanel.add(newsPanel);
-			centerPanel.add(quickPlayPanel);
+				JPanel rightPanel = new JPanel(new BorderLayout());
+				rightPanel.setOpaque(false);
+				rightPanel.add(greetingsPanel(), BorderLayout.NORTH);
+				rightPanel.add(quickPlayPanel(gamePlaceholderImage));
+				
+			centerPanel.add(leftPanel);
+			centerPanel.add(rightPanel);
 		
 		mainPanel.add(headerPanel, BorderLayout.NORTH);
 		mainPanel.add(centerPanel);
@@ -65,39 +68,110 @@ public class MainPageWindow {
 		// FRAME SETTINGS
 		mainPageFrame.add(mainPanel);
 		mainPageFrame.setVisible(true);
-		
 	}
 	
 	
 	// work in progress
-	private JPanel gameNewsPanel(String newsTitle, String newsBody) {
-		JPanel mainPanel = new JPanel(new FlowLayout());
-		mainPanel.setBackground(Color.BLUE);
+	private JPanel gameNewsPanel(String updateTitleText, String updateBodyText, ImageIcon gameImage) {
 		
-			JLabel gameImage = new JLabel();
-			gameImage.setBackground(Color.BLACK);
-			gameImage.setPreferredSize(new Dimension(2, 3));
+		final Font FONT_BOLD = new Font(Res.FONT_NAME, Font.BOLD, 18);
+		final Font FONT_PLAIN = new Font(Res.FONT_NAME, Font.PLAIN, 14);
+		
+		// MAIN PANEL
+		JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+		mainPanel.setPreferredSize(new Dimension(550,150));
+		mainPanel.setOpaque(false);
+		
+		// GAME IMAGE
+			JLabel gameImageLabel = new JLabel(new ImageIcon(new Res().GAME_PLACEHOLDER));
+			gameImageLabel.setOpaque(true);
 			
-			JPanel newsPanel = new JPanel(new GridLayout(2, 1, 5, 5));
-			newsPanel.setBackground(Color.CYAN);
-				JLabel newsTitleLabel = new JLabel(newsTitle);
-				newsTitleLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 20));
-				newsTitleLabel.setForeground(Color.WHITE);
-				newsTitleLabel.setHorizontalAlignment(JLabel.LEFT);
-				newsTitleLabel.setVerticalAlignment(JLabel.CENTER);
-				JLabel newsBodyLabel = new JLabel (newsBody);
-				newsBodyLabel.setForeground(Color.WHITE);
-				newsBodyLabel.setFont(new Font(Res.FONT_NAME, Font.PLAIN, 12));
-				newsBodyLabel.setHorizontalAlignment(JLabel.LEFT);
-				newsBodyLabel.setVerticalAlignment(JLabel.TOP);
-					
-			newsPanel.add(newsTitleLabel);
-			newsPanel.add(newsBodyLabel);
+		// UPDATE DESCRIPTION
+			JPanel update = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 5));
+			update.setPreferredSize(new Dimension(400,150));
+			update.setOpaque(false);
 			
+		// UPDATE TITLE
+				JLabel updateTitle = new JLabel(updateTitleText);
+				updateTitle.setPreferredSize(new Dimension(400, 25));
+				updateTitle.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+				updateTitle.setHorizontalAlignment(JLabel.LEFT);
+				updateTitle.setVerticalAlignment(JLabel.TOP);
+				updateTitle.setFont(FONT_BOLD);
+				updateTitle.setForeground(Color.WHITE);
+				
+		// UPDATE BODY
+				JLabel updateBody = new JLabel(updateBodyText);
+				updateBody.setPreferredSize(new Dimension(400, 110));
+				updateBody.setHorizontalAlignment(JLabel.LEFT);
+				updateBody.setVerticalAlignment(JLabel.TOP);
+				updateBody.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+				updateBody.setFont(FONT_PLAIN);
+				updateBody.setBackground(Res.PANEL_BG);
+				updateBody.setForeground(Color.WHITE);
+				updateBody.setOpaque(true);
 			
-		//mainPanel.add(gameImage);
-		mainPanel.add(newsPanel);
+			update.add(updateTitle);
+			update.add(updateBody);
+		
+		mainPanel.add(gameImageLabel);
+		mainPanel.add(update);
 		return mainPanel;
+	}
+	
+	private JPanel greetingsPanel() {
+		JPanel greetingsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		greetingsPanel.setPreferredSize(new Dimension(0, 60));
+		greetingsPanel.setBorder(BorderFactory.createEmptyBorder(25, 20, 20, 20));
+		
+		JLabel welcomeLabel = new JLabel("WELCOME BACK,");
+		welcomeLabel.setPreferredSize(new Dimension(265, 30));
+		welcomeLabel.setVerticalAlignment(JLabel.CENTER);
+		welcomeLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+		welcomeLabel.setForeground(Color.WHITE);
+		
+		JLabel nicknameLabel = new JLabel(userNickname);
+		nicknameLabel.setPreferredSize(new Dimension(250, 30));
+		nicknameLabel.setVerticalAlignment(JLabel.CENTER);
+		nicknameLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+		nicknameLabel.setForeground(Res.ACCENT_YELLOW);
+		
+		greetingsPanel.add(welcomeLabel);
+		greetingsPanel.add(nicknameLabel);
+		greetingsPanel.setOpaque(false);
+		return greetingsPanel;
+	}
+	
+	private JPanel quickPlayPanel(ImageIcon gameImage) {
+		
+		//MAIN PANEL
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
+		panel.setOpaque(false);
+		
+		// LAST PLAYED GAMES
+		JLabel lastGameLabel = new JLabel("LAST PLAYED GAMES");
+		lastGameLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 26));
+		lastGameLabel.setForeground(Color.WHITE);
+		lastGameLabel.setPreferredSize(new Dimension(600, 26));
+		
+		// GAMES IMAGE
+		
+		JLabel mostRecentlyPlayedPanel = gameImageLabel();
+		JLabel secondMostPlayedGamePanel = gameImageLabel();
+		JLabel thirdMostPlayedGamePanel = gameImageLabel();
+		
+		panel.add(lastGameLabel);
+		panel.add(mostRecentlyPlayedPanel);
+		panel.add(secondMostPlayedGamePanel);
+		panel.add(thirdMostPlayedGamePanel);
+		return panel;
+	}
+	
+	private JLabel gameImageLabel() {
+		
+		JLabel gameImageLabel = new JLabel(new ImageIcon(new Res().GAME_PLACEHOLDER));
+		gameImageLabel.setOpaque(true);
+		return gameImageLabel;
 	}
 
 }

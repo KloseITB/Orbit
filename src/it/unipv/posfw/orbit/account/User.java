@@ -6,7 +6,7 @@ import it.unipv.posfw.orbit.payment.*;
 
 public class User {
 	
-	// Parameters
+	// parameters
 	
 	protected int id; //protected because it is a Primary Key in the db
 	private String nickname;
@@ -17,7 +17,7 @@ public class User {
 	protected Library library;
 	private double balance;
 	
-	// Constructors 
+	// constructors 
 	
 	// constructor new user
 	public User(String nickname, String password) {
@@ -41,7 +41,7 @@ public class User {
 		balance = 0;
 	}
 	
-	// Class Methods
+	// class Methods
 	
 	// adding funds via a classic payment method
 	public <E extends IPaymentMethod> void addFunds(double amount, E paymentMethod) {
