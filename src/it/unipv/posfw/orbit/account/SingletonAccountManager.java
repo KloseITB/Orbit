@@ -1,8 +1,11 @@
 package it.unipv.posfw.orbit.account;
+import it.unipv.posfw.orbit.exception.*;
 
 public class SingletonAccountManager {
 	
 	private static SingletonAccountManager uniqueInstance;
+	
+	private User currentUser; // local variable to keep the user logged in
 	
 	// Constructors
 	
@@ -23,18 +26,26 @@ public class SingletonAccountManager {
 	}
 	
 	public void login(String nickname, String password) {
-		User foundUser = it.unipv.posfw.orbit.database.FacadeDB.getInstance().login(nickname, password);
-		
-		if (foundUser != null){
-			System.out.println("Login effettuato con successo: " + foundUser.getNickname());
-		}else {
-			System.out.println("Credenziali errate");
+		try {
+			// call to the method that can handle exceptions
+			User foundUser = it.unipv.posfw.orbit.database.FacadeDB.getInstance().login(nickname, password);
+			
+			// if no exceptions the login is successful 
+			this.currentUser = foundUser;
+			System.out.println("Login effettuato con successo: " + currentUser.getNickname());
+			
+		} catch (UserNotFoundException e) {
+			// user not found error
+			System.out.println("Errore: " + e.getMessage());
+			
+		} catch (WrongPasswordException e) {
+			// wrong password error
+			System.out.println("Errore: " + e.getMessage());
 		}
-	 // SQL
-		/* 1. Query for finding the user with that nickname
-		 * 2. if it finds the user, check if the password input is equal to the user's password
-		 * 3. if everything is correct, link that user to a local variable
-		 * 4. use setLoggedIn = true;
-		 */
+	}
+	
+	// getter of the logged in user
+	public User getCurrentUser() {
+		return currentUser;
 	}
 }

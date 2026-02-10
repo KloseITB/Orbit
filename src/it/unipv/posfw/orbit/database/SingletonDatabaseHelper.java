@@ -76,38 +76,54 @@ public class SingletonDatabaseHelper {
     }
 
     // method for login of SingletonAccountManager
-    public User login(String nickname, String password) {
-        String sql = "SELECT * FROM users WHERE nickname = ? AND password = ?"; // gets all the info of the user
+    public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
+    	
+    	// check the nickname
+        String sql = "SELECT * FROM users WHERE nickname = ?"; 
+        
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setString(1, nickname);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery(); // execute teh query adn save it in rs
+            ResultSet rs = pstmt.executeQuery(); // execute the query and save it in rs
 
-            if (rs.next()) { // if there is a row in the results then the user exist
-                int id = rs.getInt("id");
-                String role = rs.getString("role");
-                double balance = rs.getDouble("balance");
+            if (rs.next()) { 
+            	// if there is a row in the results then the user exist, now we check the password
+                String dbPassword = rs.getString("password");
                 
-                User user;
-                // set the user role
-                switch (role) {
-                    case "ADMIN":
-                        user = new Admin(id, nickname, password, balance);
-                        break;
-                    case "PUBLISHER":
-                        user = new Publisher(id, nickname, password, balance);
-                        break;
-                    default:
-                        user = new User(id, nickname, password, balance);
+                if(dbPassword.equals(password)) {
+                	// correct password so we load user's data
+                	int id = rs.getInt("id");
+                	String role = rs.getString("role");
+                	double balance = rs.getDouble("balance");
+                
+                	User user;
+                	// set the user role
+                	switch (role) {
+                    	case "ADMIN":
+                    		user = new Admin(id, nickname, password, balance);
+                    		break;
+                    	case "PUBLISHER":
+                    		user = new Publisher(id, nickname, password, balance);
+                    		break;
+                    	default:
+                    		user = new User(id, nickname, password, balance);
+                	}
+                               
+                	user.setLoggedIn(true); // set user status as online
+                	return user;
+                	
+                } else {
+                	// wrong password
+                	throw new WrongPasswordException("Password sbagliata");
                 }
-                                
-                user.setLoggedIn(true); // set user status as online
-                return user;
+            }else {
+            	// id re.next() is false, the nickname doesn't exist in the db
+            	throw new UserNotFoundException("User inesistente");
             }
         } catch (SQLException e) { e.printStackTrace(); }
-        return null; // return null id there's an error in the login
+        
+        return null; // return null if there's an error in the login
     }
     
     // method Purchase

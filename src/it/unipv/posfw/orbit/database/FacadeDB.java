@@ -1,8 +1,7 @@
 package it.unipv.posfw.orbit.database;
 
 import it.unipv.posfw.orbit.account.User;
-import it.unipv.posfw.orbit.exception.AmountNotValidException;
-import it.unipv.posfw.orbit.exception.CodeNotFoundException;
+import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;
 
 public class FacadeDB {
@@ -26,7 +25,7 @@ public class FacadeDB {
 
     // account methods
 
-    public User login(String nickname, String password) {
+    public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
         return db.login(nickname, password);
     }
     
