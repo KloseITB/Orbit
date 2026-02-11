@@ -358,9 +358,9 @@ public class SingletonDatabaseHelper {
                  java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
                 pstmt.setInt(1, idGioco);
-                pstmt.setString(2, r.getNomeAutore()); 
-                pstmt.setInt(3, r.getVoto());
-                pstmt.setString(4, r.getTesto());
+                pstmt.setString(2, r.getAuthorNickname()); 
+                pstmt.setInt(3, r.getVote());
+                pstmt.setString(4, r.getReviewText());
                 pstmt.executeUpdate();
                 System.out.println("Review salvata nel database!");
                 

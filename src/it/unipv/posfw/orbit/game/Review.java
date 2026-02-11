@@ -4,50 +4,34 @@ import it.unipv.posfw.orbit.account.User;
 
 public class Review {
     
-    // Variabili semplici
-	
-	
-    private User autore;
-    private int voto; // valutazione da 1 a 5
-    private String testo;
-
+    // attributes
+    private User author;
+    private int vote; // vote from 1 to 5
+    private String reviewText;
     
-    
-    // Costruttore
-    
-    
-    public Review(User autore, int voto, String testo) {
-        this.autore = autore;
-        this.voto = voto;
-        this.testo = testo;
+    // constructor
+    public Review(User author, int vote, String reviewText) {
+        this.author = author;
+        this.vote = vote;
+        this.reviewText = reviewText;
     }
 
-    
-    // Metodi per leggere i dati
-    
-    
-    public String getNomeAutore() {
-        return autore.getNickname();
-    }
-    
-    
-
-    public int getVoto() {
-        return voto;
-        
-        
+    // methods
+    public String getAuthorNickname() {
+        return author.getNickname();
     }
 
-    
-    public String getTesto() {
-        return testo;
-        
+    public int getVote() {
+        return vote;
     }
-    
+
+    public String getReviewText() {
+        return reviewText;
+    }
     
     @Override
     public String toString() {
-        return getNomeAutore() + " ha votato " + voto + "/5: " + testo;
+        return getAuthorNickname() + " gave a vote of " + vote + "/5: \n" + reviewText;
         
     }
 }

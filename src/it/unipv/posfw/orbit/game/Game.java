@@ -1,5 +1,7 @@
 package it.unipv.posfw.orbit.game;
 
+import java.util.ArrayList;
+
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.discount.DiscountManager;
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
@@ -14,7 +16,7 @@ public class Game {
 	private double currentPrice;
 	private String genre;
 
-	private java.util.ArrayList<Review> listarecensioni = new java.util.ArrayList<>();
+	private ArrayList<Review> reviewArrayList = new java.util.ArrayList<>();
 
 	private String coverPath; // string with the directory of the game's cover image
 
@@ -112,7 +114,7 @@ public class Game {
 	
 
     public void scrivirecensione(Review r) {
-        this.listarecensioni.add(r);
+        this.reviewArrayList.add(r);
        
         
         System.out.println("Recensione aggiunta: " + r.toString());
@@ -120,7 +122,7 @@ public class Game {
     }
 
     public java.util.ArrayList<Review> getrecensioni() {
-        return this.listarecensioni;
+        return this.reviewArrayList;
     }
 	
 	public String getCoverPath() {
