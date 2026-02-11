@@ -1,7 +1,7 @@
 package it.unipv.posfw.orbit.database;
 
 import it.unipv.posfw.orbit.account.User;
-import java.util.List;
+import java.util.LinkedList;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;
 
@@ -48,7 +48,7 @@ public class FacadeDB {
         db.executePurchase(buyer, game);
     }
     
-    public List<Integer> getLibrary(User user){
+    public LinkedList<Integer> getLibrary(User user){
     	return db.getLibrary(user);
     }
     

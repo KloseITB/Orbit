@@ -2,7 +2,7 @@ package it.unipv.posfw.orbit.database;
 
 
 import java.sql.*;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.ArrayList;
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.exception.*;
@@ -338,8 +338,8 @@ public class SingletonDatabaseHelper {
     }
     
     // method return a list of id (user's library) given a user
-    public List<Integer> getLibrary(User user) {
-        List<Integer> gameIds = new ArrayList<>();
+    public LinkedList<Integer> getLibrary(User user) {
+        LinkedList<Integer> gameIds = new LinkedList<>();
         String sql = "SELECT game_id FROM library WHERE user_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
