@@ -22,9 +22,9 @@ public class Res {
 	
     // IMAGES
     
-	public final URL ORBIT_LOGO = getClass().getResource("/images/orbit_logo.png");
-	public final URL ORBIT_ICON = getClass().getResource("/images/orbit_icon_only.png");
-	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/game_placeholder.png");
+	public final URL ORBIT_LOGO = getClass().getResource("/images/commons/orbit_logo.png");
+	public final URL ORBIT_ICON = getClass().getResource("/images/commons/orbit_icon_only.png");
+	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/commons/game_placeholder.png");
     
     // FONT
     
