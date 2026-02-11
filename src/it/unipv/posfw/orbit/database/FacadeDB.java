@@ -57,6 +57,10 @@ public class FacadeDB {
     public Game getGame(int gameId) {
     	return db.getGame(gameId);
     }
+    
+    public LinkedList<Integer> getAllGameIds() {
+        return db.getAllGameIds();
+    }
 
     // gift cards methods
     
