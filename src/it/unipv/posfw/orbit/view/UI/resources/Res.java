@@ -7,6 +7,11 @@ public class Res {
 
 	// common resources used by the UI
 	
+	// WINDOW SETTINGS
+	
+	public final static int DEFAULT_WINDOW_WIDTH = 1280;
+	public final static int DEFAULT_WINDOW_HEIGHT = 720;
+	
 	// COLORS
 	
 	public final static Color FRAME_BG = new Color(20, 18, 23);           // main Background Color

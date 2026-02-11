@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import javax.swing.*;
 
+import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.view.FacadeUserInterface;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
 
@@ -17,6 +19,9 @@ public class LoginWindow implements ActionListener{
 	private final int WINDOW_HEIGHT = 480;
 	private JFrame loginFrame;
 	private JButton loginButton;
+	private JTextField nicknameTF;
+	private JTextField passwordTF;
+	private JLabel loginFailedMessageLabel;
 
     // FONT PRESETS
     
@@ -30,22 +35,22 @@ public class LoginWindow implements ActionListener{
 		
 		loginFrame = Prefab.frameOrbit("Login", WINDOW_WIDTH, WINDOW_HEIGHT);
 		loginButton = Prefab.buttonOrbit("LOGIN", (WINDOW_WIDTH - 200) / 2, (WINDOW_HEIGHT - 50) / 2);
+		loginFailedMessageLabel = new JLabel();
 		
 		// TOP BANNER
 		
 		JPanel topBanner = Prefab.headerOrbit(WINDOW_WIDTH);
 		
 		// LOGIN PANEL
-		
 		int loginPanelWidth = 250;
 		int loginPanelHeight = 300;
 		
 		JPanel loginPanel = new JPanel();
 		JLabel requestLabel = new JLabel("ACCESS TO YOUR ORBIT ACCOUNT");
 		JLabel usernameLabel = new JLabel("USERNAME");
-		JTextField usernameTF = new JTextField();
+		nicknameTF = new JTextField();
 		JLabel passwordLabel = new JLabel("PASSWORD");
-		JTextField passwordTF = new JTextField();
+		passwordTF = new JTextField();
 		
 		
 		requestLabel.setForeground(Color.WHITE);
@@ -64,23 +69,46 @@ public class LoginWindow implements ActionListener{
 		
 		loginPanel.add(requestLabel);
 		loginPanel.add(usernameLabel);
-		loginPanel.add(usernameTF);
+		loginPanel.add(nicknameTF);
 		loginPanel.add(passwordLabel);
 		loginPanel.add(passwordTF);
 		loginPanel.add(loginButton);
-
+		
+		// ERROR MESSAGE
+		int labelHeight = 30;
+		int labelY = loginPanel.getY() + loginPanel.getHeight() + 10; // 10px sotto il pannello
+		loginFailedMessageLabel.setFont(FONT_REGULAR);
+		loginFailedMessageLabel.setForeground(Color.RED);
+		loginFailedMessageLabel.setBounds(loginPanel.getX(), labelY, loginPanel.getWidth(), labelHeight);
+		loginFailedMessageLabel.setHorizontalAlignment(JLabel.CENTER);
+		loginFailedMessageLabel.setVisible(false);
+		
+		
+		// ACTION LISTENERS
+		loginButton.addActionListener(this);
+		
 		// FRAME SETTINGS
-		
 		loginFrame.setLayout(null);
-		
 		loginFrame.add(topBanner);
 		loginFrame.add(loginPanel);
+		loginFrame.add(loginFailedMessageLabel);
 		loginFrame.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if (e.getSource() == loginButton) {
+			if (FacadeUserInterface.getInstance().setSessionUser(new User(nicknameTF.getText(), passwordTF.getText()))) {
+				System.out.println("successo");
+				new MainPageWindow();
+			}
+			else {
+				System.out.println("errore");
+				loginFailedMessageLabel.setText("USER CREDENTIALS NOT VALID");
+				loginFailedMessageLabel.setVisible(true);
+				loginFrame.repaint();
+			}
+		}
 		
 	}
 	

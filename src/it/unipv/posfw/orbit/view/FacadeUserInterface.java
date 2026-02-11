@@ -1,9 +1,37 @@
 package it.unipv.posfw.orbit.view;
 
+import it.unipv.posfw.orbit.account.SingletonAccountManager;
+import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.database.FacadeDB;
+import it.unipv.posfw.orbit.exception.UserNotFoundException;
+import it.unipv.posfw.orbit.exception.WrongPasswordException;
+
 public class FacadeUserInterface {
 
-	public FacadeUserInterface() {
-		// TODO Auto-generated constructor stub
-	}
+    private static FacadeUserInterface instance;
 
+    private FacadeUserInterface() {}
+
+    public static FacadeUserInterface getInstance() {
+        if (instance == null) {
+            instance = new FacadeUserInterface();
+        }
+        return instance;
+    }
+
+    public String getSessionUser() {
+        return SingletonAccountManager.getInstance().getCurrentUser().getNickname();
+    }
+
+    public boolean setSessionUser(User user) {
+        try {
+            FacadeDB.getInstance().login(user.getNickname(), user.getPassword());
+        } catch (UserNotFoundException e) {
+            return false;
+        } catch (WrongPasswordException e) {
+        	return false;
+        }
+        
+        return true;
+    }
 }

@@ -9,7 +9,9 @@ public class SingletonAccountManager {
 	
 	// Constructors
 	
-	private SingletonAccountManager() {}
+	private SingletonAccountManager() {
+		this.currentUser = new User("Klose", "password"); // here just for debug purposes.
+	}
 	
 	// Get instance of the class
 	public static SingletonAccountManager getInstance() {
@@ -44,8 +46,15 @@ public class SingletonAccountManager {
 		}
 	}
 	
-	// getter of the logged in user
+	
+	// getters and setters
+	
 	public User getCurrentUser() {
 		return currentUser;
 	}
+	
+	public void setCurrentUser(User user) {
+		this.currentUser = user;
+	}
+	
 }

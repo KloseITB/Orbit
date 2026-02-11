@@ -11,6 +11,7 @@ public class User {
 	protected int id; //protected because it is a Primary Key in the db
 	private String nickname;
 	private String password;
+
 	private boolean isBanned;
 	private boolean isLoggedIn;
 	
@@ -105,7 +106,15 @@ public class User {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	public boolean isLoggedIn() {
 		return isLoggedIn;
 	}

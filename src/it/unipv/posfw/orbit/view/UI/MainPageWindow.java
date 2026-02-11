@@ -1,30 +1,35 @@
 package it.unipv.posfw.orbit.view.UI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import it.unipv.posfw.orbit.view.FacadeUserInterface;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
-import it.unipv.posfw.orbit.main.SessionManager;
+import it.unipv.posfw.orbit.account.SingletonAccountManager;
 
-public class MainPageWindow {
+public class MainPageWindow implements ActionListener {
 	
 	// ATTRIBUTES
-	private final int WINDOW_WIDTH = 1280;
-	private final int WINDOW_HEIGHT = 720;
-	
-	private String userNickname = new SessionManager().getCurrentUser().getNickname().toUpperCase();
-	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", WINDOW_WIDTH, WINDOW_HEIGHT);
+	private String userNickname = FacadeUserInterface.getInstance().getSessionUser().toUpperCase();
+	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
 	private ImageIcon gamePlaceholderImage = new ImageIcon(new Res().GAME_PLACEHOLDER);
-	
 	
 	public MainPageWindow() {
 		
 		// MAIN CONTAINER
 		JPanel mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+		mainPanel.setPreferredSize(new Dimension(Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT));
 			
 			// HEADER
-			JPanel headerPanel = Prefab.headerOrbit(WINDOW_WIDTH, 140);
+			JPanel headerPanel = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH, 140);
+			JButton libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
+			JButton shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
+			
+			headerPanel.add(libraryButton);
+			headerPanel.add(shopButton);
 			
 			// SECONDARY CONTAINER
 			int borderThickness = 10;
@@ -65,13 +70,10 @@ public class MainPageWindow {
 		mainPanel.add(headerPanel, BorderLayout.NORTH);
 		mainPanel.add(centerPanel);
 		
-		// FRAME SETTINGS
 		mainPageFrame.add(mainPanel);
 		mainPageFrame.setVisible(true);
 	}
 	
-	
-	// work in progress
 	private JPanel gameNewsPanel(String updateTitleText, String updateBodyText, ImageIcon gameImage) {
 		
 		final Font FONT_BOLD = new Font(Res.FONT_NAME, Font.BOLD, 18);
@@ -124,12 +126,14 @@ public class MainPageWindow {
 		greetingsPanel.setPreferredSize(new Dimension(0, 60));
 		greetingsPanel.setBorder(BorderFactory.createEmptyBorder(25, 20, 20, 20));
 		
+		// WELCOME BACK,
 		JLabel welcomeLabel = new JLabel("WELCOME BACK,");
 		welcomeLabel.setPreferredSize(new Dimension(265, 30));
 		welcomeLabel.setVerticalAlignment(JLabel.CENTER);
 		welcomeLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
 		welcomeLabel.setForeground(Color.WHITE);
 		
+		// USER'S NICKNAME
 		JLabel nicknameLabel = new JLabel(userNickname);
 		nicknameLabel.setPreferredSize(new Dimension(250, 30));
 		nicknameLabel.setVerticalAlignment(JLabel.CENTER);
@@ -172,6 +176,12 @@ public class MainPageWindow {
 		JLabel gameImageLabel = new JLabel(new ImageIcon(new Res().GAME_PLACEHOLDER));
 		gameImageLabel.setOpaque(true);
 		return gameImageLabel;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
