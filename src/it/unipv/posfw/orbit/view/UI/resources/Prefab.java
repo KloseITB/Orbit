@@ -1,8 +1,10 @@
 package it.unipv.posfw.orbit.view.UI.resources;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,7 +25,7 @@ public final class Prefab {
 		if (new Res().ORBIT_ICON != null) {
 		    frame.setIconImage(new ImageIcon(new Res().ORBIT_ICON).getImage());
 		} else {
-		    System.out.println("Errore: Immagine non trovata!");
+		    System.out.println("Error: Image not found");
 		}
 		
 		// frame settings
@@ -71,7 +73,7 @@ public final class Prefab {
 		if (new Res().ORBIT_LOGO != null) {
 		    banner.add(OrbitLogoLabel);
 		} else {
-		    System.out.println("Errore: Immagine non trovata!");
+		    System.out.println("Error: Image not found");
 		}
 		
 		return banner;
@@ -87,9 +89,24 @@ public final class Prefab {
 		if (new Res().ORBIT_LOGO != null) {
 		    banner.add(OrbitLogoLabel);
 		} else {
-		    System.out.println("Errore: Immagine non trovata!");
+		    System.out.println("Error: Image not found");
 		}
 		
 		return banner;
+	}
+	
+	
+	// creates a button rappresented by the game's thumbnail
+	public JButton imageButton(String imagePath) {
+		JButton button = new JButton();
+		if (imagePath == null) {
+			button.setIcon(new ImageIcon(new Res().GAME_PLACEHOLDER));
+		}
+		else {
+			URL imageURL = getClass().getResource(imagePath);
+			button.setIcon(new ImageIcon(imagePath));
+		}
+		button.setPreferredSize(new Dimension(100, 140));
+		return button;
 	}
 }

@@ -19,8 +19,12 @@ public class FacadeUserInterface {
         return instance;
     }
 
-    public String getSessionUser() {
+    public String getSessionUserNickname() {
         return SingletonAccountManager.getInstance().getCurrentUser().getNickname();
+    }
+    
+    public User getSessionUser() {
+        return SingletonAccountManager.getInstance().getCurrentUser();
     }
 
     public boolean setSessionUser(String nickname, String password) {
