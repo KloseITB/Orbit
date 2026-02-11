@@ -64,4 +64,15 @@ public class FacadeUserInterface {
     	
     	return userGames;
     }
+    
+    public LinkedList<Game> getCatalog(){
+    	
+    	LinkedList<Game> catalog = new LinkedList<>();
+    			
+    	for ( int id : FacadeDB.getInstance().getAllGameIds()) {
+    		catalog.add(FacadeDB.getInstance().getGame(id));
+    	}
+    	
+    	return catalog;
+    }
 }

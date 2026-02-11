@@ -1,20 +1,35 @@
 package it.unipv.posfw.orbit.view.UI;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
-import javax.swing.*;
-import it.unipv.posfw.orbit.account.User;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import it.unipv.posfw.orbit.account.SingletonAccountManager;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.library.Library;
 import it.unipv.posfw.orbit.view.FacadeUserInterface;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
+import it.unipv.posfw.orbit.view.UI.resources.WrapLayout;
 
 public class ShopWindow implements ActionListener{
 	
@@ -28,8 +43,21 @@ public class ShopWindow implements ActionListener{
 			
 			// HEADER PANEL
 			JPanel header = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH);
+			JLabel buffer = new JLabel();
+			buffer.setPreferredSize(new Dimension(500, 60));
+			
+			// show the balance with the format #.00
+			double userBalance = SingletonAccountManager.getInstance().getCurrentUser().getBalance();
+			DecimalFormat df = new DecimalFormat("#.00"); 
+			JLabel balanceLabel = new JLabel("Balance: " + df.format(userBalance) + "€"); 
+			balanceLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 20));
+			balanceLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+			balanceLabel.setForeground(Color.WHITE);
+			
 			header.add(Prefab.buttonOrbit("MAIN PAGE", 0, 0));
 			header.add(Prefab.buttonOrbit("LIBRARY", 0, 0));
+			header.add(buffer);
+			header.add(balanceLabel);
 			
 			// MAIN PANEL
 			JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
@@ -37,23 +65,24 @@ public class ShopWindow implements ActionListener{
 			
 				
 				// GAME LIST PANEL
-				gameListPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 10));
+				gameListPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 25, 10));
 				gameListPanel.setPreferredSize(new Dimension(700, 590));
 				gameListPanel.setOpaque(false);
-				JLabel GameCatalogLabel = new JLabel("ORBIT CATALOG");
-				GameCatalogLabel.setPreferredSize(new Dimension(700, 80));
-				GameCatalogLabel.setHorizontalAlignment(JLabel.LEFT);
-				GameCatalogLabel.setVerticalAlignment(JLabel.CENTER);
-				GameCatalogLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
-				GameCatalogLabel.setForeground(Color.WHITE);
-				gameListPanel.add(GameCatalogLabel);
+				JLabel gameCatalogLabel = new JLabel("ORBIT CATALOG");
+				gameCatalogLabel.setPreferredSize(new Dimension(700, 80));
+				gameCatalogLabel.setHorizontalAlignment(JLabel.LEFT);
+				gameCatalogLabel.setVerticalAlignment(JLabel.CENTER);
+				gameCatalogLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+				gameCatalogLabel.setForeground(Color.WHITE);
+				gameListPanel.add(gameCatalogLabel);
+
 				populateShopPanel();
 				
 				//GAME INFOS PANEL
 				gameInfoPanel = new JPanel();
 				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
 				gameInfoPanel.setBackground(Res.PANEL_BG);
-			
+
 			// ACTION LISTENERS
 			centerPanel.add(gameListPanel);
 			centerPanel.add(gameInfoPanel);
@@ -66,8 +95,8 @@ public class ShopWindow implements ActionListener{
 	
 	private void populateShopPanel() {
 		
-		LinkedList<Game> userGames = FacadeUserInterface.getInstance().getUserGames(user);
-		for (Game game : userGames) { 
+		LinkedList<Game> catalog = FacadeUserInterface.getInstance().getCatalog();
+		for (Game game : catalog) { 
 			URL gameCoverPath;
 			
 			// if the image reference is null, the placeholder cover is used instead
@@ -99,12 +128,12 @@ public class ShopWindow implements ActionListener{
 			    openGamePage(game); // open the relative game's info page 
 			});
 			
-			addToGameListPanel(gameButton); // add the button to gameListPanel
+			addToCatalogPanel(gameButton); // add the button to gameListPanel
 		}
 
 	}
 	
-	private void addToGameListPanel(JButton button) {
+	private void addToCatalogPanel(JButton button) {
 		gameListPanel.add(button);
 	}
 	
@@ -146,17 +175,18 @@ public class ShopWindow implements ActionListener{
 		genreLabel.setFont(new Font(Res.FONT_NAME, Font.PLAIN, 18));
 		genreLabel.setForeground(Color.WHITE);
 		
-		//PLAY BUTTON (not fully implemented for obvious reasons)
-		JButton playButton = Prefab.buttonOrbit("PLAY", 0, 0);
-		playButton.setBackground(new Color(63, 193, 57)); // light green button
-		playButton.setBorderPainted(false);
+		//BUY BUTTON
+		Double priceWrapper = game.getCurrentPrice();
+		JButton buyButton = Prefab.buttonOrbit("BUY FOR " + priceWrapper.toString() + "€", 0, 0);
+		buyButton.setBackground(new Color(12, 109, 207)); // light blue button
+		buyButton.setBorderPainted(false);
 		
 		// add all the elements to the panel
 		gameInfoPanel.add(titleLabel);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
 	    gameInfoPanel.add(genreLabel);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
-	    gameInfoPanel.add(playButton);
+	    gameInfoPanel.add(buyButton);
 	    
 	    // DRAW ELEMENTS
 	    gameInfoPanel.revalidate(); // Recalculate the layout

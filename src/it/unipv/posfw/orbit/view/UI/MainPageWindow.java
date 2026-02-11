@@ -73,6 +73,7 @@ public class MainPageWindow implements ActionListener {
 		
 		// ACTION LISTENER
 		libraryButton.addActionListener(this);
+		shopButton.addActionListener(this);
 		
 		mainPageFrame.add(mainPanel);
 		mainPageFrame.setVisible(true);
@@ -163,7 +164,6 @@ public class MainPageWindow implements ActionListener {
 		lastGameLabel.setPreferredSize(new Dimension(600, 26));
 		
 		// GAMES IMAGE
-		
 		JLabel mostRecentlyPlayedPanel = gameImageLabel();
 		JLabel secondMostPlayedGamePanel = gameImageLabel();
 		JLabel thirdMostPlayedGamePanel = gameImageLabel();
@@ -187,6 +187,11 @@ public class MainPageWindow implements ActionListener {
 		if(e.getSource() == libraryButton) {
 			mainPageFrame.dispose();
 			new LibraryWindow();
+		}
+		
+		if(e.getSource() == shopButton) {
+			mainPageFrame.dispose();
+			new ShopWindow();
 		}
 		
 	}
