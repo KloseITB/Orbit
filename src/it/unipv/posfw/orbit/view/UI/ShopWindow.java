@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -22,14 +21,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import it.unipv.posfw.orbit.account.SingletonAccountManager;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.view.FacadeUserInterface;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
-import it.unipv.posfw.orbit.view.UI.resources.WrapLayout;
+
 
 public class ShopWindow implements ActionListener{
 	
@@ -63,9 +61,8 @@ public class ShopWindow implements ActionListener{
 			JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 			centerPanel.setOpaque(false);
 			
-				
 				// GAME LIST PANEL
-				gameListPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 25, 10));
+				gameListPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 10));
 				gameListPanel.setPreferredSize(new Dimension(700, 590));
 				gameListPanel.setOpaque(false);
 				JLabel gameCatalogLabel = new JLabel("ORBIT CATALOG");
@@ -146,14 +143,11 @@ public class ShopWindow implements ActionListener{
 	    // creates a new BufferedImage to paint on
 	    BufferedImage darkenedParams = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D g2 = darkenedParams.createGraphics();
-
-	    // draw the original image
-	    g2.drawImage(original.getImage(), 0, 0, null);
-
-	    // adds a dark filter to the image
+	    
+	    // draw the original image and add a darker filter
+	    g2.drawImage(original.getImage(), 0, 0, null); 
 	    g2.setColor(new Color(0, 0, 0, 150)); 
 	    g2.fillRect(0, 0, width, height);
-
 	    g2.dispose();
 	    
 	    return new ImageIcon(darkenedParams);
@@ -162,7 +156,6 @@ public class ShopWindow implements ActionListener{
 	private void openGamePage(Game game) {
 
 		gameInfoPanel.removeAll(); // remove all the previous elements from the Panel
-		
 		gameInfoPanel.setLayout(new BoxLayout(gameInfoPanel, BoxLayout.Y_AXIS));
 		gameInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // 20px padding
 		
