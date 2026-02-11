@@ -23,9 +23,9 @@ public class FacadeUserInterface {
         return SingletonAccountManager.getInstance().getCurrentUser().getNickname();
     }
 
-    public boolean setSessionUser(User user) {
+    public boolean setSessionUser(String nickname, String password) {
         try {
-            FacadeDB.getInstance().login(user.getNickname(), user.getPassword());
+            FacadeDB.getInstance().login(nickname, password);
         } catch (UserNotFoundException e) {
             return false;
         } catch (WrongPasswordException e) {
@@ -33,5 +33,11 @@ public class FacadeUserInterface {
         }
         
         return true;
+    }
+    
+    public boolean signupUser(String nickname, String password) {
+    	
+    	// signup the player by adding it to the DB
+    	return true;
     }
 }
