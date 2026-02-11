@@ -71,6 +71,9 @@ public class MainPageWindow implements ActionListener {
 		mainPanel.add(headerPanel, BorderLayout.NORTH);
 		mainPanel.add(centerPanel);
 		
+		// ACTION LISTENER
+		libraryButton.addActionListener(this);
+		
 		mainPageFrame.add(mainPanel);
 		mainPageFrame.setVisible(true);
 	}
@@ -113,9 +116,6 @@ public class MainPageWindow implements ActionListener {
 				updateBody.setBackground(Res.PANEL_BG);
 				updateBody.setForeground(Color.WHITE);
 				updateBody.setOpaque(true);
-				
-		// ACTION LISTENER
-		libraryButton.addActionListener(this);
 				
 			update.add(updateTitle);
 			update.add(updateBody);

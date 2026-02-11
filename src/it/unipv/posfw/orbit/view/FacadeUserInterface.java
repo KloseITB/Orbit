@@ -49,7 +49,6 @@ public class FacadeUserInterface {
 			FacadeDB.getInstance().signup(new User(nickname, password));
 		} catch (PlayerAlreadyExistException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
 		}
     	SingletonAccountManager.getInstance().setCurrentUser(new User(nickname, password));
