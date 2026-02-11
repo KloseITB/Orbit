@@ -27,6 +27,7 @@ public class LibraryWindow {
 			
 			// MAIN PANEL
 			JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+			centerPanel.setOpaque(false);
 			
 				// GAME LIST PANEL
 				gameListPanel = new JPanel(new GridLayout(6, 5, 5, 5));
@@ -49,10 +50,14 @@ public class LibraryWindow {
 	
 	private void populateLibrary(User user) {
 		
-		// get the user's library list
-		// iterate through the list and get the image for each owned games
+		// LinkedList<Game> userGames = FacadeUserInterface.getInstance().getUserGames(User user)
+		// for (Game game : userGames) { 
+		//get the game's image
 		// create a button 100x140 with the image as input
 		// addToGameListPanel(button)
+		//}
+		
+		
 	}
 	
 	private void addToGameListPanel(JButton button) {

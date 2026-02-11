@@ -1,10 +1,14 @@
 package it.unipv.posfw.orbit.view;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import it.unipv.posfw.orbit.account.SingletonAccountManager;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
+import it.unipv.posfw.orbit.game.Game;
 
 public class FacadeUserInterface {
 
@@ -43,5 +47,15 @@ public class FacadeUserInterface {
     	
     	// signup the player by adding it to the DB
     	return true;
+    }
+    
+    public LinkedList<Game> getUserGames(User user){
+    	LinkedList<Game> userGames = new LinkedList<>();
+    	//LinkedList<Integer> gamesId = FacadeDB.getInstance().getLibrary(user);
+    	//for (int gameId : gamesID){
+    		//userGames.add(getGame(gameId));
+    	//}
+    	
+    	return userGames;
     }
 }
