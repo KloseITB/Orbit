@@ -8,6 +8,7 @@ public class Main {
 		
 		new LoginWindow();
 		//new MainPageWindow();
+		//new LibraryWindow();
 
 	}
 

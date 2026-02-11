@@ -2,7 +2,7 @@ package it.unipv.posfw.orbit.database;
 
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;
@@ -31,7 +31,7 @@ public class SingletonDatabaseHelper {
 
     
     private void createTables() {
-        try (Connection conn = DriverManager.getConnection(URL);  // conn create a connectione between classes and the db, we need to create it in order to send the query to the db
+        try (Connection conn = DriverManager.getConnection(URL);  // conn create a connection between classes and the db, we need to create it in order to send the query to the db
              Statement stmt = conn.createStatement()) {
             
             
@@ -50,6 +50,7 @@ public class SingletonDatabaseHelper {
                               "baseprice REAL NOT NULL, " +
                               "currentprice REAL NOT NULL, " +
                               "score REAL DEFAULT 0.0, " +
+                              "cover_path TEXT, " +
                               "publisher_id INTEGER, " +
                               "FOREIGN KEY (publisher_id) REFERENCES users(id))";
             stmt.execute(sqlGames);
@@ -143,6 +144,57 @@ public class SingletonDatabaseHelper {
         return null; // return null if there's an error in the login
     }
     
+    // method register new user (sign up)
+    public void registerUser(User user) throws PlayerAlreadyExistException {
+        
+        // check if nickname already exist
+        String checkSql = "SELECT nickname FROM users WHERE nickname = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            
+            checkStmt.setString(1, user.getNickname());
+            ResultSet rs = checkStmt.executeQuery();
+            
+            if (rs.next()) {
+                // if we find a row the nickname is already in use
+                throw new PlayerAlreadyExistException("Esiste già un utente con il nickname: " + user.getNickname());
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // exit completely if there is an sql error
+            return;
+        }
+
+        // is the nickname is free to use we can register the user
+        String insertSql = "INSERT INTO users (nickname, password, role, balance) VALUES (?, ?, ?, ?)";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+            
+            insertStmt.setString(1, user.getNickname());
+            insertStmt.setString(2, user.getPassword()); // if we change the password to be masked we need to change here
+            insertStmt.setString(3, "USER"); // default role, when do we change it?
+            insertStmt.setDouble(4, 0.0);    
+            
+            int affectedRows = insertStmt.executeUpdate();
+            
+            if (affectedRows > 0) {
+                // the id is generate by the db, we need to get it to set it in the local memory
+                try (ResultSet generatedKeys = insertStmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int newId = generatedKeys.getInt(1);
+                        user.setId(newId); 
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     // method Purchase
     public void executePurchase(User buyer, Game game) throws AmountNotValidException { // launch the exception if the balance is not enough
         if (buyer.getBalance() < game.getCurrentPrice()) {
@@ -197,7 +249,7 @@ public class SingletonDatabaseHelper {
     public void registerGame(Game game, int publisherId) {
     	
     	// sql query to add a game, with no id since it will be added by the db
-    	String sql = "INSERT INTO games(title, baseprice, currentprice, tag, publisher_id) VALUES(?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO games(title, baseprice, currentprice, tag, cover_path, publisher_id) VALUES(?, ?, ?, ?, ?)";
     	
     	try (Connection conn = DriverManager.getConnection(URL); // we specify that we want back the generated keys
     		 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
@@ -206,7 +258,8 @@ public class SingletonDatabaseHelper {
             pstmt.setDouble(2, game.getBasePrice());
             pstmt.setDouble(3, game.getCurrentPrice());
             pstmt.setString(4, game.getGenre());
-            pstmt.setInt(5, publisherId);
+            pstmt.setString(5, game.getCoverPath());
+            pstmt.setInt(6, publisherId);
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -318,10 +371,59 @@ public class SingletonDatabaseHelper {
      
     }
     
+    // method return a list of id (user's library) given a user
+    public LinkedList<Integer> getLibrary(User user) {
+        LinkedList<Integer> gameIds = new LinkedList<>();
+        String sql = "SELECT game_id FROM library WHERE user_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, user.getId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                // add every id found in the list
+                gameIds.add(rs.getInt("game_id"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gameIds;
+    }
     
-    
-    
-    
+    // method that return the object game given its id
+    public Game getGame(int gameId) {
+        String sql = "SELECT * FROM games WHERE id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, gameId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // recover the data from the db
+                String title = rs.getString("title");
+                double basePrice = rs.getDouble("baseprice");
+                double currentPrice = rs.getDouble("currentprice"); // get the current price since it can change
+                String tag = rs.getString("tag");
+                String coverPath = rs.getString("cover_path");
+
+                Game game = new Game(title, basePrice, tag, coverPath);
+                
+                game.setId(gameId); //set the id with the one from the db
+                game.setCurrentPrice(currentPrice); // set the current price
+                
+                return game;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // if the game doesn't exist
+    }
     
     
 }

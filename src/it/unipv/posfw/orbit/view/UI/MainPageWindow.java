@@ -8,14 +8,15 @@ import javax.swing.*;
 import it.unipv.posfw.orbit.view.FacadeUserInterface;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
-import it.unipv.posfw.orbit.account.SingletonAccountManager;
 
 public class MainPageWindow implements ActionListener {
 	
 	// ATTRIBUTES
-	private String userNickname = FacadeUserInterface.getInstance().getSessionUser().toUpperCase();
+	private String userNickname = FacadeUserInterface.getInstance().getSessionUserNickname().toUpperCase();
 	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
 	private ImageIcon gamePlaceholderImage = new ImageIcon(new Res().GAME_PLACEHOLDER);
+	private JButton libraryButton;
+	private JButton shopButton;
 	
 	public MainPageWindow() {
 		
@@ -25,8 +26,8 @@ public class MainPageWindow implements ActionListener {
 			
 			// HEADER
 			JPanel headerPanel = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH, 140);
-			JButton libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
-			JButton shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
+			libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
+			shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
 			
 			headerPanel.add(libraryButton);
 			headerPanel.add(shopButton);
@@ -70,6 +71,9 @@ public class MainPageWindow implements ActionListener {
 		mainPanel.add(headerPanel, BorderLayout.NORTH);
 		mainPanel.add(centerPanel);
 		
+		// ACTION LISTENER
+		libraryButton.addActionListener(this);
+		
 		mainPageFrame.add(mainPanel);
 		mainPageFrame.setVisible(true);
 	}
@@ -112,7 +116,7 @@ public class MainPageWindow implements ActionListener {
 				updateBody.setBackground(Res.PANEL_BG);
 				updateBody.setForeground(Color.WHITE);
 				updateBody.setOpaque(true);
-			
+				
 			update.add(updateTitle);
 			update.add(updateBody);
 		
@@ -180,7 +184,10 @@ public class MainPageWindow implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource() == libraryButton) {
+			mainPageFrame.dispose();
+			new LibraryWindow();
+		}
 		
 	}
 

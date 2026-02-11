@@ -1,8 +1,10 @@
 package it.unipv.posfw.orbit.database;
 
 import it.unipv.posfw.orbit.account.User;
+import java.util.LinkedList;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.view.FacadeUserInterface;
 
 public class FacadeDB {
     
@@ -27,6 +29,11 @@ public class FacadeDB {
 
     public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
         return db.login(nickname, password);
+        
+    }
+    
+    public void signup(User user) throws PlayerAlreadyExistException{
+    	db.registerUser(user);
     }
     
     public void updateUserBalance(User user) {
@@ -41,6 +48,14 @@ public class FacadeDB {
 
     public void purchaseGame(User buyer, Game game) throws AmountNotValidException {
         db.executePurchase(buyer, game);
+    }
+    
+    public LinkedList<Integer> getLibrary(User user){
+    	return db.getLibrary(user);
+    }
+    
+    public Game getGame(int gameId) {
+    	return db.getGame(gameId);
     }
 
     // gift cards methods

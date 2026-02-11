@@ -3,6 +3,7 @@ package it.unipv.posfw.orbit.library;
 import java.util.LinkedList;
 
 import it.unipv.posfw.orbit.exception.GameNotFoundException;
+import it.unipv.posfw.orbit.game.Game;
 
 public class Library {
 	
@@ -18,7 +19,7 @@ public class Library {
 	
 	// Class Methods
 	
-	public void addGame(Integer gameID) {
+	public void addGame(int gameID) {
 		if(!gamesLinkedList.contains(gameID))
 		gamesLinkedList.add(gameID);
 		// add game to the library of the user in SQL
@@ -27,7 +28,7 @@ public class Library {
 		}
 	}
 	
-	public void removeGame(Integer gameID) throws GameNotFoundException{
+	public void removeGame(int gameID) throws GameNotFoundException{
 		if (gamesLinkedList.contains(gameID))
 		gamesLinkedList.remove(gameID);
 		// remove game to the library of the user in SQL

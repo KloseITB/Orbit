@@ -5,15 +5,13 @@ import java.net.URL;
 
 public class Res {
 
-	// common resources used by the UI
+	// common resources used for building the UI
 	
 	// WINDOW SETTINGS
-	
 	public final static int DEFAULT_WINDOW_WIDTH = 1280;
 	public final static int DEFAULT_WINDOW_HEIGHT = 720;
 	
 	// COLORS
-	
 	public final static Color FRAME_BG = new Color(20, 18, 23);           // main Background Color
 	public final static Color HEADER = new Color(40, 35, 50);             // header color
 	public final static Color PANEL_BG = new Color(66, 61, 71);          // secondary background color
@@ -21,13 +19,10 @@ public class Res {
 	public final static Color ACCENT_YELLOW = new Color(255, 200, 0);    // underlining color
 	
     // IMAGES
-    
-	public final URL ORBIT_LOGO = getClass().getResource("/images/orbit_logo.png");
-	public final URL ORBIT_ICON = getClass().getResource("/images/orbit_icon_only.png");
-	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/game_placeholder.png");
+	public final URL ORBIT_LOGO = getClass().getResource("/images/commons/orbit_logo.png");
+	public final URL ORBIT_ICON = getClass().getResource("/images/commons/orbit_icon_only.png");
+	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/commons/game_placeholder.png");
     
     // FONT
-    
 	public final static String FONT_NAME = "Arial"; // placeholder font
-    
 }
