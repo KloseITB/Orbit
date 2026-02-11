@@ -10,7 +10,7 @@ import it.unipv.posfw.orbit.game.Game;
 public class SingletonDatabaseHelper {
     
     private static SingletonDatabaseHelper instance;
-    private static final String URL = "jdbc:sqlite:res/database/OrbitDB.db"; // we need to put here the directory of the .db file 
+    private static final String URL = "jdbc:sqlite:res/database/OrbitDB.db"; // directory of db
     
     // constructor
     private SingletonDatabaseHelper() {
