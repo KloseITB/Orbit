@@ -71,83 +71,83 @@ INSERT INTO users (nickname, password, role, balance) VALUES ('PlayerOne', 'pass
 
 -- 1. about_elise.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('About Elise', 'Horror', 14.99, 14.99, 4.5, 'res/images/grids/about_elise.png', 4);
+VALUES ('About Elise', 'Horror', 14.99, 14.99, 4.5, '/images/grids/about_elise.png', 4);
 
 -- 2. artic_wolves.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Arctic Wolves', 'Survival', 19.99, 9.99, 3.8, 'res/images/grids/artic_wolves.png', 4);
+VALUES ('Arctic Wolves', 'Survival', 19.99, 9.99, 3.8, '/images/grids/artic_wolves.png', 4);
 
 -- 3. brane_prototype.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Brane Prototype', 'Sci-Fi', 29.99, 29.99, 4.0, 'res/images/grids/brane_prototype.png', 2);
+VALUES ('Brane Prototype', 'Sci-Fi', 29.99, 29.99, 4.0, '/images/grids/brane_prototype.png', 2);
 
 -- 4. briefcase.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('The Briefcase', 'Mystery', 9.99, 4.99, 4.2, 'res/images/grids/briefcase.png', 4);
+VALUES ('The Briefcase', 'Mystery', 9.99, 4.99, 4.2, '/images/grids/briefcase.png', 4);
 
 -- 5. cairn.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Cairn', 'Adventure', 24.99, 24.99, 4.7, 'res/images/grids/cairn.png', 3);
+VALUES ('Cairn', 'Adventure', 24.99, 24.99, 4.7, '/images/grids/cairn.png', 3);
 
 -- 6. company_of_heroes.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Company of Heroes', 'Strategy', 39.99, 19.99, 4.8, 'res/images/grids/company_of_heroes.png', 2);
+VALUES ('Company of Heroes', 'Strategy', 39.99, 19.99, 4.8, '/images/grids/company_of_heroes.png', 2);
 
 -- 7. doom_64.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('DOOM 64', 'FPS', 4.99, 4.99, 4.6, 'res/images/grids/doom_64.png', 2);
+VALUES ('DOOM 64', 'FPS', 4.99, 4.99, 4.6, '/images/grids/doom_64.png', 2);
 
 -- 8. eradicator.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Eradicator', 'Action', 14.99, 7.49, 3.5, 'res/images/grids/eradicator.png', 3);
+VALUES ('Eradicator', 'Action', 14.99, 7.49, 3.5, '/images/grids/eradicator.png', 3);
 
 -- 9. iron_lung.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Iron Lung', 'Horror', 5.99, 5.99, 4.9, 'res/images/grids/iron_lung.png', 4);
+VALUES ('Iron Lung', 'Horror', 5.99, 5.99, 4.9, '/images/grids/iron_lung.png', 4);
 
 -- 10. nam.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('NAM', 'Shooter', 9.99, 9.99, 3.2, 'res/images/grids/nam.png', 2);
+VALUES ('NAM', 'Shooter', 9.99, 9.99, 3.2, '/images/grids/nam.png', 2);
 
 -- 11. pine_hearts.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Pine Hearts', 'Adventure', 12.99, 10.99, 4.3, 'res/images/grids/pine_hearts.png', 4);
+VALUES ('Pine Hearts', 'Adventure', 12.99, 10.99, 4.3, '/images/grids/pine_hearts.png', 4);
 
 -- 12. quake_brutalist_two.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Quake: Brutalist', 'FPS', 19.99, 19.99, 4.8, 'res/images/grids/quake_brutalist_two.png', 2);
+VALUES ('Quake: Brutalist', 'FPS', 19.99, 19.99, 4.8, '/images/grids/quake_brutalist_two.png', 2);
 
 -- 13. ride_the_bullet.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Ride The Bullet', 'Action', 29.99, 14.99, 4.1, 'res/images/grids/ride_the_bullet.png', 3);
+VALUES ('Ride The Bullet', 'Action', 29.99, 14.99, 4.1, '/images/grids/ride_the_bullet.png', 3);
 
 -- 14. schedule_one.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Schedule One', 'Simulation', 39.99, 39.99, 3.9, 'res/images/grids/schedule_one.png', 2);
+VALUES ('Schedule One', 'Simulation', 39.99, 39.99, 3.9, '/images/grids/schedule_one.png', 2);
 
 -- 15. the_strange_light.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('The Strange Light', 'Puzzle', 14.99, 14.99, 4.4, 'res/images/grids/the_strange_light.png', 4);
+VALUES ('The Strange Light', 'Puzzle', 14.99, 14.99, 4.4, '/images/grids/the_strange_light.png', 4);
 
 -- 16. turn_out_the_lights.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Turn Out The Lights', 'Horror', 9.99, 2.99, 4.0, 'res/images/grids/turn_out_the_lights.png', 4);
+VALUES ('Turn Out The Lights', 'Horror', 9.99, 2.99, 4.0, '/images/grids/turn_out_the_lights.png', 4);
 
 -- 17. tyrant_realm.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Tyrant Realm', 'RPG', 49.99, 49.99, 4.5, 'res/images/grids/tyrant_realm.png', 3);
+VALUES ('Tyrant Realm', 'RPG', 49.99, 49.99, 4.5, '/images/grids/tyrant_realm.png', 3);
 
 -- 18. war_thunder.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('War Thunder', 'MMO', 0.00, 0.00, 4.2, 'res/images/grids/war_thunder.png', 2);
+VALUES ('War Thunder', 'MMO', 0.00, 0.00, 4.2, '/images/grids/war_thunder.png', 2);
 
 -- 19. wolf_wool.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Wolf & Wool', 'Indie', 7.99, 7.99, 4.6, 'res/images/grids/wolf_wool.png', 4);
+VALUES ('Wolf & Wool', 'Indie', 7.99, 7.99, 4.6, '/images/grids/wolf_wool.png', 4);
 
 -- 20. wynncraft.png
 INSERT INTO games (title, tag, baseprice, currentprice, score, cover_path, publisher_id) 
-VALUES ('Wynncraft', 'MMORPG', 0.00, 0.00, 4.9, 'res/images/grids/wynncraft.png', 4);
+VALUES ('Wynncraft', 'MMORPG', 0.00, 0.00, 4.9, '/images/grids/wynncraft.png', 4);
 
 
 -- gift cards
