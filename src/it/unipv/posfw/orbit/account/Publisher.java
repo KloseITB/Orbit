@@ -25,9 +25,9 @@ public class Publisher extends User {
 	
 	// Class Methods
 	
-	public void publishGame (String name, double basePrice, String genre) {
+	public void publishGame (String name, double basePrice, String genre, String coverPath) {
 		
-		Game game = new Game(name, basePrice, genre); // create the new game in memory with temporary id set to 0
+		Game game = new Game(name, basePrice, genre, coverPath); // create the new game in memory with temporary id set to 0
 		
 		// we connect to db to save the new game and to get the id, the id logged will be saved in this.id
 	    it.unipv.posfw.orbit.database.FacadeDB.getInstance().registerGame(game, this.id);

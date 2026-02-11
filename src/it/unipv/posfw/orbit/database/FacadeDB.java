@@ -1,6 +1,7 @@
 package it.unipv.posfw.orbit.database;
 
 import it.unipv.posfw.orbit.account.User;
+import java.util.List;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;
 
@@ -45,6 +46,14 @@ public class FacadeDB {
 
     public void purchaseGame(User buyer, Game game) throws AmountNotValidException {
         db.executePurchase(buyer, game);
+    }
+    
+    public List<Integer> getLibrary(User user){
+    	return db.getLibrary(user);
+    }
+    
+    public Game getGame(int gameId) {
+    	return db.getGame(gameId);
     }
 
     // gift cards methods

@@ -2,6 +2,7 @@ package it.unipv.posfw.orbit.database;
 
 
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.exception.*;
@@ -50,6 +51,7 @@ public class SingletonDatabaseHelper {
                               "baseprice REAL NOT NULL, " +
                               "currentprice REAL NOT NULL, " +
                               "score REAL DEFAULT 0.0, " +
+                              "cover_path TEXT, " +
                               "publisher_id INTEGER, " +
                               "FOREIGN KEY (publisher_id) REFERENCES users(id))";
             stmt.execute(sqlGames);
@@ -237,7 +239,7 @@ public class SingletonDatabaseHelper {
     public void registerGame(Game game, int publisherId) {
     	
     	// sql query to add a game, with no id since it will be added by the db
-    	String sql = "INSERT INTO games(title, baseprice, currentprice, tag, publisher_id) VALUES(?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO games(title, baseprice, currentprice, tag, cover_path, publisher_id) VALUES(?, ?, ?, ?, ?)";
     	
     	try (Connection conn = DriverManager.getConnection(URL); // we specify that we want back the generated keys
     		 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
@@ -246,7 +248,8 @@ public class SingletonDatabaseHelper {
             pstmt.setDouble(2, game.getBasePrice());
             pstmt.setDouble(3, game.getCurrentPrice());
             pstmt.setString(4, game.getGenre());
-            pstmt.setInt(5, publisherId);
+            pstmt.setString(5, game.getCoverPath());
+            pstmt.setInt(6, publisherId);
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -334,10 +337,59 @@ public class SingletonDatabaseHelper {
         } catch (SQLException e) { e.printStackTrace(); }
     }
     
+    // method return a list of id (user's library) given a user
+    public List<Integer> getLibrary(User user) {
+        List<Integer> gameIds = new ArrayList<>();
+        String sql = "SELECT game_id FROM library WHERE user_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, user.getId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                // add every id found in the list
+                gameIds.add(rs.getInt("game_id"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gameIds;
+    }
     
-    
-    
-    
+    // method that return the object game given its id
+    public Game getGame(int gameId) {
+        String sql = "SELECT * FROM games WHERE id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, gameId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // recover the data from the db
+                String title = rs.getString("title");
+                double basePrice = rs.getDouble("baseprice");
+                double currentPrice = rs.getDouble("currentprice"); // get the current price since it can change
+                String tag = rs.getString("tag");
+                String coverPath = rs.getString("cover_path");
+
+                Game game = new Game(title, basePrice, tag, coverPath);
+                
+                game.setId(gameId); //set the id with the one from the db
+                game.setCurrentPrice(currentPrice); // set the current price
+                
+                return game;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // if the game doesn't exist
+    }
     
     
 }

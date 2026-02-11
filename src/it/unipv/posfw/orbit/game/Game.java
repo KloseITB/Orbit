@@ -13,15 +13,17 @@ public class Game {
 	private double basePrice;
 	private double currentPrice;
 	private String genre;
+	private String coverPath; // string with the directory of the game's cover image
 	
 	// Constructors
 	
-	public Game(String name, double price, String tags) {
+	public Game(String name, double price, String tags, String coverPath) {
 		this.id = 0; // temporary id, the final one will be given by the db 
 		this.title = name;
 		this.basePrice = price;
 		this.currentPrice = this.basePrice;
 		this.genre = tags;
+		this.coverPath = coverPath;
 	}
 	
 	// Class Methods
@@ -104,7 +106,13 @@ public class Game {
 		this.currentPrice = currentPrice;
 	}
 	
-	
+	public String getCoverPath() {
+        return coverPath;
+    }
+
+    public void setCoverPath(String coverPath) {
+        this.coverPath = coverPath;
+    }
 	
 	
 }
