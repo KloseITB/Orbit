@@ -22,8 +22,19 @@ public class SingletonAccountManager {
 	
 	// Methods
 	
-	public User signup(String nickname, String password) {
+	public User signup(String nickname, String password) throws PlayerAlreadyExistException{
+		
 		User user = new User(nickname, password);
+		
+		// we try the registration through the facade
+		it.unipv.posfw.orbit.database.FacadeDB.getInstance().signup(user);
+		
+		// if we get here the registration was successful
+		user.setLoggedIn(true);
+		this.currentUser = user; // current user set as logged in
+		
+		System.out.println("Registrazione avventua con successo per: " +nickname);
+		
 		return user;
 	}
 	

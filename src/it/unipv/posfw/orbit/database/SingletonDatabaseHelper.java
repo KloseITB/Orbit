@@ -31,7 +31,7 @@ public class SingletonDatabaseHelper {
 
     
     private void createTables() {
-        try (Connection conn = DriverManager.getConnection(URL);  // conn create a connectione between classes and the db, we need to create it in order to send the query to the db
+        try (Connection conn = DriverManager.getConnection(URL);  // conn create a connection between classes and the db, we need to create it in order to send the query to the db
              Statement stmt = conn.createStatement()) {
             
             
@@ -130,6 +130,57 @@ public class SingletonDatabaseHelper {
         } catch (SQLException e) { e.printStackTrace(); }
         
         return null; // return null if there's an error in the login
+    }
+    
+    // method register new user (sign up)
+    public void registerUser(User user) throws PlayerAlreadyExistException {
+        
+        // check if nickname already exist
+        String checkSql = "SELECT nickname FROM users WHERE nickname = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            
+            checkStmt.setString(1, user.getNickname());
+            ResultSet rs = checkStmt.executeQuery();
+            
+            if (rs.next()) {
+                // if we find a row the nickname is already in use
+                throw new PlayerAlreadyExistException("Esiste già un utente con il nickname: " + user.getNickname());
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // exit completely if there is an sql error
+            return;
+        }
+
+        // is the nickname is free to use we can register the user
+        String insertSql = "INSERT INTO users (nickname, password, role, balance) VALUES (?, ?, ?, ?)";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+            
+            insertStmt.setString(1, user.getNickname());
+            insertStmt.setString(2, user.getPassword()); // if we change the password to be masked we need to change here
+            insertStmt.setString(3, "USER"); // default role, when do we change it?
+            insertStmt.setDouble(4, 0.0);    
+            
+            int affectedRows = insertStmt.executeUpdate();
+            
+            if (affectedRows > 0) {
+                // the id is generate by the db, we need to get it to set it in the local memory
+                try (ResultSet generatedKeys = insertStmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int newId = generatedKeys.getInt(1);
+                        user.setId(newId); 
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     // method Purchase

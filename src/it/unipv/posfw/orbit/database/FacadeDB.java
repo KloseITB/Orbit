@@ -29,6 +29,10 @@ public class FacadeDB {
         return db.login(nickname, password);
     }
     
+    public void signup(User user) throws PlayerAlreadyExistException{
+    	db.registerUser(user);
+    }
+    
     public void updateUserBalance(User user) {
         db.updateUserBalance(user);
     }
