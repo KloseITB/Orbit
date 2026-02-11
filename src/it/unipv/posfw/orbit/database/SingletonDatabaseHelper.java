@@ -425,5 +425,24 @@ public class SingletonDatabaseHelper {
         return null; // if the game doesn't exist
     }
     
+    public LinkedList<Integer> getAllGameIds() {
+        LinkedList<Integer> allGameIds = new LinkedList<>();
+        // we select only the id from the game's table
+        String sql = "SELECT id FROM games";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                allGameIds.add(rs.getInt("id"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allGameIds;
+    }
+    
     
 }
