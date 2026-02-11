@@ -76,7 +76,18 @@ public class SingletonDatabaseHelper {
             				 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             				 "code TEXT NOT NULL UNIQUE, " +
             				 "value REAL NOT NULL)";
-            stmt.execute(sqlGift);
+            stmt.execute(sqlGift); 
+            
+     
+            
+            String sqlReviews = "CREATE TABLE IF NOT EXISTS reviews (" +
+                              "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                              "game_id INTEGER, " + 
+                              "autore TEXT, " +
+                              "voto INTEGER, " +
+                              "commento TEXT)";
+            stmt.execute(sqlReviews);
+           
 
         } catch (SQLException e) { e.printStackTrace(); } // print any error that could pop up
     }
@@ -280,7 +291,31 @@ public class SingletonDatabaseHelper {
             pstmt.setDouble(1, user.getBalance());
             pstmt.setInt(2, user.getId());
             pstmt.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { e.printStackTrace(); 
+        }
+        }
+        
+        
+     // metodo in più per salvare le recensioni
+        
+        public void salvaRecensioneDb(int idGioco, it.unipv.posfw.orbit.game.Review r) {
+            String sql = "INSERT INTO reviews(game_id, autore, voto, commento) VALUES(?,?,?,?)";
+            
+            try (java.sql.Connection conn = java.sql.DriverManager.getConnection(URL);
+                 java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                pstmt.setInt(1, idGioco);
+                pstmt.setString(2, r.getNomeAutore()); 
+                pstmt.setInt(3, r.getVoto());
+                pstmt.setString(4, r.getTesto());
+                pstmt.executeUpdate();
+                System.out.println("Review salvata nel database!");
+                
+            } catch (java.sql.SQLException e) {
+                System.out.println("Errore DB: " + e.getMessage());
+            }
+       
+     
     }
     
     

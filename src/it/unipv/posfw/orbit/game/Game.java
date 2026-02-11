@@ -13,6 +13,7 @@ public class Game {
 	private double basePrice;
 	private double currentPrice;
 	private String genre;
+	private java.util.ArrayList<Review> listarecensioni = new java.util.ArrayList<>();
 	
 	// Constructors
 	
@@ -104,6 +105,18 @@ public class Game {
 		this.currentPrice = currentPrice;
 	}
 	
+    
+    public void scrivirecensione(Review r) {
+        this.listarecensioni.add(r);
+       
+        
+        System.out.println("Recensione aggiunta: " + r.toString());
+        
+    }
+
+    public java.util.ArrayList<Review> getrecensioni() {
+        return this.listarecensioni;
+    }
 	
 	
 	
