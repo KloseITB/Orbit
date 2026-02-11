@@ -111,7 +111,7 @@ public class LoginWindow implements ActionListener{
 		
 		// login button pressed
 		if (e.getSource() == loginButton) {
-			if (FacadeUserInterface.getInstance().setSessionUser(nicknameTF.getText(), passwordTF.getText())) {
+			if (FacadeUserInterface.getInstance().loginUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Login successful"); // debug string
 				loginFrame.dispose();
 				new MainPageWindow();
@@ -126,7 +126,7 @@ public class LoginWindow implements ActionListener{
 		
 		// signup button pressed
 		if (e.getSource() == signupButton) {
-			if(!FacadeUserInterface.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
+			if(FacadeUserInterface.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Signup successful"); // debug string
 				loginFrame.dispose();
 				new MainPageWindow();

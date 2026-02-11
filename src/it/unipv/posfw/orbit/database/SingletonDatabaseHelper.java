@@ -3,7 +3,6 @@ package it.unipv.posfw.orbit.database;
 
 import java.sql.*;
 import java.util.LinkedList;
-import java.util.ArrayList;
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;

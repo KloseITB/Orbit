@@ -1,4 +1,5 @@
 package it.unipv.posfw.orbit.account;
+import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.*;
 
 public class SingletonAccountManager {
@@ -9,9 +10,8 @@ public class SingletonAccountManager {
 	
 	// Constructors
 	
-	private SingletonAccountManager() {
-		this.currentUser = new User("Klose", "password"); // here just for debug purposes.
-	}
+	private SingletonAccountManager() {}
+
 	
 	// Get instance of the class
 	public static SingletonAccountManager getInstance() {
@@ -27,7 +27,7 @@ public class SingletonAccountManager {
 		User user = new User(nickname, password);
 		
 		// we try the registration through the facade
-		it.unipv.posfw.orbit.database.FacadeDB.getInstance().signup(user);
+		FacadeDB.getInstance().signup(user);
 		
 		// if we get here the registration was successful
 		user.setLoggedIn(true);
@@ -41,11 +41,11 @@ public class SingletonAccountManager {
 	public void login(String nickname, String password) {
 		try {
 			// call to the method that can handle exceptions
-			User foundUser = it.unipv.posfw.orbit.database.FacadeDB.getInstance().login(nickname, password);
+			User foundUser = FacadeDB.getInstance().login(nickname, password);
 			
 			// if no exceptions the login is successful 
 			this.currentUser = foundUser;
-			System.out.println("Login effettuato con successo: " + currentUser.getNickname());
+			//System.out.println("Login effettuato con successo: " + currentUser.getNickname());
 			
 		} catch (UserNotFoundException e) {
 			// user not found error

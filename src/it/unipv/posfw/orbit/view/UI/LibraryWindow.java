@@ -1,6 +1,9 @@
 package it.unipv.posfw.orbit.view.UI;
 
 import java.awt.*;
+import java.net.URL;
+import java.util.LinkedList;
+
 import javax.swing.*;
 
 import it.unipv.posfw.orbit.account.User;
@@ -33,12 +36,13 @@ public class LibraryWindow {
 				gameListPanel = new JPanel(new GridLayout(6, 5, 5, 5));
 				gameListPanel.setPreferredSize(new Dimension(700, 590));
 				gameListPanel.setBackground(Color.RED);
+				populateLibraryPanel(FacadeUserInterface.getInstance().getSessionUser());
 				//GAME INFOS PANEL
 				JPanel gameInfoPanel = new JPanel();
 				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
 				gameInfoPanel.setBackground(Color.GREEN);
-				populateLibrary(FacadeUserInterface.getInstance().getSessionUser());
-				
+			
+			// ACTION LISTENERS
 			centerPanel.add(gameListPanel);
 			centerPanel.add(gameInfoPanel);
 		
@@ -48,14 +52,24 @@ public class LibraryWindow {
 		libraryFrame.setVisible(true);
 	}
 	
-	private void populateLibrary(User user) {
+	private void populateLibraryPanel(User user) {
 		
-		// LinkedList<Game> userGames = FacadeUserInterface.getInstance().getUserGames(User user)
-		// for (Game game : userGames) { 
-		//get the game's image
-		// create a button 100x140 with the image as input
-		// addToGameListPanel(button)
-		//}
+		LinkedList<Game> userGames = FacadeUserInterface.getInstance().getUserGames(user);
+		for (Game game : userGames) { 
+			URL gameCoverPath;
+			
+			// if the image reference is null, the placeholder cover is used instead
+			if(game.getCoverPath() == null) {
+				gameCoverPath = new Res().GAME_PLACEHOLDER;
+			}
+			else {
+				gameCoverPath = getClass().getResource(game.getCoverPath());
+			}
+			
+			JButton gameButton = new JButton(new ImageIcon(gameCoverPath));
+			gameButton.setPreferredSize(new Dimension(100, 140));
+			addToGameListPanel(gameButton);
+		}
 		
 		
 	}

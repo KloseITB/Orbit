@@ -4,6 +4,7 @@ import it.unipv.posfw.orbit.account.User;
 import java.util.LinkedList;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.view.FacadeUserInterface;
 
 public class FacadeDB {
     
@@ -28,6 +29,7 @@ public class FacadeDB {
 
     public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
         return db.login(nickname, password);
+        
     }
     
     public void signup(User user) throws PlayerAlreadyExistException{

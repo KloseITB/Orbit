@@ -15,6 +15,8 @@ public class MainPageWindow implements ActionListener {
 	private String userNickname = FacadeUserInterface.getInstance().getSessionUserNickname().toUpperCase();
 	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
 	private ImageIcon gamePlaceholderImage = new ImageIcon(new Res().GAME_PLACEHOLDER);
+	private JButton libraryButton;
+	private JButton shopButton;
 	
 	public MainPageWindow() {
 		
@@ -24,8 +26,8 @@ public class MainPageWindow implements ActionListener {
 			
 			// HEADER
 			JPanel headerPanel = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH, 140);
-			JButton libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
-			JButton shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
+			libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
+			shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
 			
 			headerPanel.add(libraryButton);
 			headerPanel.add(shopButton);
@@ -111,7 +113,10 @@ public class MainPageWindow implements ActionListener {
 				updateBody.setBackground(Res.PANEL_BG);
 				updateBody.setForeground(Color.WHITE);
 				updateBody.setOpaque(true);
-			
+				
+		// ACTION LISTENER
+		libraryButton.addActionListener(this);
+				
 			update.add(updateTitle);
 			update.add(updateBody);
 		
@@ -179,7 +184,10 @@ public class MainPageWindow implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource() == libraryButton) {
+			mainPageFrame.dispose();
+			new LibraryWindow();
+		}
 		
 	}
 
