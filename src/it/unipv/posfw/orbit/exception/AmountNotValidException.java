@@ -4,10 +4,10 @@ public class AmountNotValidException extends Exception{
 
 	private static final long serialVersionUID = 339479837332951333L;
 	
-	// Constructors
-	
+	// default constructor
 	public AmountNotValidException(){}
 	
+	// constructor with message output
 	public AmountNotValidException(String message){
 		super(message);
 	}

@@ -48,6 +48,8 @@ public final class Prefab {
 		button.setBackground(Res.BUTTON_PURPLE);
 		button.setForeground(Color.WHITE);
 		button.setFont(new Font(Res.FONT_NAME, Font.BOLD, 18));
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
 		return button;
 	}
 	
@@ -96,7 +98,8 @@ public final class Prefab {
 	}
 	
 	
-	// creates a button rappresented by the game's thumbnail
+	// BUTTON WITH GAME THUMBNAIL
+	
 	public JButton imageButton(String imagePath) {
 		JButton button = new JButton();
 		if (imagePath == null) {
@@ -108,5 +111,28 @@ public final class Prefab {
 		}
 		button.setPreferredSize(new Dimension(100, 140));
 		return button;
+	}
+	
+	
+	// LABEL
+	
+	public static JLabel labelOrbit(String text, int fontStyle, int textSize) {
+		
+		JLabel label = new JLabel(text);
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font(Res.FONT_NAME, fontStyle, textSize));
+		
+		return label;
+	}
+	
+public static JLabel labelOrbit(String text, int fontStyle, int textSize, int hAllignment, int vAllignment) {
+		
+		JLabel label = new JLabel(text);
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font(Res.FONT_NAME, fontStyle, textSize));
+		label.setHorizontalAlignment(hAllignment);
+		label.setVerticalAlignment(vAllignment);
+		
+		return label;
 	}
 }

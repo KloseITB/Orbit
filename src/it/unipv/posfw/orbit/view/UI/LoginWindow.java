@@ -1,6 +1,5 @@
 package it.unipv.posfw.orbit.view.UI;
 
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

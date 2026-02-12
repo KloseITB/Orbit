@@ -1,18 +1,20 @@
 package it.unipv.posfw.orbit.account;
 
 import java.util.ArrayList;
+
+import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.library.Library;
 
 public class Publisher extends User {
 	
-	// Parameters
-	
+	// parameters
 	ArrayList<Game> publishedGames;
 	
-	// Constructors
 	
-	// constructor of new publisher (no library because is brought by the user)
+	// constructors
+	
+	// constructor for new publisher (no library because is brought by the user)
 	public Publisher(String nickname, String password) {
 		super(nickname, password);
 		this.publishedGames = new ArrayList<Game>();
@@ -23,14 +25,15 @@ public class Publisher extends User {
 		publishedGames = new ArrayList<Game>();
 	}
 	
-	// Class Methods
 	
+	// methods
 	public void publishGame (String name, double basePrice, String genre, String coverPath) {
 		
 		Game game = new Game(name, basePrice, genre, coverPath); // create the new game in memory with temporary id set to 0
 		
-		// we connect to db to save the new game and to get the id, the id logged will be saved in this.id
-	    it.unipv.posfw.orbit.database.FacadeDB.getInstance().registerGame(game, this.id);
+		// we connect to the db to save the new game and to
+		// get the id. The logged ID will be saved in this.id
+	    FacadeDB.getInstance().registerGame(game, this.id);
 	    
 	    // we add it to the java memory now that we have the final id
 	    if (game.getId() != 0) {
@@ -41,7 +44,5 @@ public class Publisher extends User {
 	    }
 	}
 	
-	
-	
-	// Getters & Setters
+	// getters and setters
 }

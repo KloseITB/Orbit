@@ -7,7 +7,6 @@ import it.unipv.posfw.orbit.payment.*;
 public class User {
 	
 	// parameters
-	
 	protected int id; //protected because it is a Primary Key in the db
 	private String nickname;
 	private String password;
@@ -17,6 +16,7 @@ public class User {
 	
 	protected Library library;
 	private double balance;
+	
 	
 	// constructors 
 	
@@ -30,7 +30,7 @@ public class User {
 		balance = 0;
 	}
 	
-	// constructor imported users from db (already have id and balance)
+	// constructor imported users from the database (already have an id and a balance)
 	public User(int id,String nickname, String password, double balance) {
 		this.id = id;                                     
 		this.nickname = nickname;
@@ -42,9 +42,10 @@ public class User {
 		balance = 0;
 	}
 	
-	// class Methods
 	
-	// adding funds via a classic payment method
+	// methods
+	
+	// adding funds via a conventional payment method
 	public <E extends IPaymentMethod> void addFunds(double amount, E paymentMethod) {
 
 		try {
@@ -69,7 +70,7 @@ public class User {
 	            
 	            this.balance += amount;
 	            
-	            // update the db with the new balance and removal of the card
+	            // update the database with the new balance and removal of the card
 	            facade.updateUserBalance(this);
 	            facade.discardGiftCard(giftCardCode);
 	           
@@ -81,12 +82,13 @@ public class User {
 	    }
 	}
 	
+	
 	public void removeFunds(double amount) {
 		balance -= amount;
 	}
 	
-	// Getter & Setter
 	
+	// getter and Setter
 	protected void setBanned(boolean isBanned) {
 		this.isBanned = isBanned;
 	}

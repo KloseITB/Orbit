@@ -45,7 +45,7 @@ public class ShopWindow implements ActionListener{
 			buffer.setPreferredSize(new Dimension(500, 60));
 			
 			// show the balance with the format #.00
-			double userBalance = SingletonAccountManager.getInstance().getCurrentUser().getBalance();
+			double userBalance = FacadeUserInterface.getInstance().getSessionUser().getBalance();
 			DecimalFormat df = new DecimalFormat("#.00"); 
 			JLabel balanceLabel = new JLabel("Balance: " + df.format(userBalance) + "€"); 
 			balanceLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 20));
@@ -80,7 +80,7 @@ public class ShopWindow implements ActionListener{
 				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
 				gameInfoPanel.setBackground(Res.PANEL_BG);
 
-			// ACTION LISTENERS
+			
 			centerPanel.add(gameListPanel);
 			centerPanel.add(gameInfoPanel);
 		
@@ -90,6 +90,7 @@ public class ShopWindow implements ActionListener{
 		libraryFrame.setVisible(true);
 	}
 	
+	// helper to populate the Shop with every game available in the database
 	private void populateShopPanel() {
 		
 		LinkedList<Game> catalog = FacadeUserInterface.getInstance().getCatalog();
@@ -130,10 +131,13 @@ public class ShopWindow implements ActionListener{
 
 	}
 	
+	
+	// helper to add the game button
 	private void addToCatalogPanel(JButton button) {
 		gameListPanel.add(button);
 	}
 	
+	// helper to create a darker version of an ImageIcon
 	private ImageIcon createDarkerIcon(ImageIcon original) {
 		
 	    // get the image dimension
@@ -153,6 +157,7 @@ public class ShopWindow implements ActionListener{
 	    return new ImageIcon(darkenedParams);
 	}
 	
+	
 	private void openGamePage(Game game) {
 
 		gameInfoPanel.removeAll(); // remove all the previous elements from the Panel
@@ -171,6 +176,12 @@ public class ShopWindow implements ActionListener{
 		//BUY BUTTON
 		Double priceWrapper = game.getCurrentPrice();
 		JButton buyButton = Prefab.buttonOrbit("BUY FOR " + priceWrapper.toString() + "€", 0, 0);
+		
+		// action listener
+		buyButton.addActionListener(e -> {
+			System.out.println("User wants to buy " + game.getTitle()); // debug
+		    new CheckoutWindow(game);
+		});
 		buyButton.setBackground(new Color(12, 109, 207)); // light blue button
 		buyButton.setBorderPainted(false);
 		

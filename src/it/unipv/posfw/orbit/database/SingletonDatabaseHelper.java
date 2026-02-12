@@ -12,7 +12,7 @@ public class SingletonDatabaseHelper {
     private static SingletonDatabaseHelper instance;
     private static final String URL = "jdbc:sqlite:res/database/OrbitDB.db"; // directory of db
     
-    // constructor
+    // Singleton pattern
     private SingletonDatabaseHelper() {
     	try {
             Class.forName("org.sqlite.JDBC");
@@ -23,13 +23,13 @@ public class SingletonDatabaseHelper {
         }
     }
     
-    // method instance
     public static SingletonDatabaseHelper getInstance() {
         if (instance == null) instance = new SingletonDatabaseHelper();
         return instance;
     }
-
     
+    
+    // methods
     private void createTables() {
         try (Connection conn = DriverManager.getConnection(URL);  // conn create a connection between classes and the db, we need to create it in order to send the query to the db
              Statement stmt = conn.createStatement()) {

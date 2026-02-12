@@ -4,10 +4,11 @@ import it.unipv.posfw.orbit.account.User;
 
 public class Review {
     
-    // attributes
+    // parameters
     private User author;
     private int vote; // vote from 1 to 5
     private String reviewText;
+    
     
     // constructor
     public Review(User author, int vote, String reviewText) {
@@ -15,7 +16,8 @@ public class Review {
         this.vote = vote;
         this.reviewText = reviewText;
     }
-
+    
+    
     // methods
     public String getAuthorNickname() {
         return author.getNickname();

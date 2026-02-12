@@ -18,7 +18,7 @@ public class Res {
 	public final static Color BUTTON_PURPLE = new Color(180, 160, 220);  // buttons color
 	public final static Color ACCENT_YELLOW = new Color(255, 200, 0);    // underlining color
 	
-    // IMAGES
+    // COMMON IMAGES
 	public final URL ORBIT_LOGO = getClass().getResource("/images/commons/orbit_logo.png");
 	public final URL ORBIT_ICON = getClass().getResource("/images/commons/orbit_icon_only.png");
 	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/commons/game_placeholder.png");

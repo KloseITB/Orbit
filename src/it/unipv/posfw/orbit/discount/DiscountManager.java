@@ -2,12 +2,17 @@ package it.unipv.posfw.orbit.discount;
 
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
 
+// -- UNIMPLEMENTED CLASS --
+
 public class DiscountManager{
 	
-	public final double MAXPERCENTAGEVALUE = 100;
-	public final double MINPERCENTAGEVALUE = 1;
+	// parameters
+	public static final double MAXPERCENTAGEVALUE = 100;
+	public static final double MINPERCENTAGEVALUE = 1;
 	
-	public double calculateDiscount (double currentPrice, double percentage) throws AmountNotValidException{
+	
+	// methods
+	public static double calculateDiscount (double currentPrice, double percentage) throws AmountNotValidException{
 		
 		if(currentPrice <MINPERCENTAGEVALUE || currentPrice > MAXPERCENTAGEVALUE) {
 			throw new AmountNotValidException();
@@ -17,7 +22,7 @@ public class DiscountManager{
 		return currentPrice - (currentPrice * (clampedPercentage / 100.00));
 	}
 	
-	private double clampPercentage(double percentage) {
+	private static double clampPercentage(double percentage) {
 		return Math.clamp(percentage, MAXPERCENTAGEVALUE, MINPERCENTAGEVALUE);
 	}
 }

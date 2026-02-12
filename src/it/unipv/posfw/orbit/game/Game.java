@@ -8,7 +8,7 @@ import it.unipv.posfw.orbit.exception.AmountNotValidException;
 
 public class Game {
 
-	// Parameters
+	// parameters
 	
 	private int id;
 	private String title;
@@ -24,7 +24,7 @@ public class Game {
 	// Constructors
 	
 	public Game(String name, double price, String tags, String coverPath) {
-		this.id = 0; // temporary id, the final one will be given by the db 
+		this.id = 0; // temporary id, the final one will be given by the database 
 		this.title = name;
 		this.basePrice = price;
 		this.currentPrice = this.basePrice;
@@ -32,8 +32,8 @@ public class Game {
 		this.coverPath = coverPath;
 	}
 	
-	// Class Methods
 	
+	// methods
 	public void discount(double percentage) {
 		// i used a temporary variable to avoid any kind of errors related to the pre-discount price of the game
 		double tmp = currentPrice;
@@ -78,7 +78,7 @@ public class Game {
 		 */
 	}
 	
-	// Getters & Setters
+	// getters and setters
 	
 	public double getCurrentPrice() {
 		return currentPrice;

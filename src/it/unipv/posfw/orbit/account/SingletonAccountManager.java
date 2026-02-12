@@ -45,7 +45,6 @@ public class SingletonAccountManager {
 			
 			// if no exceptions the login is successful 
 			this.currentUser = foundUser;
-			//System.out.println("Login effettuato con successo: " + currentUser.getNickname());
 			
 		} catch (UserNotFoundException e) {
 			// user not found error
@@ -61,6 +60,11 @@ public class SingletonAccountManager {
 	// getters and setters
 	
 	public User getCurrentUser() {
+		
+		// for debug purposes
+		if(currentUser == null) {
+			login("PlayerOne", "password");
+		}
 		return currentUser;
 	}
 	
