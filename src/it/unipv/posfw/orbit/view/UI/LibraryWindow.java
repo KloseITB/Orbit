@@ -20,11 +20,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.view.FacadeUI;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
+import it.unipv.posfw.orbit.view.UI.ReviewWindow;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class LibraryWindow implements ActionListener{
@@ -64,7 +66,7 @@ public class LibraryWindow implements ActionListener{
 				gameListPanel.add(ownedGamesLabel);
 				populateLibraryPanel(FacadeUI.getInstance().getSessionUser());
 				
-				//GAME INFOS PANEL
+				// GAME INFOS PANEL
 				gameInfoPanel = new JPanel();
 				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
 				gameInfoPanel.setBackground(Res.PANEL_BG);
@@ -169,12 +171,21 @@ public class LibraryWindow implements ActionListener{
 		playButton.setBackground(new Color(63, 193, 57)); // light green button
 		playButton.setBorderPainted(false);
 		
+		// review button
+		JButton reviewBtn = new JButton("Recensisci");
+		reviewBtn.setBackground(new java.awt.Color(180, 160, 220)); // violet Orbit
+	    reviewBtn.setForeground(java.awt.Color.WHITE);
+	    reviewBtn.setFocusable(false);
+	    
+	    
 		// add all the elements to the panel
 		gameInfoPanel.add(titleLabel);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
 	    gameInfoPanel.add(genreLabel);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
 	    gameInfoPanel.add(playButton);
+	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
+	    gameInfoPanel.add(reviewBtn);
 	    
 	    // DRAW ELEMENTS
 	    gameInfoPanel.revalidate(); // Recalculate the layout

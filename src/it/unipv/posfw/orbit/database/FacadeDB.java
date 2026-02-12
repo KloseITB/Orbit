@@ -1,14 +1,10 @@
 package it.unipv.posfw.orbit.database;
 
 import java.util.LinkedList;
-
 import it.unipv.posfw.orbit.account.User;
-import it.unipv.posfw.orbit.exception.AmountNotValidException;
-import it.unipv.posfw.orbit.exception.CodeNotFoundException;
-import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
-import it.unipv.posfw.orbit.exception.UserNotFoundException;
-import it.unipv.posfw.orbit.exception.WrongPasswordException;
-import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.exception.*;
+import it.unipv.posfw.orbit.game.*;
+import it.unipv.posfw.orbit.view.*;
 
 public class FacadeDB {
     
@@ -64,6 +60,10 @@ public class FacadeDB {
     
     public LinkedList<Integer> getAllGameIds() {
         return db.getAllGameIds();
+    }
+    
+    public void saveReview(Review review) {
+    	//db.saveReview(review);
     }
 
     // gift cards methods

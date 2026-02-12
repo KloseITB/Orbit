@@ -140,7 +140,6 @@ public class SingletonDatabaseHelper {
                     		user = new User(id, nickname, password, balance);
                 	}
                                
-                	user.setLoggedIn(true); // set user status as online
                 	return user;
                 	
                 } else {
@@ -370,7 +369,7 @@ public class SingletonDatabaseHelper {
                  java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
                 pstmt.setInt(1, idGioco);
-                pstmt.setString(2, r.getAuthorNickname()); 
+                //pstmt.setString(2, r.getAuthorNickname()); 
                 pstmt.setInt(3, r.getVote());
                 pstmt.setString(4, r.getReviewText());
                 pstmt.executeUpdate();

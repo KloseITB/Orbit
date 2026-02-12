@@ -13,13 +13,12 @@ public class Game {
 	
 	private int id;
 	private String title;
+	private String genre;
+	private String coverPath; // string with the directory of the game's cover image
 	private double basePrice;
 	private double currentPrice;
-	private String genre;
-
+	private boolean isBanned; // the game is still available for purchase?
 	private ArrayList<Review> reviewArrayList = new java.util.ArrayList<>();
-
-	private String coverPath; // string with the directory of the game's cover image
 
 	
 	// Constructors
@@ -135,7 +134,17 @@ public class Game {
     }
 	
     
-    // confront 2 games by their id and not by their instance in memory
+	public boolean isBanned() {
+		return isBanned;
+	}
+
+
+	public void setBanned(boolean isBanned) {
+		this.isBanned = isBanned;
+	}
+    
+    // overrides the equals(Object o) method to confront 
+	// 2 games by their id and not by their instance in memory
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -52,6 +52,17 @@ CREATE TABLE gift_cards (
     value REAL NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    game_id INTEGER,
+    rating INTEGER NOT NULL, -- Da 1 a 5
+    comment TEXT,
+    review_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (game_id) REFERENCES games(id)
+);
+
 -- base data creation to begin with
 
 -- 1admin
