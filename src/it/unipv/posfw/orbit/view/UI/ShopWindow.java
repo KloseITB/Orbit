@@ -214,8 +214,7 @@ public class ShopWindow implements ActionListener{
 	}
 	
 	public void updateWindow() {
-		shopFrame.revalidate(); // Recalculate the frame
-		shopFrame.repaint();    // draws on screen the updated Catalog
+		populateShopPanel();
 	}	
 	
 	@Override

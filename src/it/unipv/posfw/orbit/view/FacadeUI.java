@@ -57,7 +57,7 @@ public class FacadeUI {
     
     public void addGameToLibrary(User user, Game game) {
     	User currentUser = SingletonAccountManager.getInstance().getCurrentUser();
-    	currentUser.getLibrary().addGame(game.getId());
+    	currentUser.getLibrary().addGame(game, user);
     }
     
     public void saveReview(Review newReview){

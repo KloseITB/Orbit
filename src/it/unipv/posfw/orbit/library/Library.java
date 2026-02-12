@@ -23,14 +23,14 @@ public class Library {
 	
 	public void addGame(Game game, User user) {
 		gamesLinkedList.add(game);
-		//FacadeDB.getInstance().addGameToLibrary(user, game);
+		FacadeDB.getInstance().addGameToLibrary(user, game);
 	}
 	
 	public void removeGame(Game game, User user) throws GameNotFoundException{
-		if (gamesLinkedList.contains(game))
+		if (gamesLinkedList.contains(game)) {
 		gamesLinkedList.remove(game);
-		//FacadeDB.getInstance().removeGameToLibrary(user, game);
-		else {
+		FacadeDB.getInstance().removeGameFromLibrary(user, game);
+		} else {
 			throw new GameNotFoundException("\n" + "Game not found");
 		}
 	}

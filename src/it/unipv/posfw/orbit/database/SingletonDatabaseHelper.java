@@ -17,6 +17,7 @@ import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
+import it.unipv.posfw.orbit.view.FacadeUI;
 
 public class SingletonDatabaseHelper {
     
@@ -244,7 +245,7 @@ public class SingletonDatabaseHelper {
             
             // update also the user memory 
             buyer.removeFunds(game.getCurrentPrice()); // balance
-            buyer.getLibrary().addGame(game.getId()); // library
+            buyer.getLibrary().addGame(game, FacadeUI.getInstance().getSessionUser()); // library
 
         } catch (SQLException e) { // if the connection was already open, cancel the transaction and print the error
             if (conn != null) try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }

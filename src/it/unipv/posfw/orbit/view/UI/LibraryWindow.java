@@ -170,7 +170,10 @@ public class LibraryWindow implements ActionListener{
 		JButton playButton = Prefab.buttonOrbit("PLAY", 0, 0);
 		playButton.setBackground(new Color(63, 193, 57)); // light green button
 		playButton.setBorderPainted(false);
-		
+		playButton.addActionListener(e -> {
+			System.out.println("Executing " + game.getTitle() + "..."); // debug
+			playButton.setBackground(Color.GRAY); // the button changes to a gray color to give feedback to the user
+		});
 		// review button
 		JButton reviewButton = Prefab.buttonOrbit("REVIEW GAME", 0, 0);
 		
