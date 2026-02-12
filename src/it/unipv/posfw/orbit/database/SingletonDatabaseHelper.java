@@ -18,6 +18,7 @@ import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.game.Review;
 
 public class SingletonDatabaseHelper {
     
@@ -360,27 +361,55 @@ public class SingletonDatabaseHelper {
         }
         
         
-     // metodo in più per salvare le recensioni
+    // method to save the reviews in the db
+    public void saveReview(Review review) {
+        String sqlInsert = "INSERT INTO reviews (user_id, game_id, rating, comment) VALUES (?, ?, ?, ?)";
         
-        public void salvaRecensioneDb(int idGioco, it.unipv.posfw.orbit.game.Review r) {
-            String sql = "INSERT INTO reviews(game_id, autore, voto, commento) VALUES(?,?,?,?)";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
             
-            try (java.sql.Connection conn = java.sql.DriverManager.getConnection(URL);
-                 java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                
-                pstmt.setInt(1, idGioco);
-                //pstmt.setString(2, r.getAuthorNickname()); 
-                pstmt.setInt(3, r.getVote());
-                pstmt.setString(4, r.getReviewText());
-                pstmt.executeUpdate();
-                System.out.println("Review salvata nel database!");
-                
-            } catch (java.sql.SQLException e) {
-                System.out.println("Errore DB: " + e.getMessage());
-            }
-       
-     
+            pstmt.setInt(1, review.getUserId());
+            pstmt.setInt(2, review.getGameId());
+            pstmt.setInt(3, review.getRating());
+            pstmt.setString(4, review.getComment());
+            
+            pstmt.executeUpdate();
+            System.out.println("Recensione salvata per il gioco ID: " + review.getGameId());
+            
+            // update the db with the average review score
+            updateGameScore(review.getGameId(), conn);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+    
+    // method to update the average review score of the game
+    private void updateGameScore(int gameId, Connection conn) {
+        String sqlAvg = "SELECT AVG(rating) FROM reviews WHERE game_id = ?";
+        String sqlUpdate = "UPDATE games SET score = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmtAvg = conn.prepareStatement(sqlAvg);
+             PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate)) {
+            
+            // calculate teh average
+            pstmtAvg.setInt(1, gameId);
+            ResultSet rs = pstmtAvg.executeQuery();
+            double newScore = 0.0;
+            if (rs.next()) {
+                newScore = rs.getDouble(1);
+            }
+            
+            // update the game table
+            pstmtUpdate.setDouble(1, newScore);
+            pstmtUpdate.setInt(2, gameId);
+            pstmtUpdate.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     
     // method return a list of id (user's library) given a user
     public LinkedList<Integer> getLibrary(User user) {

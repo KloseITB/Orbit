@@ -63,7 +63,7 @@ public class FacadeDB {
     }
     
     public void saveReview(Review review) {
-    	//db.saveReview(review);
+    	db.saveReview(review);
     }
 
     // gift cards methods
