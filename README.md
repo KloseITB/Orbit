@@ -107,7 +107,7 @@ The Login window should appear. You can register a new account or log in if you 
 
 ```text
 it.unipv.posfw.orbit
-├── account      # User, Admin, Publisher classes and Account Manager
+├── account      # User, Admin, Publisher roles and Account Manager
 ├── database     # Database connection (Singleton) and Facade
 ├── discount     # Logic for managing store discounts
 ├── exception    # Custom exceptions (e.g., UserNotFound, PaymentFailed)
