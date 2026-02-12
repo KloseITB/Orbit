@@ -1,10 +1,22 @@
 package it.unipv.posfw.orbit.database;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
-import it.unipv.posfw.orbit.account.*;
-import it.unipv.posfw.orbit.exception.*;
+
+import it.unipv.posfw.orbit.account.Admin;
+import it.unipv.posfw.orbit.account.Publisher;
+import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.exception.AmountNotValidException;
+import it.unipv.posfw.orbit.exception.CodeNotFoundException;
+import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
+import it.unipv.posfw.orbit.exception.UserNotFoundException;
+import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
 
 public class SingletonDatabaseHelper {

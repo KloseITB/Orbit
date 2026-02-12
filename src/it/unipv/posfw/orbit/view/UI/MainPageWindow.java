@@ -5,14 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import it.unipv.posfw.orbit.view.FacadeUserInterface;
+import it.unipv.posfw.orbit.view.FacadeUI;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class MainPageWindow implements ActionListener {
 	
 	// ATTRIBUTES
-	private String userNickname = FacadeUserInterface.getInstance().getSessionUserNickname().toUpperCase();
+	private String userNickname = FacadeUI.getInstance().getSessionUserNickname().toUpperCase();
 	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
 	private ImageIcon gamePlaceholderImage = new ImageIcon(new Res().GAME_PLACEHOLDER);
 	private JButton libraryButton;

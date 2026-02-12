@@ -1,33 +1,41 @@
 package it.unipv.posfw.orbit.view.UI;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import it.unipv.posfw.orbit.account.User;
-import it.unipv.posfw.orbit.view.FacadeUserInterface;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import it.unipv.posfw.orbit.view.FacadeUI;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class LoginWindow implements ActionListener{
 	
-	// PARAMETERS
+	// parameters
 	private final int WINDOW_WIDTH = 640;
 	private final int WINDOW_HEIGHT = 640;
+	private final Font FONT_REGULAR = new Font(Res.FONT_NAME, Font.PLAIN, 20);
+	private final Font FONT_ROMANIC = new Font(Res.FONT_NAME, Font.ROMAN_BASELINE, 16);
+	private final Font FONT_BOLD = new Font(Res.FONT_NAME, Font.BOLD, 16);
+	
 	private JFrame loginFrame;
 	private JButton loginButton;
 	private JButton signupButton;
 	private JTextField nicknameTF;
 	private JTextField passwordTF;
 	private JLabel errorMessageLabel;
-	private JLabel signupFailedMessageLabel;
 	
-    // FONT PRESETS
-    
-	private static Font FONT_REGULAR = new Font(Res.FONT_NAME, Font.PLAIN, 20);
-	private static Font FONT_ROMANIC = new Font(Res.FONT_NAME, Font.ROMAN_BASELINE, 16);
-	private static Font FONT_BOLD = new Font(Res.FONT_NAME, Font.BOLD, 16);
-    
+	
+	// constructor
 	public LoginWindow() {
 
 		// Initial Setup
@@ -104,13 +112,15 @@ public class LoginWindow implements ActionListener{
 		loginFrame.add(errorMessageLabel);
 		loginFrame.setVisible(true);
 	}
-
+	
+	
+	// methods
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		// login button pressed
 		if (e.getSource() == loginButton) {
-			if (FacadeUserInterface.getInstance().loginUser(nicknameTF.getText(), passwordTF.getText())) {
+			if (FacadeUI.getInstance().loginUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Login successful"); // debug string
 				loginFrame.dispose();
 				new MainPageWindow();
@@ -123,9 +133,8 @@ public class LoginWindow implements ActionListener{
 			}
 		}
 		
-		// signup button pressed
 		if (e.getSource() == signupButton) {
-			if(FacadeUserInterface.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
+			if(FacadeUI.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Signup successful"); // debug string
 				loginFrame.dispose();
 				new MainPageWindow();

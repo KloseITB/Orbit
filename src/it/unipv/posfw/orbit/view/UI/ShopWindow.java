@@ -22,22 +22,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import it.unipv.posfw.orbit.account.SingletonAccountManager;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.view.FacadeUserInterface;
+import it.unipv.posfw.orbit.view.FacadeUI;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 
 public class ShopWindow implements ActionListener{
 	
-	JPanel gameListPanel;
-	JPanel gameInfoPanel;
-	JFrame libraryFrame = Prefab.frameOrbit("Shop", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
-	
+	private JPanel gameListPanel;
+	private JPanel gameInfoPanel;
+	private JFrame shopFrame = Prefab.frameOrbit("Shop", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
+	private JButton mainPageButton;
+	private JButton libraryButton;
 	public ShopWindow() {
 		
-		libraryFrame.setLayout(new BorderLayout());
+		shopFrame.setLayout(new BorderLayout());
 			
 			// HEADER PANEL
 			JPanel header = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH);
@@ -45,15 +45,17 @@ public class ShopWindow implements ActionListener{
 			buffer.setPreferredSize(new Dimension(500, 60));
 			
 			// show the balance with the format #.00
-			double userBalance = FacadeUserInterface.getInstance().getSessionUser().getBalance();
+			double userBalance = FacadeUI.getInstance().getSessionUser().getBalance();
 			DecimalFormat df = new DecimalFormat("#.00"); 
 			JLabel balanceLabel = new JLabel("Balance: " + df.format(userBalance) + "€"); 
 			balanceLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 20));
 			balanceLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 			balanceLabel.setForeground(Color.WHITE);
 			
-			header.add(Prefab.buttonOrbit("MAIN PAGE", 0, 0));
-			header.add(Prefab.buttonOrbit("LIBRARY", 0, 0));
+			mainPageButton = Prefab.buttonOrbit("MAIN PAGE", 0, 0);
+			header.add(mainPageButton);
+			libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
+			header.add(libraryButton);
 			header.add(buffer);
 			header.add(balanceLabel);
 			
@@ -84,17 +86,30 @@ public class ShopWindow implements ActionListener{
 			centerPanel.add(gameListPanel);
 			centerPanel.add(gameInfoPanel);
 		
+			// ACTION LISTENERS
+			mainPageButton.addActionListener(this);
+			libraryButton.addActionListener(this);
 			
-		libraryFrame.add(header, BorderLayout.NORTH);
-		libraryFrame.add(centerPanel);
-		libraryFrame.setVisible(true);
+		shopFrame.add(header, BorderLayout.NORTH);
+		shopFrame.add(centerPanel);
+		shopFrame.setVisible(true);
 	}
 	
 	// helper to populate the Shop with every game available in the database
 	private void populateShopPanel() {
 		
-		LinkedList<Game> catalog = FacadeUserInterface.getInstance().getCatalog();
-		for (Game game : catalog) { 
+		LinkedList<Game> catalog = FacadeUI.getInstance().getCatalog();
+		LinkedList<Game> gamesNotOwned = new LinkedList<>();
+		
+		for (Game game : catalog) {
+			if(!FacadeUI.getInstance().getSessionUserGames().contains(game)) {
+				gamesNotOwned.add(game);
+				System.out.println(game.getTitle());
+			}
+		}
+		
+		// create a button only for the games not owned by the user
+		for (Game game : gamesNotOwned) { 
 			URL gameCoverPath;
 			
 			// if the image reference is null, the placeholder cover is used instead
@@ -185,14 +200,14 @@ public class ShopWindow implements ActionListener{
 		buyButton.setBackground(new Color(12, 109, 207)); // light blue button
 		buyButton.setBorderPainted(false);
 		
-		// add all the elements to the panel
+		// add all the components to the panel
 		gameInfoPanel.add(titleLabel);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
 	    gameInfoPanel.add(genreLabel);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
 	    gameInfoPanel.add(buyButton);
 	    
-	    // DRAW ELEMENTS
+	    // draw components
 	    gameInfoPanel.revalidate(); // Recalculate the layout
 	    gameInfoPanel.repaint();    // draws on screen the updated UI
 
@@ -200,7 +215,15 @@ public class ShopWindow implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource() == mainPageButton) {
+			shopFrame.dispose();
+			new MainPageWindow();
+		}
+		
+		if(e.getSource() == libraryButton) {
+			shopFrame.dispose();
+			new LibraryWindow();
+		}
 		
 	}
 }

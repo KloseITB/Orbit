@@ -1,13 +1,14 @@
 package it.unipv.posfw.orbit.game;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.discount.DiscountManager;
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
 
 public class Game {
-
+	
 	// parameters
 	
 	private int id;
@@ -133,5 +134,23 @@ public class Game {
         this.coverPath = coverPath;
     }
 	
+    
+    // confront 2 games by their id and not by their instance in memory
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        
+        if (o == null || getClass() != o.getClass()) return false;
+        
+        // 3. Casting dell'oggetto
+        Game game = (Game) o;
+        
+        return this.id == game.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 	
 }

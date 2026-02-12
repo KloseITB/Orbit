@@ -33,7 +33,7 @@ public class Review {
     
     @Override
     public String toString() {
-        return getAuthorNickname() + " gave a vote of " + vote + "/5: \n" + reviewText;
+        return getAuthorNickname() + "gave a vote of " + vote + "/5: \n" + reviewText;
         
     }
 }

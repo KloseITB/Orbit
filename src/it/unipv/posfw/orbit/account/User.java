@@ -1,8 +1,13 @@
 package it.unipv.posfw.orbit.account;
 
-import it.unipv.posfw.orbit.exception.*;
+import java.util.LinkedList;
+
+import it.unipv.posfw.orbit.exception.AmountNotValidException;
+import it.unipv.posfw.orbit.exception.CodeNotFoundException;
+import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.library.Library;
-import it.unipv.posfw.orbit.payment.*;
+import it.unipv.posfw.orbit.payment.IPaymentMethod;
+import it.unipv.posfw.orbit.payment.PaymentManager;
 
 public class User {
 	
@@ -139,6 +144,11 @@ public class User {
 
 	public Library getLibrary() {
 		return library;
+	}
+	
+	// similar to getLibrary but it outputs an iterable list of games owned by the user
+	public LinkedList<Game> getOwnedGames() {
+		return library.getGames(this);
 	}
 
 	public void setLibrary(Library library) {

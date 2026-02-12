@@ -1,18 +1,29 @@
 package it.unipv.posfw.orbit.view.UI;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.library.Library;
-import it.unipv.posfw.orbit.view.FacadeUserInterface;
+import it.unipv.posfw.orbit.view.FacadeUI;
 import it.unipv.posfw.orbit.view.UI.resources.Prefab;
 import it.unipv.posfw.orbit.view.UI.resources.Res;
 
@@ -21,6 +32,8 @@ public class LibraryWindow implements ActionListener{
 	JPanel gameListPanel;
 	JPanel gameInfoPanel;
 	JFrame libraryFrame = Prefab.frameOrbit("Library", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
+	JButton mainPageButton;
+	JButton shopButton;
 	
 	public LibraryWindow() {
 		
@@ -28,8 +41,10 @@ public class LibraryWindow implements ActionListener{
 			
 			// HEADER PANEL
 			JPanel header = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH);
-			header.add(Prefab.buttonOrbit("MAIN PAGE", 0, 0));
-			header.add(Prefab.buttonOrbit("SHOP", 0, 0));
+			mainPageButton = Prefab.buttonOrbit("MAIN PAGE", 0, 0);
+			header.add(mainPageButton);
+			shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
+			header.add(shopButton);
 			
 			// MAIN PANEL
 			JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
@@ -47,7 +62,7 @@ public class LibraryWindow implements ActionListener{
 				ownedGamesLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
 				ownedGamesLabel.setForeground(Color.WHITE);
 				gameListPanel.add(ownedGamesLabel);
-				populateLibraryPanel(FacadeUserInterface.getInstance().getSessionUser());
+				populateLibraryPanel(FacadeUI.getInstance().getSessionUser());
 				
 				//GAME INFOS PANEL
 				gameInfoPanel = new JPanel();
@@ -55,6 +70,9 @@ public class LibraryWindow implements ActionListener{
 				gameInfoPanel.setBackground(Res.PANEL_BG);
 			
 			// ACTION LISTENERS
+			mainPageButton.addActionListener(this);
+			shopButton.addActionListener(this);
+				
 			centerPanel.add(gameListPanel);
 			centerPanel.add(gameInfoPanel);
 		
@@ -66,7 +84,7 @@ public class LibraryWindow implements ActionListener{
 	
 	private void populateLibraryPanel(User user) {
 		
-		LinkedList<Game> userGames = FacadeUserInterface.getInstance().getUserGames(user);
+		LinkedList<Game> userGames = FacadeUI.getInstance().getSessionUserGames();
 		for (Game game : userGames) { 
 			URL gameCoverPath;
 			
@@ -166,7 +184,15 @@ public class LibraryWindow implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource() == mainPageButton) {
+			libraryFrame.dispose();
+			new MainPageWindow();
+		}
+		
+		if(e.getSource() == shopButton) {
+			libraryFrame.dispose();
+			new ShopWindow();
+		}
 		
 	}
 }

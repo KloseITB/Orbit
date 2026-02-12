@@ -1,10 +1,14 @@
 package it.unipv.posfw.orbit.database;
 
-import it.unipv.posfw.orbit.account.User;
 import java.util.LinkedList;
-import it.unipv.posfw.orbit.exception.*;
+
+import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.exception.AmountNotValidException;
+import it.unipv.posfw.orbit.exception.CodeNotFoundException;
+import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
+import it.unipv.posfw.orbit.exception.UserNotFoundException;
+import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.view.FacadeUserInterface;
 
 public class FacadeDB {
     

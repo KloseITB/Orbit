@@ -2,6 +2,8 @@ package it.unipv.posfw.orbit.library;
 
 import java.util.LinkedList;
 
+import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.GameNotFoundException;
 import it.unipv.posfw.orbit.game.Game;
 
@@ -37,8 +39,14 @@ public class Library {
 		}
 	}
 	
-	public void getOwnedGames() {
-		// get game info through SQL query
+	public LinkedList<Game> getGames(User user) {
+		LinkedList<Game> userGames = new LinkedList<>();
+    	LinkedList<Integer> gamesId = FacadeDB.getInstance().getLibrary(user);
+    	for (int gameId : gamesId){
+    		userGames.add(FacadeDB.getInstance().getGame(gameId));
+    	}
+    	
+    	return userGames;
 	}
 
 }

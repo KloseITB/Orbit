@@ -1,20 +1,43 @@
 package it.unipv.posfw.orbit.view.UI;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.view.FacadeUserInterface;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-public class CheckoutWindow {
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.view.FacadeUI;
+import it.unipv.posfw.orbit.view.UI.resources.Prefab;
+import it.unipv.posfw.orbit.view.UI.resources.Res;
+
+public class CheckoutWindow implements ActionListener{
 	
 	private final int WINDOW_SIZE = 800;
+	
+	private Game selectedGame;
+	private JButton payButton;
+	private JButton verifyCodeButton;
+	JFrame checkoutFrame;
 
     public CheckoutWindow(Game game) {
-        JFrame checkoutFrame = Prefab.frameOrbit("Checkout", WINDOW_SIZE, WINDOW_SIZE);
+    	// make the game the user wants to buy a global variable
+    	selectedGame = game;
+        checkoutFrame = Prefab.frameOrbit("Checkout", WINDOW_SIZE, WINDOW_SIZE);
         checkoutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         checkoutFrame.setLayout(new BorderLayout());
 
@@ -44,7 +67,7 @@ public class CheckoutWindow {
         addTextField(creditCardPanel);
         
         creditCardPanel.add(Box.createVerticalGlue()); 
-        addButton(creditCardPanel, "PAY");
+        payButton = addButton(creditCardPanel, "PAY");
 
         // RIGHT PANEL
         JPanel rightColumn = new JPanel();
@@ -56,7 +79,7 @@ public class CheckoutWindow {
         topRightPanel.setPreferredSize(new Dimension(300, 190));
         
         // BALANCE LABEL
-		double userBalance = FacadeUserInterface.getInstance().getSessionUser().getBalance();
+		double userBalance = FacadeUI.getInstance().getSessionUser().getBalance();
 		DecimalFormat df = new DecimalFormat("#.00"); 
         addLabel(topRightPanel, df.format(userBalance) + "€");
         addPadding(topRightPanel, 10);
@@ -78,7 +101,7 @@ public class CheckoutWindow {
         addLabel(giftCardPanel, "Enter Gift card code");
         addTextField(giftCardPanel);
         addPadding(giftCardPanel, 15);
-        addButton(giftCardPanel, "CONFIRM");
+        verifyCodeButton = addButton(giftCardPanel, "CONFIRM");
 
         // add panels to the right column
         rightColumn.add(topRightPanel);
@@ -133,17 +156,33 @@ public class CheckoutWindow {
     }
 
     // helper to create Purple Buttons
-    private void addButton(JPanel parent, String text) {
+    private JButton addButton(JPanel parent, String text) {
         JButton btn = Prefab.buttonOrbit(text, 0, 0);
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         // fix for button width in BoxLayout to avoid stretching too wide or staying too small
         // we wrap it in a panel or set alignment carefully, but BoxLayout respects max size.
         parent.add(btn);
+        return btn;
     }
 
     // helper for vertical spacing
     private void addPadding(JPanel parent, int height) {
         parent.add(Box.createRigidArea(new Dimension(0, height)));
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == payButton) {
+			User user = FacadeUI.getInstance().getSessionUser();
+			FacadeUI.getInstance().addGameToLibrary(user, selectedGame);
+			checkoutFrame.dispose();
+		}
+		
+		if(e.getSource() == verifyCodeButton) {
+			// check if the code is valid
+			
+		}
+		
+	}
 }

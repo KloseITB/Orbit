@@ -1,6 +1,7 @@
 package it.unipv.posfw.orbit.view;
 
 import java.util.LinkedList;
+
 import it.unipv.posfw.orbit.account.SingletonAccountManager;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
@@ -9,17 +10,17 @@ import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
 
-public class FacadeUserInterface {
+public class FacadeUI {
 	
 	// parameters
-    private static FacadeUserInterface instance;
+    private static FacadeUI instance;
     
     // Singleton pattern
-    private FacadeUserInterface() {}
+    private FacadeUI() {}
     
-    public static FacadeUserInterface getInstance() {
+    public static FacadeUI getInstance() {
         if (instance == null) {
-            instance = new FacadeUserInterface();
+            instance = new FacadeUI();
         }
         return instance;
     }
@@ -52,16 +53,14 @@ public class FacadeUserInterface {
     	return true;
     }
     
+    public void addGameToLibrary(User user, Game game) {
+    	User currentUser = SingletonAccountManager.getInstance().getCurrentUser();
+    	currentUser.getLibrary().addGame(game.getId());
+    }
     
     // getters and setters
-    public LinkedList<Game> getUserGames(User user){
-    	LinkedList<Game> userGames = new LinkedList<>();
-    	LinkedList<Integer> gamesId = FacadeDB.getInstance().getLibrary(user);
-    	for (int gameId : gamesId){
-    		userGames.add(FacadeDB.getInstance().getGame(gameId));
-    	}
-    	
-    	return userGames;
+    public LinkedList<Game> getSessionUserGames(){
+    	return getSessionUser().getOwnedGames();
     }
     
     // get all the game available to be sold
