@@ -1,5 +1,6 @@
 package it.unipv.posfw.orbit.account;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
@@ -12,26 +13,27 @@ import it.unipv.posfw.orbit.payment.PaymentManager;
 public class User {
 	
 	// parameters
-	protected int id; //protected because it is a Primary Key in the db
+	protected int id; // protected because it is a Primary Key in the db
+	protected Library library;
 	private String nickname;
 	private String password;
-
 	private boolean isBanned;
-	private boolean isLoggedIn;
-	
-	protected Library library;
+	private boolean isAdmin;
+	private boolean isPubblisher;
 	private double balance;
+	private ArrayList<Game> publishedGames; // in case the user publishes a game
 	
 	
-	// constructors 
-	
+	// constructors
+
 	// constructor new user
 	public User(String nickname, String password) {
 		this.nickname = nickname;
 		this.password = password;
 		this.library = new Library();
 		isBanned = false;
-		isLoggedIn = false;
+		isAdmin = false;
+		isPubblisher = false;
 		balance = 0;
 	}
 	
@@ -43,21 +45,32 @@ public class User {
 		this.library = new Library();
 		this.balance = balance;
 		isBanned = false;
-		isLoggedIn = false;
+		isPubblisher = false;
 		balance = 0;
 	}
 	
+	// constructor that gives the possibility to set a new account as admin and/or publisher
+	public User(String nickname, String password, boolean isAdmin, boolean isPublisher) {
+		this.nickname = nickname;
+		this.password = password;
+		this.library = new Library();
+		isBanned = false;
+		this.isAdmin = isAdmin;
+		this.isPubblisher = isPublisher;
+		balance = 0;
+	}
 	
 	// methods
 	
 	// adding funds via a conventional payment method
-	public <E extends IPaymentMethod> void addFunds(double amount, E paymentMethod) {
+	public <E extends IPaymentMethod> boolean addFunds(double amount, E paymentMethod) {
 
 		try {
 			balance += PaymentManager.Pay(amount, paymentMethod);
+			return true;
 		}
 		catch(AmountNotValidException anve) {
-			// say via UI that the operation failed
+			return false;
 		}
 	}
 	
@@ -93,9 +106,32 @@ public class User {
 	}
 	
 	
+	// ADMIN-SPECIFIC methods
+
+	public void permaBanUser (User user) {
+		setBanned(true, this);
+	}
+	
+	// called when a game violates the platform's Term of Service (ex. NSFW content, Scam, AI slop ecc...)
+	public void banPublishedGame(Game game) {
+		if(isAdmin) {
+			game.setBanned(true);
+		}
+		else {
+			// error: the user is not an admin
+		}
+	}
+	
 	// getter and Setter
-	protected void setBanned(boolean isBanned) {
-		this.isBanned = isBanned;
+	
+	// you can ban someone ONLY if you are an admin
+	protected void setBanned(boolean isBanned, User admin) {
+		if(admin.isAdmin) {
+			this.isBanned = true;
+		}
+		else {
+			// error: the user is not an admin
+		}
 	}
 	
 	protected boolean isBanned() {
@@ -125,14 +161,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public boolean isLoggedIn() {
-		return isLoggedIn;
-	}
-
-	public void setLoggedIn(boolean isLoggedIn) {
-		this.isLoggedIn = isLoggedIn;
-	}
 
 	public double getBalance() {
 		return balance;
@@ -155,6 +183,13 @@ public class User {
 		this.library = library;
 	}
 	
+	public ArrayList<Game> getPublishedGames() {
+		return publishedGames;
+	}
+
+	public void setPublishedGames(ArrayList<Game> publishedGames) {
+		this.publishedGames = publishedGames;
+	}
 	
 
 

@@ -140,7 +140,6 @@ public class SingletonDatabaseHelper {
                     		user = new User(id, nickname, password, balance);
                 	}
                                
-                	user.setLoggedIn(true); // set user status as online
                 	return user;
                 	
                 } else {

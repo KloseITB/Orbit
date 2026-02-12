@@ -30,10 +30,9 @@ public class SingletonAccountManager {
 		FacadeDB.getInstance().signup(user);
 		
 		// if we get here the registration was successful
-		user.setLoggedIn(true);
 		this.currentUser = user; // current user set as logged in
 		
-		System.out.println("Registrazione avventua con successo per: " +nickname);
+		System.out.println("Registration successful: " + nickname); // debug
 		
 		return user;
 	}
