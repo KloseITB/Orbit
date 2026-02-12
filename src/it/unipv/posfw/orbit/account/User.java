@@ -75,7 +75,7 @@ public class User {
 	}
 	
 	// adding funds via gift card
-	public void addFunds (String giftCardCode) {
+	public boolean addFunds (String giftCardCode) {
 		
 		it.unipv.posfw.orbit.database.FacadeDB facade = it.unipv.posfw.orbit.database.FacadeDB.getInstance();	    
 	    
@@ -96,8 +96,10 @@ public class User {
 	        }
 	    } catch (CodeNotFoundException e) {
 	        // exception if card doesn't exist
-	        System.out.println(e.getMessage());
+	        return false;
 	    }
+		
+		return true;
 	}
 	
 	

@@ -11,23 +11,25 @@ public class Library {
 	
 	// Parameters
 	
-	LinkedList<Integer> gamesLinkedList;
+	LinkedList<Game> gamesLinkedList;
 	
 	// Constructors
 	
 	public Library () {
-		gamesLinkedList = new LinkedList<Integer>();
+		gamesLinkedList = new LinkedList<Game>();
 	}
 	
 	// Class Methods
 	
-	public void addGame(int gameID) {
+	public void addGame(Game game, User user) {
+		gamesLinkedList.add(game);
+		//FacadeDB.getInstance().addGameToLibrary(user, game);
 	}
 	
-	public void removeGame(int gameID) throws GameNotFoundException{
-		if (gamesLinkedList.contains(gameID))
-		gamesLinkedList.remove(gameID);
-		// remove game to the library of the user in SQL
+	public void removeGame(Game game, User user) throws GameNotFoundException{
+		if (gamesLinkedList.contains(game))
+		gamesLinkedList.remove(game);
+		//FacadeDB.getInstance().removeGameToLibrary(user, game);
 		else {
 			throw new GameNotFoundException("\n" + "Game not found");
 		}

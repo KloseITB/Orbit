@@ -195,7 +195,7 @@ public class ShopWindow implements ActionListener{
 		// action listener
 		buyButton.addActionListener(e -> {
 			System.out.println("User wants to buy " + game.getTitle()); // debug
-		    new CheckoutWindow(game);
+		    new CheckoutWindow(game, this);
 		});
 		buyButton.setBackground(new Color(12, 109, 207)); // light blue button
 		buyButton.setBorderPainted(false);
@@ -212,6 +212,11 @@ public class ShopWindow implements ActionListener{
 	    gameInfoPanel.repaint();    // draws on screen the updated UI
 
 	}
+	
+	public void updateWindow() {
+		shopFrame.revalidate(); // Recalculate the frame
+		shopFrame.repaint();    // draws on screen the updated Catalog
+	}	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

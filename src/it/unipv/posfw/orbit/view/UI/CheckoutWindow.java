@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -32,11 +33,14 @@ public class CheckoutWindow implements ActionListener{
 	private Game selectedGame;
 	private JButton payButton;
 	private JButton verifyCodeButton;
-	JFrame checkoutFrame;
+	private JTextField giftCardTextField;
+	private JFrame checkoutFrame;
+	private ShopWindow currentShopWindow;
 
-    public CheckoutWindow(Game game) {
-    	// make the game the user wants to buy a global variable
+    public CheckoutWindow(Game game, ShopWindow shopWindow) {
+    	// moving the arguments of the constructor to global variables
     	selectedGame = game;
+    	currentShopWindow = shopWindow;
         checkoutFrame = Prefab.frameOrbit("Checkout", WINDOW_SIZE, WINDOW_SIZE);
         checkoutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         checkoutFrame.setLayout(new BorderLayout());
@@ -99,7 +103,7 @@ public class CheckoutWindow implements ActionListener{
         giftCardPanel.setPreferredSize(new Dimension(300, 190));
         
         addLabel(giftCardPanel, "Enter Gift card code");
-        addTextField(giftCardPanel);
+        giftCardTextField = addTextField(giftCardPanel);
         addPadding(giftCardPanel, 15);
         verifyCodeButton = addButton(giftCardPanel, "CONFIRM");
 
@@ -151,12 +155,13 @@ public class CheckoutWindow implements ActionListener{
     }
 
     // helper to create TextFields
-    private void addTextField(JPanel parent) {
+    private JTextField addTextField(JPanel parent) {
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(200, 30));
         textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
         textField.setAlignmentX(Component.LEFT_ALIGNMENT);
         parent.add(textField);
+        return textField;
     }
 
     // helper to create Purple Buttons
@@ -174,18 +179,29 @@ public class CheckoutWindow implements ActionListener{
     private void addPadding(JPanel parent, int height) {
         parent.add(Box.createRigidArea(new Dimension(0, height)));
     }
-
+    
+    public void updateWindow() {
+    	checkoutFrame.revalidate(); // Recalculate the frame
+    	checkoutFrame.repaint();    // draws on screen the updated Catalog
+	}	
+    
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == payButton) {
 			User user = FacadeUI.getInstance().getSessionUser();
 			FacadeUI.getInstance().addGameToLibrary(user, selectedGame);
 			checkoutFrame.dispose();
+			currentShopWindow.updateWindow();
 		}
 		
 		if(e.getSource() == verifyCodeButton) {
-			// check if the code is valid
-			
+			if(FacadeUI.getInstance().checkGiftCardCode(giftCardTextField.getText())) {
+				updateWindow();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "The inserted code is not valid or has been already used", "Code not valid", JOptionPane.ERROR_MESSAGE);
+				updateWindow();
+			}
 		}
 		
 	}

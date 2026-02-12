@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import it.unipv.posfw.orbit.account.SingletonAccountManager;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
+import it.unipv.posfw.orbit.exception.CodeNotFoundException;
 import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
@@ -86,5 +87,10 @@ public class FacadeUI {
     
     public User getSessionUser() {
         return SingletonAccountManager.getInstance().getCurrentUser();
+    }
+    
+    public boolean checkGiftCardCode(String code) {
+    	
+    	return SingletonAccountManager.getInstance().getCurrentUser().addFunds(code);
     }
 }

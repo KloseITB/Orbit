@@ -39,7 +39,7 @@ public class FacadeDB {
     public void updateUserBalance(User user) {
         db.updateUserBalance(user);
     }
-
+    
     // game methods
 
     public void registerGame(Game game, int publisherId) {
