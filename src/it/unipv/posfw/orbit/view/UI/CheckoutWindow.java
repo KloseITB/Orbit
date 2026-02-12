@@ -107,8 +107,12 @@ public class CheckoutWindow implements ActionListener{
         rightColumn.add(topRightPanel);
         rightColumn.add(Box.createRigidArea(new Dimension(0, 20))); // Gap between red panels
         rightColumn.add(giftCardPanel);
-
-        // add Main components to Center Panel
+        
+        // ACTION LISTENERS
+        payButton.addActionListener(this);
+        verifyCodeButton.addActionListener(this);
+        
+        // add main components to Center Panel
         centerPanel.add(creditCardPanel);
         centerPanel.add(rightColumn);
 

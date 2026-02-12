@@ -9,6 +9,7 @@ import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.game.Review;
 
 public class FacadeUI {
 	
@@ -56,6 +57,10 @@ public class FacadeUI {
     public void addGameToLibrary(User user, Game game) {
     	User currentUser = SingletonAccountManager.getInstance().getCurrentUser();
     	currentUser.getLibrary().addGame(game.getId());
+    }
+    
+    public void saveReview(Review newReview){
+    	FacadeDB.getInstance().saveReview(newReview);
     }
     
     // getters and setters

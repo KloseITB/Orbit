@@ -22,12 +22,6 @@ public class Library {
 	// Class Methods
 	
 	public void addGame(int gameID) {
-		if(!gamesLinkedList.contains(gameID))
-		gamesLinkedList.add(gameID);
-		// add game to the library of the user in SQL
-		else {
-			// tell that this game is already in the library
-		}
 	}
 	
 	public void removeGame(int gameID) throws GameNotFoundException{

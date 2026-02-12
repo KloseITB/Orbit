@@ -3,11 +3,16 @@ package it.unipv.posfw.orbit.view.UI;
 import javax.swing.*;
 import java.awt.*;
 import it.unipv.posfw.orbit.account.User;
-import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
+import it.unipv.posfw.orbit.view.FacadeUI;
+import it.unipv.posfw.orbit.view.UI.resources.Prefab;
+import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class ReviewWindow {
+	
+	private final int WINDOW_WIDTH = 400;
+	private final int WINDOW_HEIGHT = 400;
 	
 	private JFrame frame;
     private User user;
@@ -20,17 +25,16 @@ public class ReviewWindow {
     }
 
     private void initialize() {
-        frame = new JFrame("Recensisci: " + game.getTitle());
-        frame.setSize(400, 350);
-        frame.setLocationRelativeTo(null);
+        frame = Prefab.frameOrbit(game.getTitle() + "Review", WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setLayout(new BorderLayout());
-        frame.getContentPane().setBackground(new Color(30, 30, 35)); 
 
         // title
-        JLabel titleLabel = new JLabel("Lascia una recensione", SwingConstants.CENTER);
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        JLabel titleLabel = Prefab.labelOrbit("LEAVE A REVIEW", Font.BOLD, 25);
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(Res.HEADER);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setVerticalAlignment(JLabel.CENTER);
         frame.add(titleLabel, BorderLayout.NORTH);
 
         // center panel
@@ -40,23 +44,23 @@ public class ReviewWindow {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         // slider to to choose the vote
-        JLabel ratingLabel = new JLabel("Voto: 5/5");
-        ratingLabel.setForeground(Color.LIGHT_GRAY);
-        ratingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel ratingLabel = new JLabel("Vote: 5/5");
+        ratingLabel.setForeground(Color.WHITE);
+        ratingLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        ratingLabel.setAlignmentY(JLabel.CENTER_ALIGNMENT);
         
         JSlider ratingSlider = new JSlider(1, 5, 5);
-        ratingSlider.setBackground(new Color(30, 30, 35));
+        ratingSlider.setOpaque(false);
         ratingSlider.setForeground(Color.WHITE);
         ratingSlider.setMajorTickSpacing(1);
         ratingSlider.setPaintTicks(true);
         ratingSlider.setPaintLabels(true);
         
         // listener that change the label when the slider is moved
-        ratingSlider.addChangeListener(e -> ratingLabel.setText("Voto: " + ratingSlider.getValue() + "/5"));
+        ratingSlider.addChangeListener(e -> ratingLabel.setText("Vote: " + ratingSlider.getValue() + "/5"));
 
         // comment area
-        JLabel commentLabel = new JLabel("Il tuo commento:");
-        commentLabel.setForeground(Color.LIGHT_GRAY);
+        JLabel commentLabel = Prefab.labelOrbit("Describe your experience", Font.PLAIN, 14);
         commentLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JTextArea commentArea = new JTextArea(5, 20);
@@ -75,32 +79,22 @@ public class ReviewWindow {
         frame.add(centerPanel, BorderLayout.CENTER);
 
         // enter button
-        JButton submitButton = new JButton("PUBBLICA RECENSIONE");
-        submitButton.setBackground(new Color(180, 160, 220)); // Button Purple
-        submitButton.setForeground(Color.WHITE);
-        submitButton.setFont(new Font("Arial", Font.BOLD, 14));
-        submitButton.setFocusable(false);
-        submitButton.setPreferredSize(new Dimension(400, 50));
+        JButton submitButton = Prefab.buttonOrbit("PUBLISH REVIEW", 0, 0);
         
         submitButton.addActionListener(e -> {
             int rating = ratingSlider.getValue();
             String comment = commentArea.getText();
-            
-            if (comment.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Scrivi un breve commento prima di inviare.");
-                return;
-            }
 
             // creation of the review object
             Review newReview = new Review(user.getId(), game.getId(), rating, comment);
             
-            // using the FacadeDb to save the review
+            // using the FacadeUI to save the review
             try {
-                FacadeDB.getInstance().saveReview(newReview);
-                JOptionPane.showMessageDialog(frame, "Recensione pubblicata con successo!");
+            	FacadeUI.getInstance().saveReview(newReview);
+                JOptionPane.showMessageDialog(frame, "Review published successfully!");
                 frame.dispose(); // close the window
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(frame, "Errore nel salvataggio: " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error while saving: " + ex.getMessage());
             }
         });
 

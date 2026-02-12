@@ -172,11 +172,13 @@ public class LibraryWindow implements ActionListener{
 		playButton.setBorderPainted(false);
 		
 		// review button
-		JButton reviewBtn = new JButton("Recensisci");
-		reviewBtn.setBackground(new java.awt.Color(180, 160, 220)); // violet Orbit
-	    reviewBtn.setForeground(java.awt.Color.WHITE);
-	    reviewBtn.setFocusable(false);
-	    
+		JButton reviewButton = Prefab.buttonOrbit("REVIEW GAME", 0, 0);
+		
+		// action listener
+		reviewButton.addActionListener(e -> {
+			System.out.println("User wants to review " + game.getTitle()); // debug
+		    new ReviewWindow(FacadeUI.getInstance().getSessionUser(), game);
+		});
 	    
 		// add all the elements to the panel
 		gameInfoPanel.add(titleLabel);
@@ -185,7 +187,7 @@ public class LibraryWindow implements ActionListener{
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
 	    gameInfoPanel.add(playButton);
 	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
-	    gameInfoPanel.add(reviewBtn);
+	    gameInfoPanel.add(reviewButton);
 	    
 	    // DRAW ELEMENTS
 	    gameInfoPanel.revalidate(); // Recalculate the layout
