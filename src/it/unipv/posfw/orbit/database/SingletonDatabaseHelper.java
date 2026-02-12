@@ -481,5 +481,46 @@ public class SingletonDatabaseHelper {
         return allGameIds;
     }
     
+    // method to add a  game to an user library
+    public void addGameToLibrary(User user, Game game) {
+        String sql = "INSERT INTO library (user_id, game_id) VALUES (?, ?)";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, user.getId());
+            pstmt.setInt(2, game.getId());
+            
+            pstmt.executeUpdate();
+            System.out.println("Game" + game.getTitle() + " added to " + user.getNickname() + " library.");
+
+        } catch (SQLException e) {
+            // error game already in library
+            System.err.println("Error, game already in library " + e.getMessage());
+        }
+    }
+    
+ // method to remove game from a user libary
+    public void removeGameFromLibrary(User user, Game game) {
+        String sql = "DELETE FROM library WHERE user_id = ? AND game_id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, user.getId());
+            pstmt.setInt(2, game.getId());
+            
+            int rowsAffected = pstmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Game " + game.getTitle() + " remove from " + user.getNickname() + " library");
+            } else {
+                System.out.println("Error: game already not present");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
 }

@@ -40,6 +40,14 @@ public class FacadeDB {
         db.updateUserBalance(user);
     }
     
+    public void addGameToLibrary(User user, Game game) {
+        db.addGameToLibrary(user, game);
+    }
+
+    public void removeGameFromLibrary(User user, Game game) {
+        db.removeGameFromLibrary(user, game);
+    }
+
     // game methods
 
     public void registerGame(Game game, int publisherId) {
