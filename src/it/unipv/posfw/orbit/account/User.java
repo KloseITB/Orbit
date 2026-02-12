@@ -19,7 +19,7 @@ public class User {
 	private String password;
 	private boolean isBanned;
 	private boolean isAdmin;
-	private boolean isPubblisher;
+	private boolean isPublisher;
 	private double balance;
 	private ArrayList<Game> publishedGames; // in case the user publishes a game
 	
@@ -33,7 +33,7 @@ public class User {
 		this.library = new Library();
 		isBanned = false;
 		isAdmin = false;
-		isPubblisher = false;
+		isPublisher = false;
 		balance = 0;
 	}
 	
@@ -45,7 +45,7 @@ public class User {
 		this.library = new Library();
 		this.balance = balance;
 		isBanned = false;
-		isPubblisher = false;
+		isPublisher = false;
 		balance = 0;
 	}
 	
@@ -56,7 +56,7 @@ public class User {
 		this.library = new Library();
 		isBanned = false;
 		this.isAdmin = isAdmin;
-		this.isPubblisher = isPublisher;
+		this.isPublisher = isPublisher;
 		balance = 0;
 	}
 	
@@ -160,6 +160,22 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public boolean getIsAdmin() {
+		return isAdmin;
+	}
+	
+	public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+	
+	public void setPublisher(boolean isPublisher) {
+        this.isPublisher = isPublisher;
+    }
+	
+	public boolean getIsPubblisher() {
+		return isPublisher;
 	}
 
 	public double getBalance() {

@@ -76,7 +76,7 @@ INSERT INTO users (nickname, password, role, balance) VALUES ('Rockstar', '1234'
 INSERT INTO users (nickname, password, role, balance) VALUES ('IndieDev', '1234', 'PUBLISHER', 200.0);
 
 -- 1 standard user
-INSERT INTO users (nickname, password, role, balance) VALUES ('PlayerOne', 'password', 'USER', 50.0);
+INSERT INTO users (nickname, password, role, balance) VALUES ('PlayerOne', 'password', 'ADMIN', 50.0);
 
 -- stock games data creation
 

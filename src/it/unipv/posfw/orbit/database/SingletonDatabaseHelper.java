@@ -9,8 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
-import it.unipv.posfw.orbit.account.Admin;
-import it.unipv.posfw.orbit.account.Publisher;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
@@ -92,8 +90,6 @@ public class SingletonDatabaseHelper {
             				 "value REAL NOT NULL)";
             stmt.execute(sqlGift); 
             
-     
-            
             String sqlReviews = "CREATE TABLE IF NOT EXISTS reviews (" +
                               "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                               "game_id INTEGER, " + 
@@ -128,17 +124,18 @@ public class SingletonDatabaseHelper {
                 	String role = rs.getString("role");
                 	double balance = rs.getDouble("balance");
                 
-                	User user;
+                	User user = new User(id, nickname, password, balance);
                 	// set the user role
                 	switch (role) {
                     	case "ADMIN":
-                    		user = new Admin(id, nickname, password, balance);
+                    		user.setAdmin(true);
                     		break;
                     	case "PUBLISHER":
-                    		user = new Publisher(id, nickname, password, balance);
+                    		user.setPublisher(true);
                     		break;
                     	default:
-                    		user = new User(id, nickname, password, balance);
+                    		// for default user both boolean are false
+                    		break;
                 	}
                                
                 	return user;
