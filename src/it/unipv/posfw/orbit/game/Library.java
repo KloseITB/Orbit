@@ -1,11 +1,10 @@
-package it.unipv.posfw.orbit.library;
+package it.unipv.posfw.orbit.game;
 
 import java.util.LinkedList;
 
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.GameNotFoundException;
-import it.unipv.posfw.orbit.game.Game;
 
 public class Library {
 	

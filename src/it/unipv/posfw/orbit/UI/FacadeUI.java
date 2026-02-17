@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.view;
+package it.unipv.posfw.orbit.view.UI;
 
 import java.util.LinkedList;
 

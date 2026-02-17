@@ -7,7 +7,7 @@ import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
 import it.unipv.posfw.orbit.exception.PaymentFailedException;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.library.Library;
+import it.unipv.posfw.orbit.game.Library;
 import it.unipv.posfw.orbit.payment.IPaymentMethod;
 
 public class User {

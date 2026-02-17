@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import it.unipv.posfw.orbit.account.*;
-import it.unipv.posfw.orbit.discount.DiscountManager;
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
 
 public class Game {

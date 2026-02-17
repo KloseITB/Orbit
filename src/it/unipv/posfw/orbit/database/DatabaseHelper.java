@@ -17,7 +17,7 @@ import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
-import it.unipv.posfw.orbit.view.FacadeUI;
+import it.unipv.posfw.orbit.view.UI.FacadeUI;
 
 public class DatabaseHelper {
     

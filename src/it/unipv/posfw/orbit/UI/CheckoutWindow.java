@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.view.FacadeUI;
 
 public class CheckoutWindow implements ActionListener{
 	

@@ -5,7 +5,6 @@ import java.awt.*;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
-import it.unipv.posfw.orbit.view.FacadeUI;
 
 public class ReviewWindow {
 	
