@@ -15,17 +15,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import it.unipv.posfw.orbit.view.FacadeUI;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class LoginWindow implements ActionListener{
 	
 	// parameters
 	private final int WINDOW_WIDTH = 640;
 	private final int WINDOW_HEIGHT = 640;
-	private final Font FONT_REGULAR = new Font(Res.FONT_NAME, Font.PLAIN, 20);
-	private final Font FONT_ROMANIC = new Font(Res.FONT_NAME, Font.ROMAN_BASELINE, 16);
-	private final Font FONT_BOLD = new Font(Res.FONT_NAME, Font.BOLD, 16);
+	private final Font FONT_REGULAR = new Font(Prefab.FONT_NAME, Font.PLAIN, 20);
+	private final Font FONT_ROMANIC = new Font(Prefab.FONT_NAME, Font.ROMAN_BASELINE, 16);
+	private final Font FONT_BOLD = new Font(Prefab.FONT_NAME, Font.BOLD, 16);
 	
 	private JFrame loginFrame;
 	private JButton loginButton;
@@ -69,7 +67,7 @@ public class LoginWindow implements ActionListener{
 		loginPanel.setLayout(new GridLayout(6, 1, 0, 5));
 		loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		loginPanel.setBounds((WINDOW_WIDTH - loginPanelWidth) / 2, (WINDOW_HEIGHT - loginPanelHeight) / 2, loginPanelWidth, loginPanelHeight);
-		loginPanel.setBackground(Res.PANEL_BG);
+		loginPanel.setBackground(Prefab.PANEL_BG);
 		
 		// LOGIN OR SIGNUP
 		JPanel loginOrSignup = new JPanel( new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -123,7 +121,7 @@ public class LoginWindow implements ActionListener{
 			if (FacadeUI.getInstance().loginUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Login successful"); // debug string
 				loginFrame.dispose();
-				new MainPageWindow();
+				new FrontPageWindow();
 			}
 			else {
 				System.out.println("Login Failed"); // debug string
@@ -137,7 +135,7 @@ public class LoginWindow implements ActionListener{
 			if(FacadeUI.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Signup successful"); // debug string
 				loginFrame.dispose();
-				new MainPageWindow();
+				new FrontPageWindow();
 			}
 			else {
 				System.out.println("Signup Failed"); // debug string

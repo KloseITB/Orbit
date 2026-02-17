@@ -19,13 +19,13 @@ import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 import it.unipv.posfw.orbit.view.FacadeUI;
 
-public class SingletonDatabaseHelper {
+public class DatabaseHelper {
     
-    private static SingletonDatabaseHelper instance;
+    private static DatabaseHelper instance;
     private static final String URL = "jdbc:sqlite:res/database/OrbitDB.db"; // directory of db
     
     // Singleton pattern
-    private SingletonDatabaseHelper() {
+    private DatabaseHelper() {
     	try {
             Class.forName("org.sqlite.JDBC");
             createTables();  // create the tables to check id they exists
@@ -35,8 +35,8 @@ public class SingletonDatabaseHelper {
         }
     }
     
-    public static SingletonDatabaseHelper getInstance() {
-        if (instance == null) instance = new SingletonDatabaseHelper();
+    public static DatabaseHelper getInstance() {
+        if (instance == null) instance = new DatabaseHelper();
         return instance;
     }
     
@@ -245,7 +245,7 @@ public class SingletonDatabaseHelper {
             
             // update also the user memory 
             buyer.removeFunds(game.getCurrentPrice()); // balance
-            buyer.getLibrary().addGame(game, FacadeUI.getInstance().getSessionUser()); // library
+            buyer.getLibrary().addGame(game, FacadeUI.getInstance().getCurrentUser()); // library
 
         } catch (SQLException e) { // if the connection was already open, cancel the transaction and print the error
             if (conn != null) try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }

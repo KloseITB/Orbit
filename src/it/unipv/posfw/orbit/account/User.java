@@ -3,12 +3,12 @@ package it.unipv.posfw.orbit.account;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import it.unipv.posfw.orbit.exception.AmountNotValidException;
+import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
+import it.unipv.posfw.orbit.exception.PaymentFailedException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.library.Library;
 import it.unipv.posfw.orbit.payment.IPaymentMethod;
-import it.unipv.posfw.orbit.payment.PaymentManager;
 
 public class User {
 	
@@ -66,10 +66,10 @@ public class User {
 	public <E extends IPaymentMethod> boolean addFunds(double amount, E paymentMethod) {
 
 		try {
-			balance += PaymentManager.Pay(amount, paymentMethod);
+			balance += paymentMethod.pay();
 			return true;
 		}
-		catch(AmountNotValidException anve) {
+		catch(PaymentFailedException pfe) {
 			return false;
 		}
 	}
@@ -77,22 +77,22 @@ public class User {
 	// adding funds via gift card
 	public boolean addFunds (String giftCardCode) {
 		
-		it.unipv.posfw.orbit.database.FacadeDB facade = it.unipv.posfw.orbit.database.FacadeDB.getInstance();	    
+		FacadeDB.getInstance();    
 	    
 		try {
 	        // check the gift card's existence
-	        if (facade.checkGiftCard(giftCardCode)) {
+	        if (FacadeDB.getInstance().checkGiftCard(giftCardCode)) {
 	            
 	            // take the gift card value
-	            double amount = facade.getGiftCardValue(giftCardCode);
+	            double amount = FacadeDB.getInstance().getGiftCardValue(giftCardCode);
 	            
 	            this.balance += amount;
 	            
 	            // update the database with the new balance and removal of the card
-	            facade.updateUserBalance(this);
-	            facade.discardGiftCard(giftCardCode);
+	            FacadeDB.getInstance().updateUserBalance(this);
+	            FacadeDB.getInstance().discardGiftCard(giftCardCode);
 	           
-	            System.out.println("Riscattati " + amount + " euro. Nuovo saldo: " + this.balance);
+	            System.out.println("Redeemed " + amount + " Euros. New Balance: " + this.balance);
 	        }
 	    } catch (CodeNotFoundException e) {
 	        // exception if card doesn't exist

@@ -6,26 +6,24 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import it.unipv.posfw.orbit.view.FacadeUI;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
 
-public class MainPageWindow implements ActionListener {
+public class FrontPageWindow implements ActionListener {
 	
 	// ATTRIBUTES
-	private String userNickname = FacadeUI.getInstance().getSessionUserNickname().toUpperCase();
-	private JFrame mainPageFrame = Prefab.frameOrbit("Quick Access", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
-	private ImageIcon gamePlaceholderImage = new ImageIcon(new Res().GAME_PLACEHOLDER);
+	private String userNickname = FacadeUI.getInstance().getCurrentUser().getNickname().toUpperCase();
+	private JFrame mainPageFrame = Prefab.frameOrbit("Front Page", Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT);
+	private ImageIcon gamePlaceholderImage = new ImageIcon(new Prefab().GAME_PLACEHOLDER);
 	private JButton libraryButton;
 	private JButton shopButton;
 	
-	public MainPageWindow() {
+	public FrontPageWindow() {
 		
 		// MAIN CONTAINER
 		JPanel mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setPreferredSize(new Dimension(Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT));
+		mainPanel.setPreferredSize(new Dimension(Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT));
 			
 			// HEADER
-			JPanel headerPanel = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH, 140);
+			JPanel headerPanel = Prefab.headerOrbit(Prefab.DEFAULT_WINDOW_WIDTH, 140);
 			libraryButton = Prefab.buttonOrbit("LIBRARY", 0, 0);
 			shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
 			
@@ -36,14 +34,14 @@ public class MainPageWindow implements ActionListener {
 			int borderThickness = 10;
 			JPanel centerPanel = new JPanel(new GridLayout(1, 2, borderThickness, 0));
 			centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-			centerPanel.setBackground(Res.FRAME_BG);
+			centerPanel.setBackground(Prefab.FRAME_BG);
 		
 				// NEWS CONTAINER
 				JPanel leftPanel = new JPanel(new BorderLayout());
 				leftPanel.setOpaque(false);
 				leftPanel.setBorder(BorderFactory.createEmptyBorder(6, 90, 0, 0));
 				JLabel newsLabel = new JLabel("NEWS");
-				newsLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+				newsLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
 				newsLabel.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
 				newsLabel.setHorizontalAlignment(JLabel.LEFT);
 				newsLabel.setVerticalAlignment(JLabel.TOP);
@@ -81,8 +79,8 @@ public class MainPageWindow implements ActionListener {
 	
 	private JPanel gameNewsPanel(String updateTitleText, String updateBodyText, ImageIcon gameImage) {
 		
-		final Font FONT_BOLD = new Font(Res.FONT_NAME, Font.BOLD, 18);
-		final Font FONT_PLAIN = new Font(Res.FONT_NAME, Font.PLAIN, 14);
+		final Font FONT_BOLD = new Font(Prefab.FONT_NAME, Font.BOLD, 18);
+		final Font FONT_PLAIN = new Font(Prefab.FONT_NAME, Font.PLAIN, 14);
 		
 		// MAIN PANEL
 		JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
@@ -90,7 +88,7 @@ public class MainPageWindow implements ActionListener {
 		mainPanel.setOpaque(false);
 		
 		// GAME IMAGE
-			JLabel gameImageLabel = new JLabel(new ImageIcon(new Res().GAME_PLACEHOLDER));
+			JLabel gameImageLabel = new JLabel(new ImageIcon(new Prefab().GAME_PLACEHOLDER));
 			gameImageLabel.setOpaque(true);
 			
 		// UPDATE DESCRIPTION
@@ -114,7 +112,7 @@ public class MainPageWindow implements ActionListener {
 				updateBody.setVerticalAlignment(JLabel.TOP);
 				updateBody.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 				updateBody.setFont(FONT_PLAIN);
-				updateBody.setBackground(Res.PANEL_BG);
+				updateBody.setBackground(Prefab.PANEL_BG);
 				updateBody.setForeground(Color.WHITE);
 				updateBody.setOpaque(true);
 				
@@ -135,15 +133,15 @@ public class MainPageWindow implements ActionListener {
 		JLabel welcomeLabel = new JLabel("WELCOME BACK,");
 		welcomeLabel.setPreferredSize(new Dimension(265, 30));
 		welcomeLabel.setVerticalAlignment(JLabel.CENTER);
-		welcomeLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+		welcomeLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
 		welcomeLabel.setForeground(Color.WHITE);
 		
 		// USER'S NICKNAME
 		JLabel nicknameLabel = new JLabel(userNickname);
 		nicknameLabel.setPreferredSize(new Dimension(250, 30));
 		nicknameLabel.setVerticalAlignment(JLabel.CENTER);
-		nicknameLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
-		nicknameLabel.setForeground(Res.ACCENT_YELLOW);
+		nicknameLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
+		nicknameLabel.setForeground(Prefab.ACCENT_YELLOW);
 		
 		greetingsPanel.add(welcomeLabel);
 		greetingsPanel.add(nicknameLabel);
@@ -159,7 +157,7 @@ public class MainPageWindow implements ActionListener {
 		
 		// LAST PLAYED GAMES
 		JLabel lastGameLabel = new JLabel("LAST PLAYED GAMES");
-		lastGameLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 26));
+		lastGameLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 26));
 		lastGameLabel.setForeground(Color.WHITE);
 		lastGameLabel.setPreferredSize(new Dimension(600, 26));
 		
@@ -177,7 +175,7 @@ public class MainPageWindow implements ActionListener {
 	
 	private JLabel gameImageLabel() {
 		
-		JLabel gameImageLabel = new JLabel(new ImageIcon(new Res().GAME_PLACEHOLDER));
+		JLabel gameImageLabel = new JLabel(new ImageIcon(new Prefab().GAME_PLACEHOLDER));
 		gameImageLabel.setOpaque(true);
 		return gameImageLabel;
 	}

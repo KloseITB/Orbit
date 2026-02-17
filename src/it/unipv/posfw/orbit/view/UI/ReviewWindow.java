@@ -6,8 +6,6 @@ import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 import it.unipv.posfw.orbit.view.FacadeUI;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class ReviewWindow {
 	
@@ -31,7 +29,7 @@ public class ReviewWindow {
         // title
         JLabel titleLabel = Prefab.labelOrbit("LEAVE A REVIEW", Font.BOLD, 25);
         titleLabel.setOpaque(true);
-        titleLabel.setBackground(Res.HEADER);
+        titleLabel.setBackground(Prefab.HEADER);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setVerticalAlignment(JLabel.CENTER);

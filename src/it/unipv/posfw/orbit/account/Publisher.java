@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.game.Game;
-import it.unipv.posfw.orbit.library.Library;
 
 public class Publisher extends User {
 	

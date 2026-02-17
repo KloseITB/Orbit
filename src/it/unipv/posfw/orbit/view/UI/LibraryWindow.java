@@ -20,20 +20,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JOptionPane;
-
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.view.FacadeUI;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.ReviewWindow;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class LibraryWindow implements ActionListener{
 	
 	JPanel gameListPanel;
 	JPanel gameInfoPanel;
-	JFrame libraryFrame = Prefab.frameOrbit("Library", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
+	JFrame libraryFrame = Prefab.frameOrbit("Library", Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT);
 	JButton mainPageButton;
 	JButton shopButton;
 	
@@ -42,7 +37,7 @@ public class LibraryWindow implements ActionListener{
 		libraryFrame.setLayout(new BorderLayout());
 			
 			// HEADER PANEL
-			JPanel header = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH);
+			JPanel header = Prefab.headerOrbit(Prefab.DEFAULT_WINDOW_WIDTH);
 			mainPageButton = Prefab.buttonOrbit("MAIN PAGE", 0, 0);
 			header.add(mainPageButton);
 			shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
@@ -61,15 +56,15 @@ public class LibraryWindow implements ActionListener{
 				ownedGamesLabel.setPreferredSize(new Dimension(700, 80));
 				ownedGamesLabel.setHorizontalAlignment(JLabel.LEFT);
 				ownedGamesLabel.setVerticalAlignment(JLabel.CENTER);
-				ownedGamesLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+				ownedGamesLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
 				ownedGamesLabel.setForeground(Color.WHITE);
 				gameListPanel.add(ownedGamesLabel);
-				populateLibraryPanel(FacadeUI.getInstance().getSessionUser());
+				populateLibraryPanel(FacadeUI.getInstance().getCurrentUser());
 				
 				// GAME INFOS PANEL
 				gameInfoPanel = new JPanel();
 				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
-				gameInfoPanel.setBackground(Res.PANEL_BG);
+				gameInfoPanel.setBackground(Prefab.PANEL_BG);
 			
 			// ACTION LISTENERS
 			mainPageButton.addActionListener(this);
@@ -86,13 +81,13 @@ public class LibraryWindow implements ActionListener{
 	
 	private void populateLibraryPanel(User user) {
 		
-		LinkedList<Game> userGames = FacadeUI.getInstance().getSessionUserGames();
+		LinkedList<Game> userGames = FacadeUI.getInstance().getCurrentUserGames();
 		for (Game game : userGames) { 
 			URL gameCoverPath;
 			
 			// if the image reference is null, the placeholder cover is used instead
 			if(game.getCoverPath() == null) {
-				gameCoverPath = new Res().GAME_PLACEHOLDER;
+				gameCoverPath = new Prefab().GAME_PLACEHOLDER;
 			}
 			else {
 				gameCoverPath = getClass().getResource(game.getCoverPath());
@@ -159,11 +154,11 @@ public class LibraryWindow implements ActionListener{
 		
 		// INFOS
 		JLabel titleLabel = new JLabel(game.getTitle());  // game title
-		titleLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 40));
+		titleLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 40));
 		titleLabel.setForeground(Color.WHITE);
 		
 		JLabel genreLabel = new JLabel("Genre: " + game.getGenre()); // game genre
-		genreLabel.setFont(new Font(Res.FONT_NAME, Font.PLAIN, 18));
+		genreLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 18));
 		genreLabel.setForeground(Color.WHITE);
 		
 		//PLAY BUTTON (not fully implemented for obvious reasons)
@@ -180,7 +175,7 @@ public class LibraryWindow implements ActionListener{
 		// action listener
 		reviewButton.addActionListener(e -> {
 			System.out.println("User wants to review " + game.getTitle()); // debug
-		    new ReviewWindow(FacadeUI.getInstance().getSessionUser(), game);
+		    new ReviewWindow(FacadeUI.getInstance().getCurrentUser(), game);
 		});
 	    
 		// add all the elements to the panel
@@ -202,7 +197,7 @@ public class LibraryWindow implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == mainPageButton) {
 			libraryFrame.dispose();
-			new MainPageWindow();
+			new FrontPageWindow();
 		}
 		
 		if(e.getSource() == shopButton) {

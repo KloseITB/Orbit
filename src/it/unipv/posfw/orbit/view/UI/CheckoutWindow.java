@@ -23,8 +23,6 @@ import javax.swing.border.EmptyBorder;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.view.FacadeUI;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 public class CheckoutWindow implements ActionListener{
 	
@@ -48,7 +46,7 @@ public class CheckoutWindow implements ActionListener{
         // CHECKOUT LABEL
         JLabel checkoutLabel = new JLabel("CHECKOUT");
         checkoutLabel.setForeground(Color.WHITE);
-        checkoutLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 36));
+        checkoutLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 36));
         checkoutLabel.setBorder(new EmptyBorder(20, 30, 10, 30));
         checkoutFrame.add(checkoutLabel, BorderLayout.NORTH);
 
@@ -83,7 +81,7 @@ public class CheckoutWindow implements ActionListener{
         topRightPanel.setPreferredSize(new Dimension(300, 190));
         
         // BALANCE LABEL
-		double userBalance = FacadeUI.getInstance().getSessionUser().getBalance();
+		double userBalance = FacadeUI.getInstance().getCurrentUser().getBalance();
 		DecimalFormat df = new DecimalFormat("#.00"); 
         addLabel(topRightPanel, df.format(userBalance) + "€");
         addPadding(topRightPanel, 10);
@@ -139,7 +137,7 @@ public class CheckoutWindow implements ActionListener{
     // helper to create opaque Panels with BoxLayout
     private JPanel createOpaquePanel() {
         JPanel panel = new JPanel();
-        panel.setBackground(Res.PANEL_BG);
+        panel.setBackground(Prefab.PANEL_BG);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(new EmptyBorder(15, 15, 15, 15));
         return panel;
@@ -188,7 +186,7 @@ public class CheckoutWindow implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == payButton) {
-			User user = FacadeUI.getInstance().getSessionUser();
+			User user = FacadeUI.getInstance().getCurrentUser();
 			FacadeUI.getInstance().addGameToLibrary(user, selectedGame);
 			checkoutFrame.dispose();
 			currentShopWindow.updateWindow();

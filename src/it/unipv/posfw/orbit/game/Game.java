@@ -37,9 +37,8 @@ public class Game {
 	public void discount(double percentage) {
 		// i used a temporary variable to avoid any kind of errors related to the pre-discount price of the game
 		double tmp = currentPrice;
-		DiscountManager discountManager =  new DiscountManager();
 		try {
-			tmp = discountManager.calculateDiscount(tmp, percentage);
+			tmp = DiscountManager.calculateDiscount(tmp, percentage);
 		}
 		catch (AmountNotValidException ave) {
 			// say via UI that the amount isn't acceptable and that it will be clamped into a number between 1% and 100%

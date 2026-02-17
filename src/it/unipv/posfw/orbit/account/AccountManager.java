@@ -2,21 +2,20 @@ package it.unipv.posfw.orbit.account;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.*;
 
-public class SingletonAccountManager {
+public class AccountManager {
 	
-	private static SingletonAccountManager uniqueInstance;
+	private static AccountManager uniqueInstance;
 	
 	private User currentUser; // local variable to keep the user logged in
 	
 	// Constructors
 	
-	private SingletonAccountManager() {}
+	private AccountManager() {}
 
-	
 	// Get instance of the class
-	public static SingletonAccountManager getInstance() {
+	public static AccountManager getInstance() {
 		if (uniqueInstance == null ) {
-			return uniqueInstance = new SingletonAccountManager();
+			return uniqueInstance = new AccountManager();
 		} else return uniqueInstance;
 	}
 	

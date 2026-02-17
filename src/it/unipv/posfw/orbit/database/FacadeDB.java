@@ -4,17 +4,16 @@ import java.util.LinkedList;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.*;
-import it.unipv.posfw.orbit.view.*;
 
 public class FacadeDB {
     
     private static FacadeDB instance;
-    private SingletonDatabaseHelper db;
+    private DatabaseHelper db;
 
     // private constructor
     private FacadeDB() {
         // facade manage the SingletonDatabaseHelper instance
-        this.db = SingletonDatabaseHelper.getInstance();
+        this.db = DatabaseHelper.getInstance();
     }
 
     // singleton for the Facade

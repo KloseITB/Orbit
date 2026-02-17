@@ -24,15 +24,13 @@ import javax.swing.JPanel;
 
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.view.FacadeUI;
-import it.unipv.posfw.orbit.view.UI.resources.Prefab;
-import it.unipv.posfw.orbit.view.UI.resources.Res;
 
 
 public class ShopWindow implements ActionListener{
 	
 	private JPanel gameListPanel;
 	private JPanel gameInfoPanel;
-	private JFrame shopFrame = Prefab.frameOrbit("Shop", Res.DEFAULT_WINDOW_WIDTH, Res.DEFAULT_WINDOW_HEIGHT);
+	private JFrame shopFrame = Prefab.frameOrbit("Shop", Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT);
 	private JButton mainPageButton;
 	private JButton libraryButton;
 	public ShopWindow() {
@@ -40,15 +38,15 @@ public class ShopWindow implements ActionListener{
 		shopFrame.setLayout(new BorderLayout());
 			
 			// HEADER PANEL
-			JPanel header = Prefab.headerOrbit(Res.DEFAULT_WINDOW_WIDTH);
+			JPanel header = Prefab.headerOrbit(Prefab.DEFAULT_WINDOW_WIDTH);
 			JLabel buffer = new JLabel();
 			buffer.setPreferredSize(new Dimension(500, 60));
 			
 			// show the balance with the format #.00
-			double userBalance = FacadeUI.getInstance().getSessionUser().getBalance();
+			double userBalance = FacadeUI.getInstance().getCurrentUser().getBalance();
 			DecimalFormat df = new DecimalFormat("#.00"); 
 			JLabel balanceLabel = new JLabel("Balance: " + df.format(userBalance) + "€"); 
-			balanceLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 20));
+			balanceLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
 			balanceLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 			balanceLabel.setForeground(Color.WHITE);
 			
@@ -71,7 +69,7 @@ public class ShopWindow implements ActionListener{
 				gameCatalogLabel.setPreferredSize(new Dimension(700, 80));
 				gameCatalogLabel.setHorizontalAlignment(JLabel.LEFT);
 				gameCatalogLabel.setVerticalAlignment(JLabel.CENTER);
-				gameCatalogLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 30));
+				gameCatalogLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
 				gameCatalogLabel.setForeground(Color.WHITE);
 				gameListPanel.add(gameCatalogLabel);
 
@@ -80,7 +78,7 @@ public class ShopWindow implements ActionListener{
 				//GAME INFOS PANEL
 				gameInfoPanel = new JPanel();
 				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
-				gameInfoPanel.setBackground(Res.PANEL_BG);
+				gameInfoPanel.setBackground(Prefab.PANEL_BG);
 
 			
 			centerPanel.add(gameListPanel);
@@ -102,7 +100,7 @@ public class ShopWindow implements ActionListener{
 		LinkedList<Game> gamesNotOwned = new LinkedList<>();
 		
 		for (Game game : catalog) {
-			if(!FacadeUI.getInstance().getSessionUserGames().contains(game)) {
+			if(!FacadeUI.getInstance().getCurrentUserGames().contains(game)) {
 				gamesNotOwned.add(game);
 				System.out.println(game.getTitle());
 			}
@@ -114,7 +112,7 @@ public class ShopWindow implements ActionListener{
 			
 			// if the image reference is null, the placeholder cover is used instead
 			if(game.getCoverPath() == null) {
-				gameCoverPath = new Res().GAME_PLACEHOLDER;
+				gameCoverPath = new Prefab().GAME_PLACEHOLDER;
 			}
 			else {
 				gameCoverPath = getClass().getResource(game.getCoverPath());
@@ -181,11 +179,11 @@ public class ShopWindow implements ActionListener{
 		
 		// INFOS
 		JLabel titleLabel = new JLabel(game.getTitle());  // game title
-		titleLabel.setFont(new Font(Res.FONT_NAME, Font.BOLD, 40));
+		titleLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 40));
 		titleLabel.setForeground(Color.WHITE);
 		
 		JLabel genreLabel = new JLabel("Genre: " + game.getGenre()); // game genre
-		genreLabel.setFont(new Font(Res.FONT_NAME, Font.PLAIN, 18));
+		genreLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 18));
 		genreLabel.setForeground(Color.WHITE);
 		
 		//BUY BUTTON
@@ -221,7 +219,7 @@ public class ShopWindow implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == mainPageButton) {
 			shopFrame.dispose();
-			new MainPageWindow();
+			new FrontPageWindow();
 		}
 		
 		if(e.getSource() == libraryButton) {

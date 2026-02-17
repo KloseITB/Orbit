@@ -2,10 +2,9 @@ package it.unipv.posfw.orbit.view;
 
 import java.util.LinkedList;
 
-import it.unipv.posfw.orbit.account.SingletonAccountManager;
+import it.unipv.posfw.orbit.account.AccountManager;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
-import it.unipv.posfw.orbit.exception.CodeNotFoundException;
 import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
@@ -27,12 +26,12 @@ public class FacadeUI {
         return instance;
     }
     
-    // methods
+    // Methods
     
     // check if the user credentials exist and are correct
     public boolean loginUser(String nickname, String password) {
         try {
-            SingletonAccountManager.getInstance().setCurrentUser(FacadeDB.getInstance().login(nickname, password));
+            AccountManager.getInstance().setCurrentUser(FacadeDB.getInstance().login(nickname, password));
         } catch (UserNotFoundException e) {
             return false;
         } catch (WrongPasswordException e) {
@@ -51,12 +50,12 @@ public class FacadeUI {
 		} catch (PlayerAlreadyExistException e) {
 			return false;
 		}
-    	SingletonAccountManager.getInstance().setCurrentUser(new User(nickname, password));
+    	AccountManager.getInstance().setCurrentUser(new User(nickname, password));
     	return true;
     }
     
     public void addGameToLibrary(User user, Game game) {
-    	User currentUser = SingletonAccountManager.getInstance().getCurrentUser();
+    	User currentUser = AccountManager.getInstance().getCurrentUser();
     	currentUser.getLibrary().addGame(game, user);
     }
     
@@ -65,8 +64,8 @@ public class FacadeUI {
     }
     
     // getters and setters
-    public LinkedList<Game> getSessionUserGames(){
-    	return getSessionUser().getOwnedGames();
+    public LinkedList<Game> getCurrentUserGames(){
+    	return getCurrentUser().getOwnedGames();
     }
     
     // get all the game available to be sold
@@ -81,16 +80,12 @@ public class FacadeUI {
     	return catalog;
     }
     
-    public String getSessionUserNickname() {
-        return SingletonAccountManager.getInstance().getCurrentUser().getNickname();
-    }
-    
-    public User getSessionUser() {
-        return SingletonAccountManager.getInstance().getCurrentUser();
+    public User getCurrentUser() {
+        return AccountManager.getInstance().getCurrentUser();
     }
     
     public boolean checkGiftCardCode(String code) {
     	
-    	return SingletonAccountManager.getInstance().getCurrentUser().addFunds(code);
+    	return AccountManager.getInstance().getCurrentUser().addFunds(code);
     }
 }
