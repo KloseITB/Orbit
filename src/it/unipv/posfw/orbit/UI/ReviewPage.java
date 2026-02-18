@@ -1,12 +1,28 @@
-package it.unipv.posfw.orbit.view.UI;
+package it.unipv.posfw.orbit.UI;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.JTextArea;
+
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 
-public class ReviewWindow {
+public class ReviewPage {
 	
 	private final int WINDOW_WIDTH = 400;
 	private final int WINDOW_HEIGHT = 400;
@@ -15,7 +31,7 @@ public class ReviewWindow {
     private User user;
     private Game game;
 
-    public ReviewWindow(User user, Game game) {
+    public ReviewPage(User user, Game game) {
         this.user = user;
         this.game = game;
         initialize();

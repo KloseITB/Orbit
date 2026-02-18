@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.view.UI;
+package it.unipv.posfw.orbit.UI;
 
 import java.awt.Color;
 import java.awt.Dimension;

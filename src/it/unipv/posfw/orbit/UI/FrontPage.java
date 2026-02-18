@@ -1,11 +1,11 @@
-package it.unipv.posfw.orbit.view.UI;
+package it.unipv.posfw.orbit.UI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class FrontPageWindow implements ActionListener {
+public class FrontPage implements ActionListener {
 	
 	// ATTRIBUTES
 	private String userNickname = FacadeUI.getInstance().getCurrentUser().getNickname().toUpperCase();
@@ -14,7 +14,7 @@ public class FrontPageWindow implements ActionListener {
 	private JButton libraryButton;
 	private JButton shopButton;
 	
-	public FrontPageWindow() {
+	public FrontPage() {
 		
 		// MAIN CONTAINER
 		JPanel mainPanel = new JPanel(new BorderLayout());
@@ -182,12 +182,12 @@ public class FrontPageWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == libraryButton) {
 			mainPageFrame.dispose();
-			new LibraryWindow();
+			new LibraryPage();
 		}
 		
 		if(e.getSource() == shopButton) {
 			mainPageFrame.dispose();
-			new ShopWindow();
+			new StorePage();
 		}
 		
 	}

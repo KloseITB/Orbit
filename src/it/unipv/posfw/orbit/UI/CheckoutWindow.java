@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.view.UI;
+package it.unipv.posfw.orbit.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,9 +32,9 @@ public class CheckoutWindow implements ActionListener{
 	private JButton verifyCodeButton;
 	private JTextField giftCardTextField;
 	private JFrame checkoutFrame;
-	private ShopWindow currentShopWindow;
+	private StorePage currentShopWindow;
 
-    public CheckoutWindow(Game game, ShopWindow shopWindow) {
+    public CheckoutWindow(Game game, StorePage shopWindow) {
     	// moving the arguments of the constructor to global variables
     	selectedGame = game;
     	currentShopWindow = shopWindow;

@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.view.UI;
+package it.unipv.posfw.orbit.UI;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LoginWindow implements ActionListener{
+public class LoginPage implements ActionListener{
 	
 	// parameters
 	private final int WINDOW_WIDTH = 640;
@@ -32,7 +32,7 @@ public class LoginWindow implements ActionListener{
 	
 	
 	// constructor
-	public LoginWindow() {
+	public LoginPage() {
 
 		// Initial Setup
 		loginFrame = Prefab.frameOrbit("Login", WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -119,7 +119,7 @@ public class LoginWindow implements ActionListener{
 			if (FacadeUI.getInstance().loginUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Login successful"); // debug string
 				loginFrame.dispose();
-				new FrontPageWindow();
+				new FrontPage();
 			}
 			else {
 				System.out.println("Login Failed"); // debug string
@@ -133,7 +133,7 @@ public class LoginWindow implements ActionListener{
 			if(FacadeUI.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
 				System.out.println("Signup successful"); // debug string
 				loginFrame.dispose();
-				new FrontPageWindow();
+				new FrontPage();
 			}
 			else {
 				System.out.println("Signup Failed"); // debug string
