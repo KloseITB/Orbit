@@ -10,7 +10,7 @@ public class FrontPage implements ActionListener {
 	// ATTRIBUTES
 	private String userNickname = FacadeUI.getInstance().getCurrentUser().getNickname().toUpperCase();
 	private JFrame mainPageFrame = Prefab.frameOrbit("Front Page", Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT);
-	private ImageIcon gamePlaceholderImage = new ImageIcon(new Prefab().GAME_PLACEHOLDER);
+	private ImageIcon gamePlaceholderImage = new ImageIcon(new Prefab().COVER_PLACEHOLDER);
 	private JButton libraryButton;
 	private JButton shopButton;
 	
@@ -86,7 +86,7 @@ public class FrontPage implements ActionListener {
 		mainPanel.setOpaque(false);
 		
 		// GAME IMAGE
-			JLabel gameImageLabel = new JLabel(new ImageIcon(new Prefab().GAME_PLACEHOLDER));
+			JLabel gameImageLabel = new JLabel(new ImageIcon(new Prefab().COVER_PLACEHOLDER));
 			gameImageLabel.setOpaque(true);
 			
 		// UPDATE DESCRIPTION
@@ -173,7 +173,7 @@ public class FrontPage implements ActionListener {
 	
 	private JLabel gameImageLabel() {
 		
-		JLabel gameImageLabel = new JLabel(new ImageIcon(new Prefab().GAME_PLACEHOLDER));
+		JLabel gameImageLabel = new JLabel(new ImageIcon(new Prefab().COVER_PLACEHOLDER));
 		gameImageLabel.setOpaque(true);
 		return gameImageLabel;
 	}

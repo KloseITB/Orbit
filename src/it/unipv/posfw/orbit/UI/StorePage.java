@@ -92,10 +92,12 @@ public class StorePage implements ActionListener{
 		shopFrame.setVisible(true);
 	}
 	
-	// helper to populate the Shop with every game available in the database
+	// helper to populate the Shop with every game not bought by the user
 	private void populateShopPanel() {
 		
-		LinkedList<Game> catalog = FacadeUI.getInstance().getCatalog();
+		// create a list of games catalog - ownedGames
+		LinkedList<Integer> catalogId = FacadeUI.getInstance().getIdCatalog();
+		LinkedList<Game> catalog = FacadeUI.getInstance().gameFromId(catalogId);
 		LinkedList<Game> gamesNotOwned = new LinkedList<>();
 		
 		for (Game game : catalog) {
@@ -111,7 +113,7 @@ public class StorePage implements ActionListener{
 			
 			// if the image reference is null, the placeholder cover is used instead
 			if(game.getCoverPath() == null) {
-				gameCoverPath = new Prefab().GAME_PLACEHOLDER;
+				gameCoverPath = new Prefab().COVER_PLACEHOLDER;
 			}
 			else {
 				gameCoverPath = getClass().getResource(game.getCoverPath());

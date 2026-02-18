@@ -21,7 +21,7 @@ public class AccountManager {
 	
 	// Methods
 	
-	public User signup(String nickname, String password) throws PlayerAlreadyExistException{
+	public User signup(String nickname, String password) throws UserAlreadyExistException{
 		
 		User user = new User(nickname, password);
 		

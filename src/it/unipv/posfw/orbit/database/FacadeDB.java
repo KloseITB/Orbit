@@ -31,7 +31,7 @@ public class FacadeDB {
         
     }
     
-    public void signup(User user) throws PlayerAlreadyExistException{
+    public void signup(User user) throws UserAlreadyExistException{
     	db.registerUser(user);
     }
     
@@ -39,12 +39,12 @@ public class FacadeDB {
         db.updateUserBalance(user);
     }
     
-    public void addGameToLibrary(User user, Game game) {
-        db.addGameToLibrary(user, game);
+    public void addGameToLibrary(Library library, Game game) {
+        db.addGameToLibrary(library, game);
     }
 
-    public void removeGameFromLibrary(User user, Game game) {
-        db.removeGameFromLibrary(user, game);
+    public void removeGameFromLibrary(Library library, Game game) {
+        db.removeGameFromLibrary(library, game);
     }
 
     // game methods

@@ -35,7 +35,7 @@ public class CheckoutWindow implements ActionListener{
 	private StorePage currentShopWindow;
 
     public CheckoutWindow(Game game, StorePage shopWindow) {
-    	// moving the arguments of the constructor to global variables
+    	// Moving the arguments of the constructor to global variables
     	selectedGame = game;
     	currentShopWindow = shopWindow;
         checkoutFrame = Prefab.frameOrbit("Checkout", WINDOW_SIZE, WINDOW_SIZE);
@@ -49,7 +49,7 @@ public class CheckoutWindow implements ActionListener{
         checkoutLabel.setBorder(new EmptyBorder(20, 30, 10, 30));
         checkoutFrame.add(checkoutLabel, BorderLayout.NORTH);
 
-        //CENTER PANEL
+        // CENTER PANEL
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
         centerPanel.setOpaque(false); 
@@ -104,7 +104,7 @@ public class CheckoutWindow implements ActionListener{
         addPadding(giftCardPanel, 15);
         verifyCodeButton = addButton(giftCardPanel, "CONFIRM");
 
-        // add panels to the right column
+        // Add panels to the right column
         rightColumn.add(topRightPanel);
         rightColumn.add(Box.createRigidArea(new Dimension(0, 20))); // Gap between red panels
         rightColumn.add(giftCardPanel);
@@ -113,7 +113,7 @@ public class CheckoutWindow implements ActionListener{
         payButton.addActionListener(this);
         verifyCodeButton.addActionListener(this);
         
-        // add main components to Center Panel
+        // Add main components to Center Panel
         centerPanel.add(creditCardPanel);
         centerPanel.add(rightColumn);
 
@@ -124,7 +124,7 @@ public class CheckoutWindow implements ActionListener{
         checkoutFrame.setVisible(true);
     }
 
-    // helper to create transparent Panels with BoxLayout
+    // Helper to create transparent Panels with BoxLayout
     private JPanel createTransparentPanel() {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
@@ -133,7 +133,7 @@ public class CheckoutWindow implements ActionListener{
         return panel;
     }
     
-    // helper to create opaque Panels with BoxLayout
+    // Helper to create opaque Panels with BoxLayout
     private JPanel createOpaquePanel() {
         JPanel panel = new JPanel();
         panel.setBackground(Prefab.PANEL_BG);
@@ -142,7 +142,7 @@ public class CheckoutWindow implements ActionListener{
         return panel;
     }
 
-    // helper to create Labels
+    // Helper to create Labels
     private void addLabel(JPanel parent, String text) {
         JLabel label = Prefab.labelOrbit(text, Font.PLAIN, 14);
         label.setBorder(new EmptyBorder(3, 0, 3, 0)); // padding adjusted
@@ -151,7 +151,7 @@ public class CheckoutWindow implements ActionListener{
         parent.add(Box.createRigidArea(new Dimension(0, 5)));
     }
 
-    // helper to create TextFields
+    // Helper to create TextFields
     private JTextField addTextField(JPanel parent) {
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(200, 30));
@@ -161,18 +161,18 @@ public class CheckoutWindow implements ActionListener{
         return textField;
     }
 
-    // helper to create Purple Buttons
+    // Helper to create Purple Buttons
     private JButton addButton(JPanel parent, String text) {
         JButton btn = Prefab.buttonOrbit(text, 0, 0);
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        // fix for button width in BoxLayout to avoid stretching too wide or staying too small
-        // we wrap it in a panel or set alignment carefully, but BoxLayout respects max size.
+        // Fix for button width in BoxLayout to avoid stretching too wide or staying too small
+        // We wrap it in a panel or set alignment carefully, but BoxLayout respects max size.
         parent.add(btn);
         return btn;
     }
 
-    // helper for vertical spacing
+    // Helper for vertical spacing
     private void addPadding(JPanel parent, int height) {
         parent.add(Box.createRigidArea(new Dimension(0, height)));
     }

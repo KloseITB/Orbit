@@ -86,7 +86,7 @@ public class LibraryPage implements ActionListener{
 			
 			// if the image reference is null, the placeholder cover is used instead
 			if(game.getCoverPath() == null) {
-				gameCoverPath = new Prefab().GAME_PLACEHOLDER;
+				gameCoverPath = new Prefab().COVER_PLACEHOLDER;
 			}
 			else {
 				gameCoverPath = getClass().getResource(game.getCoverPath());

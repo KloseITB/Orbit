@@ -1,34 +1,31 @@
 package it.unipv.posfw.orbit.account;
 
-//IMPORTANT: CHECK YOUR PART OF CODE AND GET RID OF THIS CLASS SINCE IT WILL BE DELETED
-public class Admin extends User {
-	// constructors
+import it.unipv.posfw.orbit.game.Game;
 
-	// constructors for new Admin
+public class Admin extends User {
+
+	// Constructors
+
+	// Constructors for new Admin
 	public Admin(String nickname, String password) { 
 		super(nickname, password);
 	}
 	
-	// costructor for already existing Admin
+	// Costructor for already existing Admin
 	public Admin(int id, String nickname, String password, double balance) {
 		super(id, nickname, password, balance);
 	}
 	
-	// methods
+	// Methods
 	
-
-	
-	// created a different method do underline the difference between
-	// banning a normal user and a publisher who
-	// doesn't respect the platform's Term Of Service
-	
-	// -- UNIMPLEMENTED --
-	public void permaBanPublisher (Publisher publisher) {
-		publisher.setBanned(true, this);
-		// delete all the games published by the banned publisher from the database
+	public void banUser (User user) {
+		user.isBanned = true;
 	}
-
 	
+	// Called when a game violates the platform's Term of Service (ex. NSFW content, Scam, AI slop ecc...)
+	public void banPublishedGame(Game game) {
+			game.setBanned(true);
+	}
 	
 	
 }

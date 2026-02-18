@@ -30,7 +30,7 @@ public final class Prefab {
     // COMMON IMAGES
 	public final URL ORBIT_LOGO = getClass().getResource("/images/commons/orbit_logo.png");
 	public final URL ORBIT_ICON = getClass().getResource("/images/commons/orbit_icon_only.png");
-	public final URL GAME_PLACEHOLDER = getClass().getResource("/images/commons/game_placeholder.png");
+	public final URL COVER_PLACEHOLDER = getClass().getResource("/images/commons/game_placeholder.png");
     
     // FONT
 	public final static String FONT_NAME = "Arial"; // placeholder font
@@ -42,14 +42,14 @@ public final class Prefab {
 	public static JFrame frameOrbit(String name, int width, int height) {
 		JFrame frame = new JFrame();
 		
-		// icon setup 
+		// Icon setup 
 		if (new Prefab().ORBIT_ICON != null) {
 		    frame.setIconImage(new ImageIcon(new Prefab().ORBIT_ICON).getImage());
 		} else {
 		    System.out.println("Error: Image not found");
 		}
 		
-		// frame settings
+		// Frame settings
 		frame.setTitle("Orbit - " + name);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(width, height);
@@ -119,13 +119,13 @@ public final class Prefab {
 	}
 	
 	
-	// BUTTON WITH GAME THUMBNAIL
+	// BUTTON WITH GAME COVER
 	
 	public JButton imageButton(String imagePath) {
 		// If the game doesn't have an image, use the placeholder one
 		JButton button = new JButton();
 		if (imagePath == null) {
-			button.setIcon(new ImageIcon(new Prefab().GAME_PLACEHOLDER));
+			button.setIcon(new ImageIcon(new Prefab().COVER_PLACEHOLDER));
 		}
 		else {
 			@SuppressWarnings("unused")

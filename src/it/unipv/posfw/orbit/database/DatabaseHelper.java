@@ -9,15 +9,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
-import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.account.*;
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
-import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
+import it.unipv.posfw.orbit.exception.UserAlreadyExistException;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.exception.WrongPasswordException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
-import it.unipv.posfw.orbit.UI.FacadeUI;
+import it.unipv.posfw.orbit.game.Library;
 
 public class DatabaseHelper {
     
@@ -129,25 +129,21 @@ public class DatabaseHelper {
                 	// set the user role
                 	switch (role) {
                     	case "ADMIN":
-                    		user.setAdmin(true);
-                    		break;
+                    		Admin admin = (Admin)user;
+                            return admin;
                     	case "PUBLISHER":
-                    		user.setPublisher(true);
-                    		break;
+                    		Publisher publisher = (Publisher)user;
+                            return publisher;
                     	default:
-                    		// for default user both boolean are false
-                    		break;
+                    		return user;
                 	}
-                               
-                	return user;
-                	
                 } else {
                 	// wrong password
-                	throw new WrongPasswordException("Password sbagliata");
+                	throw new WrongPasswordException("Wrong password");
                 }
             }else {
             	// id re.next() is false, the nickname doesn't exist in the db
-            	throw new UserNotFoundException("User inesistente");
+            	throw new UserNotFoundException("User not found");
             }
         } catch (SQLException e) { e.printStackTrace(); }
         
@@ -155,7 +151,7 @@ public class DatabaseHelper {
     }
     
     // method register new user (sign up)
-    public void registerUser(User user) throws PlayerAlreadyExistException {
+    public void registerUser(User user) throws UserAlreadyExistException {
         
         // check if nickname already exist
         String checkSql = "SELECT nickname FROM users WHERE nickname = ?";
@@ -168,7 +164,7 @@ public class DatabaseHelper {
             
             if (rs.next()) {
                 // if we find a row the nickname is already in use
-                throw new PlayerAlreadyExistException("Esiste già un utente con il nickname: " + user.getNickname());
+                throw new UserAlreadyExistException("User with the nickname " + user.getNickname() + " already exists");
             }
             
         } catch (SQLException e) {
@@ -245,7 +241,7 @@ public class DatabaseHelper {
             
             // update also the user memory 
             buyer.removeFunds(game.getCurrentPrice()); // balance
-            buyer.getLibrary().addGame(game, FacadeUI.getInstance().getCurrentUser()); // library
+            buyer.getLibrary().addGame(game); // library
 
         } catch (SQLException e) { // if the connection was already open, cancel the transaction and print the error
             if (conn != null) try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
@@ -483,8 +479,9 @@ public class DatabaseHelper {
     }
     
     // method to add a  game to an user library
-    public void addGameToLibrary(User user, Game game) {
+    public void addGameToLibrary(Library library, Game game) {
         String sql = "INSERT INTO library (user_id, game_id) VALUES (?, ?)";
+        User user = library.getOwner();
         
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -502,9 +499,10 @@ public class DatabaseHelper {
     }
     
  // method to remove game from a user libary
-    public void removeGameFromLibrary(User user, Game game) {
+    public void removeGameFromLibrary(Library library, Game game) {
         String sql = "DELETE FROM library WHERE user_id = ? AND game_id = ?";
-        
+        User user = library.getOwner();
+
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             

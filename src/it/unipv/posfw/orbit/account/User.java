@@ -13,13 +13,11 @@ import it.unipv.posfw.orbit.payment.IPaymentMethod;
 public class User {
 	
 	// parameters
-	protected int id; // protected because it is a Primary Key in the db
+	protected int id; // Primary Key in the db
 	protected Library library;
 	private String nickname;
 	private String password;
-	private boolean isBanned;
-	private boolean isAdmin;
-	private boolean isPublisher;
+	protected boolean isBanned; // pro
 	private double balance;
 	private ArrayList<Game> publishedGames; // in case the user publishes a game
 	
@@ -30,10 +28,8 @@ public class User {
 	public User(String nickname, String password) {
 		this.nickname = nickname;
 		this.password = password;
-		this.library = new Library();
+		this.library = new Library(this);
 		isBanned = false;
-		isAdmin = false;
-		isPublisher = false;
 		balance = 0;
 	}
 	
@@ -42,27 +38,16 @@ public class User {
 		this.id = id;                                     
 		this.nickname = nickname;
 		this.password = password;
-		this.library = new Library();
+		this.library = new Library(this);
+		isBanned = false;
 		this.balance = balance;
-		isBanned = false;
-		isPublisher = false;
 		balance = 0;
 	}
+
 	
-	// constructor that gives the possibility to set a new account as admin and/or publisher
-	public User(String nickname, String password, boolean isAdmin, boolean isPublisher) {
-		this.nickname = nickname;
-		this.password = password;
-		this.library = new Library();
-		isBanned = false;
-		this.isAdmin = isAdmin;
-		this.isPublisher = isPublisher;
-		balance = 0;
-	}
+	// Methods
 	
-	// methods
-	
-	// adding funds via a conventional payment method
+	// Adding funds via conventional payment method
 	public <E extends IPaymentMethod> boolean addFunds(double amount, E paymentMethod) {
 
 		try {
@@ -74,28 +59,28 @@ public class User {
 		}
 	}
 	
-	// adding funds via gift card
+	// Adding funds via gift card
 	public boolean addFunds (String giftCardCode) {
 		
 		FacadeDB.getInstance();    
 	    
 		try {
-	        // check the gift card's existence
+	        // Check the gift card's existence
 	        if (FacadeDB.getInstance().checkGiftCard(giftCardCode)) {
 	            
-	            // take the gift card value
+	            // Take the gift card value
 	            double amount = FacadeDB.getInstance().getGiftCardValue(giftCardCode);
 	            
 	            this.balance += amount;
 	            
-	            // update the database with the new balance and removal of the card
+	            // Update the database with the new balance and removal of the card
 	            FacadeDB.getInstance().updateUserBalance(this);
 	            FacadeDB.getInstance().discardGiftCard(giftCardCode);
 	           
 	            System.out.println("Redeemed " + amount + " Euros. New Balance: " + this.balance);
 	        }
 	    } catch (CodeNotFoundException e) {
-	        // exception if card doesn't exist
+	        // Exception if card doesn't exist
 	        return false;
 	    }
 		
@@ -107,34 +92,8 @@ public class User {
 		balance -= amount;
 	}
 	
-	
-	// ADMIN-SPECIFIC methods
 
-	public void permaBanUser (User user) {
-		setBanned(true, this);
-	}
-	
-	// called when a game violates the platform's Term of Service (ex. NSFW content, Scam, AI slop ecc...)
-	public void banPublishedGame(Game game) {
-		if(isAdmin) {
-			game.setBanned(true);
-		}
-		else {
-			// error: the user is not an admin
-		}
-	}
-	
-	// getter and Setter
-	
-	// you can ban someone ONLY if you are an admin
-	protected void setBanned(boolean isBanned, User admin) {
-		if(admin.isAdmin) {
-			this.isBanned = true;
-		}
-		else {
-			// error: the user is not an admin
-		}
-	}
+	// Getter and Setter
 	
 	protected boolean isBanned() {
 		return isBanned;
@@ -164,22 +123,6 @@ public class User {
 		this.password = password;
 	}
 	
-	public boolean getIsAdmin() {
-		return isAdmin;
-	}
-	
-	public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-	
-	public void setPublisher(boolean isPublisher) {
-        this.isPublisher = isPublisher;
-    }
-	
-	public boolean getIsPubblisher() {
-		return isPublisher;
-	}
-
 	public double getBalance() {
 		return balance;
 	}

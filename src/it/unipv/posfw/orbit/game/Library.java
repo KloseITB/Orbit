@@ -11,24 +11,26 @@ public class Library {
 	// Parameters
 	
 	LinkedList<Game> gamesLinkedList;
+	User owner;
 	
 	// Constructors
 	
-	public Library () {
+	public Library (User user) {
 		gamesLinkedList = new LinkedList<Game>();
+		owner = user;
 	}
 	
 	// Class Methods
 	
-	public void addGame(Game game, User user) {
+	public void addGame(Game game) {
 		gamesLinkedList.add(game);
-		FacadeDB.getInstance().addGameToLibrary(user, game);
+		FacadeDB.getInstance().addGameToLibrary(this, game);
 	}
 	
 	public void removeGame(Game game, User user) throws GameNotFoundException{
 		if (gamesLinkedList.contains(game)) {
 		gamesLinkedList.remove(game);
-		FacadeDB.getInstance().removeGameFromLibrary(user, game);
+		FacadeDB.getInstance().removeGameFromLibrary(this, game);
 		} else {
 			throw new GameNotFoundException("\n" + "Game not found");
 		}
@@ -42,6 +44,10 @@ public class Library {
     	}
     	
     	return userGames;
+	}
+
+	public User getOwner(){
+		return owner;
 	}
 
 }

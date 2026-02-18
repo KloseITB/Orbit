@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import it.unipv.posfw.orbit.account.AccountManager;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
-import it.unipv.posfw.orbit.exception.PlayerAlreadyExistException;
-import it.unipv.posfw.orbit.exception.UserNotFoundException;
-import it.unipv.posfw.orbit.exception.WrongPasswordException;
+import it.unipv.posfw.orbit.exception.UserAlreadyExistException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 
@@ -30,13 +28,7 @@ public class FacadeUI {
     
     // check if the user credentials exist and are correct
     public boolean loginUser(String nickname, String password) {
-        try {
-            AccountManager.getInstance().setCurrentUser(FacadeDB.getInstance().login(nickname, password));
-        } catch (UserNotFoundException e) {
-            return false;
-        } catch (WrongPasswordException e) {
-        	return false;
-        }
+        AccountManager.getInstance().login(nickname, password);
         
         return true;
     }
@@ -46,8 +38,8 @@ public class FacadeUI {
     public boolean signupUser(String nickname, String password) {
     	
     	try {
-			FacadeDB.getInstance().signup(new User(nickname, password));
-		} catch (PlayerAlreadyExistException e) {
+			AccountManager.getInstance().signup(nickname, password);
+		} catch (UserAlreadyExistException e) {
 			return false;
 		}
     	AccountManager.getInstance().setCurrentUser(new User(nickname, password));
@@ -56,7 +48,7 @@ public class FacadeUI {
     
     public void addGameToLibrary(User user, Game game) {
     	User currentUser = AccountManager.getInstance().getCurrentUser();
-    	currentUser.getLibrary().addGame(game, user);
+    	currentUser.getLibrary().addGame(game);
     }
     
     public void saveReview(Review newReview){
@@ -69,14 +61,9 @@ public class FacadeUI {
     }
     
     // get all the game available to be sold
-    public LinkedList<Game> getCatalog(){
+    public LinkedList<Integer> getIdCatalog(){
     	
-    	LinkedList<Game> catalog = new LinkedList<>();
-    			
-    	for ( int id : FacadeDB.getInstance().getAllGameIds()) {
-    		catalog.add(FacadeDB.getInstance().getGame(id));
-    	}
-    	
+    	LinkedList<Integer> catalog = FacadeDB.getInstance().getAllGameIds();
     	return catalog;
     }
     
@@ -87,5 +74,22 @@ public class FacadeUI {
     public boolean checkGiftCardCode(String code) {
     	
     	return AccountManager.getInstance().getCurrentUser().addFunds(code);
+    }
+
+    public Game gameFromId(int id){
+        Game game = FacadeDB.getInstance().getGame(id);
+        
+        return game;
+    }
+
+    public LinkedList<Game> gameFromId(LinkedList<Integer> idList){    
+        LinkedList<Game> gameList = new LinkedList<>();
+
+        for (int id : idList){
+            Game game = FacadeDB.getInstance().getGame(id);
+            gameList.add(game);
+        }
+
+        return gameList;
     }
 }
