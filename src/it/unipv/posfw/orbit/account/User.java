@@ -1,30 +1,25 @@
 package it.unipv.posfw.orbit.account;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
-import it.unipv.posfw.orbit.exception.PaymentFailedException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Library;
-import it.unipv.posfw.orbit.payment.IPaymentMethod;
 
 public class User {
 	
-	// parameters
+	// Parameters
 	protected int id; // Primary Key in the db
 	protected Library library;
 	private String nickname;
 	private String password;
-	protected boolean isBanned; // pro
+	protected boolean isBanned;
 	private double balance;
-	private ArrayList<Game> publishedGames; // in case the user publishes a game
 	
-	
-	// constructors
+	// Constructors
 
-	// constructor new user
+	// Constructor new user
 	public User(String nickname, String password) {
 		this.nickname = nickname;
 		this.password = password;
@@ -33,7 +28,7 @@ public class User {
 		balance = 0;
 	}
 	
-	// constructor imported users from the database (already have an id and a balance)
+	// Constructor imported users from the database (already have an id and a balance)
 	public User(int id,String nickname, String password, double balance) {
 		this.id = id;                                     
 		this.nickname = nickname;
@@ -47,16 +42,9 @@ public class User {
 	
 	// Methods
 	
-	// Adding funds via conventional payment method
-	public <E extends IPaymentMethod> boolean addFunds(double amount, E paymentMethod) {
-
-		try {
-			balance += paymentMethod.pay();
-			return true;
-		}
-		catch(PaymentFailedException pfe) {
-			return false;
-		}
+	public void addFunds(int amount) {
+		balance += amount;
+		FacadeDB.getInstance().updateUserBalance(this);
 	}
 	
 	// Adding funds via gift card
@@ -77,10 +65,9 @@ public class User {
 	            FacadeDB.getInstance().updateUserBalance(this);
 	            FacadeDB.getInstance().discardGiftCard(giftCardCode);
 	           
-	            System.out.println("Redeemed " + amount + " Euros. New Balance: " + this.balance);
+	            System.out.println("Redeemed " + amount + " Euros. New Balance: " + this.balance); // Debug
 	        }
 	    } catch (CodeNotFoundException e) {
-	        // Exception if card doesn't exist
 	        return false;
 	    }
 		
@@ -90,6 +77,7 @@ public class User {
 	
 	public void removeFunds(double amount) {
 		balance -= amount;
+		FacadeDB.getInstance().updateUserBalance(this);
 	}
 	
 
@@ -135,7 +123,7 @@ public class User {
 		return library;
 	}
 	
-	// similar to getLibrary but it outputs an iterable list of games owned by the user
+	// Similar to getLibrary but it outputs an iterable list of games owned by the user
 	public LinkedList<Game> getOwnedGames() {
 		return library.getGames(this);
 	}
@@ -144,14 +132,4 @@ public class User {
 		this.library = library;
 	}
 	
-	public ArrayList<Game> getPublishedGames() {
-		return publishedGames;
-	}
-
-	public void setPublishedGames(ArrayList<Game> publishedGames) {
-		this.publishedGames = publishedGames;
-	}
-	
-
-
 }

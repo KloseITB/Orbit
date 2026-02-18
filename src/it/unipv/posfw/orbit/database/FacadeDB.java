@@ -10,13 +10,13 @@ public class FacadeDB {
     private static FacadeDB instance;
     private DatabaseHelper db;
 
-    // private constructor
+    // Private constructor
     private FacadeDB() {
-        // facade manage the SingletonDatabaseHelper instance
+        // Facade manage the SingletonDatabaseHelper instance
         this.db = DatabaseHelper.getInstance();
     }
 
-    // singleton for the Facade
+    // Singleton for the Facade
     public static FacadeDB getInstance() {
         if (instance == null) {
             instance = new FacadeDB();
@@ -24,7 +24,7 @@ public class FacadeDB {
         return instance;
     }
 
-    // account methods
+    // Account methods
 
     public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
         return db.login(nickname, password);
@@ -47,7 +47,7 @@ public class FacadeDB {
         db.removeGameFromLibrary(library, game);
     }
 
-    // game methods
+    // Game methods
 
     public void registerGame(Game game, int publisherId) {
         db.registerGame(game, publisherId);
@@ -73,7 +73,7 @@ public class FacadeDB {
     	db.saveReview(review);
     }
 
-    // gift cards methods
+    // Gift cards methods
     
     public boolean checkGiftCard(String code) throws CodeNotFoundException {
         return db.checkGiftCard(code);
