@@ -55,7 +55,7 @@ public class AccountManager {
 	}
 	
 	
-	// getters and setters
+	// Getters and Setters
 	
 	public User getCurrentUser() {
 		

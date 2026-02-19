@@ -81,7 +81,7 @@ public class User {
 	}
 	
 
-	// Getter and Setter
+	// Getters and Setters
 	
 	protected boolean isBanned() {
 		return isBanned;
