@@ -1,10 +1,16 @@
 package it.unipv.posfw.orbit.game;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.swing.ImageIcon;
+
 import it.unipv.posfw.orbit.account.*;
+import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.AmountNotValidException;
+import it.unipv.posfw.orbit.exception.PaymentFailedException;
+import it.unipv.posfw.orbit.payment.IPaymentMethod;
 
 public class Game {
 	
@@ -13,11 +19,11 @@ public class Game {
 	private int id;
 	private String title;
 	private String genre;
-	private String coverPath; // string with the directory of the game's cover image
+	private String coverPath; // Directory path of the game's cover image
 	private double basePrice;
 	private double currentPrice;
-	private boolean isBanned; // the game is still available for purchase?
-	private ArrayList<Review> reviewArrayList = new java.util.ArrayList<>();
+	private boolean isBanned; // Is the game still available for purchase?
+	private ArrayList<Review> reviewArrayList = new ArrayList<>();
 
 	
 	// Constructors
@@ -32,10 +38,9 @@ public class Game {
 	}
 	
 	
-	// methods
+	// Methods
 	public void discount(double percentage) {
-		// i used a temporary variable to avoid any kind of errors related to the pre-discount price of the game
-		double tmp = currentPrice;
+		double tmp = currentPrice; // Used a temporary variable to avoid any kind of errors related to the pre-discount price of the game
 		try {
 			tmp = DiscountManager.calculateDiscount(tmp, percentage);
 		}
@@ -45,38 +50,58 @@ public class Game {
 		currentPrice = tmp;
 	}
 	
-	public <T extends User> void buy(T user) {
-		
-		if (user.getBalance() < this.currentPrice) {
-			double missing= this.currentPrice - user.getBalance();
-			System.out.println("Mancano " + missing +" fondi.");
-			// UI asking if you want to add balance
-			
-			return;
-		}
-		try {
-			it.unipv.posfw.orbit.database.FacadeDB.getInstance().purchaseGame(user, this);
-			System.out.println("Gioco acquistato: " + this.title);
-		}catch (Exception e) {
-			System.out.println("Errore durante l'acquisto: " + e.getMessage());
-		}
-		
-		/*
-		 if ( user.balance < currentPrice)
-		 	float missingAmount = currentPrice - user.balance
-		  	ask to add funds to the user's account via User Interface
-		  		if(user agrees to add funds) {
-		  			PaymentOptions methodChosen = ask for the payment method via User Interface and store it
-		  			user.addFunds(missingAmount, methodChosen);
-		  		}
-		  else {
-		 	 user.removeFunds(currentPrice);
-		 	 add game to the user's library inside the Database
-		  }
-		 */
+	// Buy using the user's balance
+	public <U extends User> void buy(U user) throws PaymentFailedException{
+		if(currentPrice < user.getBalance()){
+			user.removeFunds(currentPrice);
+			user.getLibrary().addGame(this);
+			}
+		else throw new PaymentFailedException();
 	}
 	
-	// getters and setters
+	// Buy the game using the credit card
+	public <U extends User,P extends IPaymentMethod> void buy(U user, P paymentMethod) throws PaymentFailedException{
+		if(paymentMethod.pay(this.currentPrice)) {
+			user.getLibrary().addGame(this);
+		}
+		else {
+			throw new PaymentFailedException();
+		}
+	}
+	
+	public void addToReviewList(Review review) {
+		reviewArrayList.add(review);
+		FacadeDB.getInstance().saveReview(review);
+	}
+	
+	public double avgRating() {
+		
+		double ratingSum = 0;
+		int reviewCount = 0;
+		double avgRating = 0;
+		
+		// For every review, get the rating score
+		for (Review review : reviewArrayList) {
+			ratingSum += review.getRating();
+			reviewCount++;
+		}
+		
+		// Try-Catch in case there are no reviews, which means that the code will try to divide 0 by 0
+		try{
+			avgRating = ratingSum / reviewCount;
+			}
+		catch(Exception e) {
+			return 0; // Returning 0 means that the game hasn't been reviewed yet
+		}
+		return avgRating;
+	}
+	
+	
+	// Getters and Setters
+	public ImageIcon getCoverImg() {
+		URL coverImageURL = getClass().getResource(coverPath);
+		return new ImageIcon(coverImageURL);
+	}
 	
 	public double getCurrentPrice() {
 		return currentPrice;
@@ -102,47 +127,23 @@ public class Game {
 		return basePrice;
 	}
 
-	public void setBasePrice(double basePrice) {
-		this.basePrice = basePrice;
-	}
-
 	public void setCurrentPrice(double currentPrice) {
 		this.currentPrice = currentPrice;
 	}
 	
-
-    public void scrivirecensione(Review r) {
-        this.reviewArrayList.add(r);
-       
-        
-        System.out.println("Recensione aggiunta: " + r.toString());
-        
-    }
-
-    public java.util.ArrayList<Review> getrecensioni() {
-        return this.reviewArrayList;
-    }
-	
 	public String getCoverPath() {
         return coverPath;
     }
-
-    public void setCoverPath(String coverPath) {
-        this.coverPath = coverPath;
-    }
 	
-    
 	public boolean isBanned() {
 		return isBanned;
 	}
-
 
 	public void setBanned(boolean isBanned) {
 		this.isBanned = isBanned;
 	}
     
-    // overrides the equals(Object o) method to confront 
-	// 2 games by their id and not by their instance in memory
+    // Overrides the equals(Object o) method to confront 2 games by their id and not by their instances in the memory
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

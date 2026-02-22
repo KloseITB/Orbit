@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.UI;
+package it.unipv.posfw.orbit.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 
-public class CheckoutWindow implements ActionListener{
+public class CheckoutPage implements ActionListener{
 	
 	private final int WINDOW_SIZE = 800;
 	
@@ -22,13 +22,11 @@ public class CheckoutWindow implements ActionListener{
 	private JFrame checkoutFrame;
 	private StorePage currentShopWindow;
 
-    public CheckoutWindow(Game game, StorePage shopWindow) {
+    public CheckoutPage(Game game, StorePage shopWindow) {
     	// Moving the arguments of the constructor to global variables
     	selectedGame = game;
     	currentShopWindow = shopWindow;
         checkoutFrame = Prefab.frameOrbit("Checkout", WINDOW_SIZE, WINDOW_SIZE);
-        checkoutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        checkoutFrame.setLayout(new BorderLayout());
 
         // CHECKOUT LABEL
         JLabel checkoutLabel = new JLabel("CHECKOUT");
@@ -165,9 +163,6 @@ public class CheckoutWindow implements ActionListener{
         parent.add(Box.createRigidArea(new Dimension(0, height)));
     }
     
-    public void updateWindow() {
-    	// refresh the page
-	}	
     
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -180,11 +175,9 @@ public class CheckoutWindow implements ActionListener{
 		
 		if(e.getSource() == verifyCodeButton) {
 			if(FacadeUI.getInstance().checkGiftCardCode(giftCardTextField.getText())) {
-				updateWindow();
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "The inserted code is not valid or has been already used", "Code not valid", JOptionPane.ERROR_MESSAGE);
-				updateWindow();
 			}
 		}
 		

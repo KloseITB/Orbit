@@ -61,7 +61,7 @@ public class FacadeDB {
     	return db.getLibrary(user);
     }
     
-    public Game getGame(int gameId) {
+    public Game getGameFromId(int gameId) {
     	return db.getGame(gameId);
     }
     

@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.UI;
+package it.unipv.posfw.orbit.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

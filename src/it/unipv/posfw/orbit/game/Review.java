@@ -22,12 +22,12 @@ public class Review {
     	return gameId; 
     }
     
-    public int getRating() { 
-    	return rating; 
+    public int getRating() {
+    	return rating;
     }
     
-    public String getComment() { 
-    	return comment; 
+    public String getComment() {
+    	return comment;
     }
     
 }

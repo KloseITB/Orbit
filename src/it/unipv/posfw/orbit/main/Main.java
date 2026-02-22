@@ -1,12 +1,25 @@
 package it.unipv.posfw.orbit.main;
 
-import it.unipv.posfw.orbit.UI.*;
+import java.awt.EventQueue;
+
+import it.unipv.posfw.orbit.gui.*;
 
 public class Main {
 	
 	public static void main(String[] args) {
 		
-		new LoginPage();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					
+					
+					new LoginPage();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
 	}
 	

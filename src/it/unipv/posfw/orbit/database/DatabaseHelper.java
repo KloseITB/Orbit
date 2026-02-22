@@ -125,16 +125,17 @@ public class DatabaseHelper {
                 	String role = rs.getString("role");
                 	double balance = rs.getDouble("balance");
                 
-                	User user = new User(id, nickname, password, balance);
+                	
                 	// set the user role
                 	switch (role) {
                     	case "ADMIN":
-                    		Admin admin = (Admin)user;
+                    		Admin admin = new Admin(id, nickname, password, balance);
                             return admin;
                     	case "PUBLISHER":
-                    		Publisher publisher = (Publisher)user;
+                    		Publisher publisher = new Publisher(id, nickname, password, balance);
                             return publisher;
                     	default:
+                    		User user = new User(id, nickname, password, balance);
                     		return user;
                 	}
                 } else {

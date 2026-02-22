@@ -1,4 +1,4 @@
-package it.unipv.posfw.orbit.UI;
+package it.unipv.posfw.orbit.gui;
 
 import java.util.LinkedList;
 
@@ -52,12 +52,13 @@ public class FacadeUI {
     }
     
     public void saveReview(Review newReview){
-    	FacadeDB.getInstance().saveReview(newReview);
+    	Game game = FacadeDB.getInstance().getGameFromId(newReview.getGameId()); // Get the game reviewed
+    	game.addToReviewList(newReview); // Add the review to the game's list
     }
     
     // getters and setters
     public LinkedList<Game> getCurrentUserGames(){
-    	return getCurrentUser().getOwnedGames();
+    	return getCurrentUser().getLibrary().getGames();
     }
     
     // get all the game available to be sold
@@ -73,20 +74,20 @@ public class FacadeUI {
     
     public boolean checkGiftCardCode(String code) {
     	
-    	return AccountManager.getInstance().getCurrentUser().addFunds(code);
+    	return AccountManager.getInstance().getCurrentUser().addGiftCardFunds(code);
     }
 
-    public Game gameFromId(int id){
-        Game game = FacadeDB.getInstance().getGame(id);
+    public Game getGameFromId(int id){
+        Game game = FacadeDB.getInstance().getGameFromId(id);
         
         return game;
     }
 
-    public LinkedList<Game> gameFromId(LinkedList<Integer> idList){    
+    public LinkedList<Game> getGameFromId(LinkedList<Integer> idList){    
         LinkedList<Game> gameList = new LinkedList<>();
 
         for (int id : idList){
-            Game game = FacadeDB.getInstance().getGame(id);
+            Game game = FacadeDB.getInstance().getGameFromId(id);
             gameList.add(game);
         }
 

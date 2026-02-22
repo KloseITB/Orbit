@@ -42,15 +42,8 @@ public class User {
 	
 	// Methods
 	
-	public void addFunds(int amount) {
-		balance += amount;
-		FacadeDB.getInstance().updateUserBalance(this);
-	}
-	
 	// Adding funds via gift card
-	public boolean addFunds (String giftCardCode) {
-		
-		FacadeDB.getInstance();    
+	public boolean addGiftCardFunds (String giftCardCode) { 
 	    
 		try {
 	        // Check the gift card's existence
@@ -83,7 +76,7 @@ public class User {
 
 	// Getters and Setters
 	
-	protected boolean isBanned() {
+	public boolean isBanned() {
 		return isBanned;
 	}
 	
@@ -115,18 +108,10 @@ public class User {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
 	public Library getLibrary() {
 		return library;
 	}
-	
-	// Similar to getLibrary but it outputs an iterable list of games owned by the user
-	public LinkedList<Game> getOwnedGames() {
-		return library.getGames(this);
-	}
+
 
 	public void setLibrary(Library library) {
 		this.library = library;

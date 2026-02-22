@@ -5,7 +5,7 @@ import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.PaymentFailedException;
 import it.unipv.posfw.orbit.game.Game;
 
-public class DebitCard implements IPaymentMethod {
+public class CreditCard implements IPaymentMethod {
 
 	// Parameters
 
@@ -15,7 +15,7 @@ public class DebitCard implements IPaymentMethod {
 
 	// Constructor
 
-	public DebitCard(String cardCode, String securityCode, String owner) {
+	public CreditCard(String cardCode, String securityCode, String owner) {
 		this.cardCode = cardCode;
 		this.securityCode = securityCode;
 		this.owner = owner;
@@ -24,19 +24,21 @@ public class DebitCard implements IPaymentMethod {
 	// Methods
 
 	@Override
-	public void pay(int gameId, User user) throws PaymentFailedException {
+	public boolean pay(double amount) {
 		// Since we would have to connect to the debit card's bank system, which goes beyond our scope,
 		// we will simulate the possibility of an error occurring by using Math.random()
 		
-		// We will simulate a 4% error rate
-		final double ERROR_RATE = 0.04;
+		
+		final double ERROR_RATE = 0.04; // Simulate a 4% error rate
 		double randomValue = Math.random();
 		
 		if(randomValue >= ERROR_RATE) {
-			Game game = FacadeDB.getInstance().getGame(gameId);
-			user.getLibrary().addGame(game);
+			return true; // Payment succeeded
 		}
-		else throw new PaymentFailedException();
+		else{
+			return false; // Payment failed due some problem with the bank system
+			
+		}
 	}
 
 }
