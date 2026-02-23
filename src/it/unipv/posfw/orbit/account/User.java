@@ -1,10 +1,7 @@
 package it.unipv.posfw.orbit.account;
 
-import java.util.LinkedList;
-
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
-import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Library;
 
 public class User {

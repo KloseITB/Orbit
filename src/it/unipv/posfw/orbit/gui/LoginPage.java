@@ -1,141 +1,160 @@
 package it.unipv.posfw.orbit.gui;
 
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
 
-public class LoginPage implements ActionListener{
-	
-	// parameters
-	private final int WINDOW_WIDTH = 640;
-	private final int WINDOW_HEIGHT = 640;
-	private final Font FONT_REGULAR = new Font(Prefab.FONT_NAME, Font.PLAIN, 20);
-	private final Font FONT_ROMANIC = new Font(Prefab.FONT_NAME, Font.ROMAN_BASELINE, 16);
-	private final Font FONT_BOLD = new Font(Prefab.FONT_NAME, Font.BOLD, 16);
-	
-	private JFrame loginFrame;
+public class LoginPage extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField nicknameField;
+	private JPasswordField passwordField;
 	private JButton loginButton;
 	private JButton signupButton;
-	private JTextField nicknameTF;
-	private JTextField passwordTF;
-	private JLabel errorMessageLabel;
-	
-	
-	// constructor
-	public LoginPage() {
 
-		// Initial Setup
-		loginFrame = Prefab.frameOrbit("Login", WINDOW_WIDTH, WINDOW_HEIGHT);
-		loginButton = Prefab.buttonOrbit("LOGIN", 0, 0);
-		signupButton = Prefab.buttonOrbit("SIGNUP", 0, 0);
+	public LoginPage() {
 		
-		// TOP BANNER
-		JPanel topBanner = Prefab.headerOrbit(WINDOW_WIDTH);
+		// FRAME
 		
-		// LOGIN PANEL
-		int loginPanelWidth = 350;
-		int loginPanelHeight = 350;
+		setTitle("Orbit - Login Page");
+		setLocationRelativeTo(null);
+		setResizable(false);
+		setIconImage(new ImageIcon(new Prefab().ORBIT_ICON).getImage());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 500, 500);
+		contentPane = new JPanel();
+		contentPane.setBackground(Prefab.FRAME_BG);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		// HEADER
+		
+		JPanel header = Prefab.createHeader();
+		contentPane.add(header);
+		contentPane.setLayout(null);
+		
+		// INPUT CREDENTIALS SECTION
 		
 		JPanel loginPanel = new JPanel();
-		JLabel requestLabel = new JLabel("LOGIN OR SIGNUP TO ORBIT");
-		JLabel usernameLabel = new JLabel("USERNAME");
-		nicknameTF = new JTextField();
-		JLabel passwordLabel = new JLabel("PASSWORD");
-		passwordTF = new JTextField();
-
-		requestLabel.setForeground(Color.WHITE);
-		requestLabel.setFont(FONT_REGULAR);
-		requestLabel.setHorizontalAlignment(JLabel.CENTER);
-		requestLabel.setVerticalAlignment(JLabel.CENTER);
-		usernameLabel.setForeground(Color.WHITE);
-		usernameLabel.setFont(FONT_BOLD);
-		passwordLabel.setForeground(Color.WHITE);
-		passwordLabel.setFont(FONT_BOLD);
-		
-		loginPanel.setLayout(new GridLayout(6, 1, 0, 5));
-		loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		loginPanel.setBounds((WINDOW_WIDTH - loginPanelWidth) / 2, (WINDOW_HEIGHT - loginPanelHeight) / 2, loginPanelWidth, loginPanelHeight);
+		loginPanel.setBounds(100, 100, 300, 300);
 		loginPanel.setBackground(Prefab.PANEL_BG);
+		contentPane.add(loginPanel);
+		loginPanel.setLayout(null);
 		
-		// LOGIN OR SIGNUP
-		JPanel loginOrSignup = new JPanel( new FlowLayout(FlowLayout.CENTER, 15, 0));
-		loginOrSignup.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-		loginOrSignup.setAlignmentY(JPanel.CENTER_ALIGNMENT);
-		loginOrSignup.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
-		JLabel orLabel = new JLabel("OR");
-		orLabel.setFont(FONT_REGULAR);
-		orLabel.setForeground(Color.WHITE);
-		loginOrSignup.add(loginButton);
-		loginOrSignup.add(orLabel);
-		loginOrSignup.add(signupButton);
-		loginOrSignup.setOpaque(false);
+		JLabel loginText = new JLabel("LOGIN OR SIGNUP TO ORBIT");
+		loginText.setForeground(Color.WHITE);
+		loginText.setHorizontalAlignment(SwingConstants.CENTER);
+		loginText.setBounds(10, 15, 280, 24);
+		loginText.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 19));
+		loginPanel.add(loginText);
 		
-		loginPanel.add(requestLabel);
-		loginPanel.add(usernameLabel);
-		loginPanel.add(nicknameTF);
-		loginPanel.add(passwordLabel);
-		loginPanel.add(passwordTF);
-		loginPanel.add(loginOrSignup);
+		JLabel nicknameText = new JLabel("NICKNAME");
+		nicknameText.setHorizontalAlignment(SwingConstants.LEFT);
+		nicknameText.setForeground(Color.WHITE);
+		nicknameText.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 15));
+		nicknameText.setBounds(10, 60, 270, 24);
+		loginPanel.add(nicknameText);
 		
-		// ERROR MESSAGES
-		int labelHeight = 30;
-		int labelY = loginPanel.getY() + loginPanel.getHeight() + 10; // 10px lower than the loginPanel
-		errorMessageLabel = new JLabel();
-		errorMessageLabel.setFont(FONT_ROMANIC);
-		errorMessageLabel.setForeground(Color.RED);
-		errorMessageLabel.setBounds(loginPanel.getX(), labelY, loginPanel.getWidth(), labelHeight);
-		errorMessageLabel.setHorizontalAlignment(JLabel.CENTER);
-		errorMessageLabel.setVisible(false);
+		nicknameField = new JTextField();
+		nicknameField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 11));
+		nicknameField.setBounds(10, 100, 280, 30);
+		loginPanel.add(nicknameField);
+		nicknameField.setColumns(10);
 		
-		// ACTION LISTENERS
+		JLabel passwordText = new JLabel("PASSWORD");
+		passwordText.setHorizontalAlignment(SwingConstants.LEFT);
+		passwordText.setForeground(Color.WHITE);
+		passwordText.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 15));
+		passwordText.setBounds(10, 150, 270, 24);
+		loginPanel.add(passwordText);
+		
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 11));
+		passwordField.setColumns(10);
+		passwordField.setBounds(10, 190, 280, 30);
+		loginPanel.add(passwordField);
+		
+		// LOGIN OR SIGNUP SECTION
+		
+		loginButton = new JButton("LOGIN");
 		loginButton.addActionListener(this);
-		signupButton.addActionListener(this);
+		loginButton.setForeground(Color.WHITE);
+		loginButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 19));
+		loginButton.setFocusable(false);
+		loginButton.setFocusPainted(false);
+		loginButton.setBorderPainted(false);
+		loginButton.setBackground(new Color(180, 160, 220));
+		loginButton.setBounds(10, 250, 108, 30);
+		loginPanel.add(loginButton);
 		
-		// FRAME SETTINGS
-		loginFrame.setLayout(null);
-		loginFrame.add(topBanner);
-		loginFrame.add(loginPanel);
-		loginFrame.add(errorMessageLabel);
-		loginFrame.setVisible(true);
+		JLabel orText = new JLabel("OR");
+		orText.setHorizontalAlignment(SwingConstants.CENTER);
+		orText.setForeground(Color.WHITE);
+		orText.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 18));
+		orText.setBounds(132, 254, 34, 24);
+		loginPanel.add(orText);
+		
+		signupButton = new JButton("SIGNUP");
+		signupButton.addActionListener(this);
+		signupButton.setForeground(Color.WHITE);
+		signupButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 19));
+		signupButton.setFocusable(false);
+		signupButton.setFocusPainted(false);
+		signupButton.setBorderPainted(false);
+		signupButton.setBackground(new Color(180, 160, 220));
+		signupButton.setBounds(182, 250, 108, 30);
+		loginPanel.add(signupButton);
+		
 	}
-	
-	
-	// methods
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getSource() == loginButton) {
-			if (FacadeUI.getInstance().loginUser(nicknameTF.getText(), passwordTF.getText())) {
-				System.out.println("Login successful"); // debug string
-				loginFrame.dispose();
-				new FrontPage();
+		if(e.getSource() == loginButton) {
+			
+			if (FacadeUI.getInstance().loginUser(nicknameField.getText(), passwordField.getSelectedText())) {
+				System.out.println("Login successful"); // Debug
+				System.out.println(passwordField.getSelectedText()); // Debug
+				HomePage frame = new HomePage();
+				frame.setVisible(true);
+				this.dispose();
 			}
 			else {
-				System.out.println("Login Failed"); // debug string
-				errorMessageLabel.setText("USER CREDENTIALS NOT VALID");
-				errorMessageLabel.setVisible(true);
-				loginFrame.repaint();
+				System.out.println("Login Failed"); // Debug
+				JOptionPane.showMessageDialog(null, "Nickname and/or password not valid", "Log in failed", JOptionPane.ERROR_MESSAGE);
 			}
+			
 		}
 		
-		if (e.getSource() == signupButton) {
-			if(FacadeUI.getInstance().signupUser(nicknameTF.getText(), passwordTF.getText())) {
-				System.out.println("Signup successful"); // debug string
-				loginFrame.dispose();
-				new FrontPage();
+		if(e.getSource() == signupButton) {
+			
+			if(FacadeUI.getInstance().signupUser(nicknameField.getText(), passwordField.getSelectedText())) {
+				System.out.println(passwordField.getSelectedText()); // Debug
+				System.out.println("Signup successful"); // Debug
+				HomePage frame = new HomePage();
+				frame.setVisible(true);
+				this.dispose();
 			}
 			else {
-				System.out.println("Signup Failed"); // debug string
-				errorMessageLabel.setText("NICKNAME ALREADY TAKEN");
-				errorMessageLabel.setVisible(true);
-				loginFrame.repaint();
+				System.out.println("Signup Failed"); // Debug
+				JOptionPane.showMessageDialog(null, "An account with this nickname already exists", "Sign up failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
 	}
-	
 }

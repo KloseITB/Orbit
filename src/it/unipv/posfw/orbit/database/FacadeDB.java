@@ -32,7 +32,7 @@ public class FacadeDB {
     }
     
     public void signup(User user) throws UserAlreadyExistException{
-    	db.registerUser(user);
+        db.registerUser(user);     
     }
     
     public void updateUserBalance(User user) {
@@ -61,7 +61,7 @@ public class FacadeDB {
     	return db.getLibrary(user);
     }
     
-    public Game getGameFromId(int gameId) {
+    public Game gameFromId(int gameId) {
     	return db.getGame(gameId);
     }
     

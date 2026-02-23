@@ -1,184 +1,298 @@
 package it.unipv.posfw.orbit.gui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import it.unipv.posfw.orbit.account.User;
+import it.unipv.posfw.orbit.exception.PaymentFailedException;
 import it.unipv.posfw.orbit.game.Game;
+import it.unipv.posfw.orbit.gui.FacadeUI;
+import it.unipv.posfw.orbit.payment.CreditCard;
 
-public class CheckoutPage implements ActionListener{
-	
-	private final int WINDOW_SIZE = 800;
-	
-	private Game selectedGame;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.Component;
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JSeparator;
+import javax.swing.JFormattedTextField;
+
+import java.text.ParseException;
+
+public class CheckoutPage extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JFormattedTextField creditCardField;
+	private JFormattedTextField expDateField;
+	private JTextField ownerField;
+	private JTextField giftCardField;
 	private JButton payButton;
-	private JButton verifyCodeButton;
-	private JTextField giftCardTextField;
-	private JFrame checkoutFrame;
-	private StorePage currentShopWindow;
+	private JButton balanceButton;
+	private JButton applyButton;
+	private User currentUser = FacadeUI.getInstance().getCurrentUser();
+	private Game game;
 
-    public CheckoutPage(Game game, StorePage shopWindow) {
-    	// Moving the arguments of the constructor to global variables
-    	selectedGame = game;
-    	currentShopWindow = shopWindow;
-        checkoutFrame = Prefab.frameOrbit("Checkout", WINDOW_SIZE, WINDOW_SIZE);
-
-        // CHECKOUT LABEL
-        JLabel checkoutLabel = new JLabel("CHECKOUT");
-        checkoutLabel.setForeground(Color.WHITE);
-        checkoutLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 36));
-        checkoutLabel.setBorder(new EmptyBorder(20, 30, 10, 30));
-        checkoutFrame.add(checkoutLabel, BorderLayout.NORTH);
-
-        // CENTER PANEL
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        centerPanel.setOpaque(false); 
-        
-        // CREDIT CARD PAYMENT PANEL
-        JPanel creditCardPanel = createOpaquePanel();
-        creditCardPanel.setPreferredSize(new Dimension(300, 400));
-
-        addLabel(creditCardPanel, "Credit card number");
-        addTextField(creditCardPanel);
-        addPadding(creditCardPanel, 15);
-        addLabel(creditCardPanel, "Card Owner");
-        addTextField(creditCardPanel);
-        addPadding(creditCardPanel, 15);
-        addLabel(creditCardPanel, "Expiration date");
-        addTextField(creditCardPanel);
-        
-        creditCardPanel.add(Box.createVerticalGlue()); 
-        payButton = addButton(creditCardPanel, "PAY");
-
-        // RIGHT PANEL
-        JPanel rightColumn = new JPanel();
-        rightColumn.setLayout(new BoxLayout(rightColumn, BoxLayout.Y_AXIS));
-        rightColumn.setOpaque(false);
-
-        // TOP RIGHT PANEL
-        JPanel topRightPanel = createOpaquePanel();
-        topRightPanel.setPreferredSize(new Dimension(300, 190));
-        
-        // BALANCE LABEL
-		double userBalance = FacadeUI.getInstance().getCurrentUser().getBalance();
-		DecimalFormat df = new DecimalFormat("#.00"); 
-        addLabel(topRightPanel, df.format(userBalance) + "€");
-        addPadding(topRightPanel, 10);
-        
-        // GAME PRICE LABEL
-        double gamePrice = game.getCurrentPrice();
-        addLabel(topRightPanel, df.format(gamePrice) + "€");
-        addPadding(topRightPanel, 40); 
-        
-        // BALANCE AFTER CHECKOUT LABEL
-        double checkoutBalance = userBalance - gamePrice;
-        addLabel(topRightPanel, "ACCOUNT BALANCE AFTER CHECKOUT:");
-        addLabel(topRightPanel, df.format(checkoutBalance) + "€");
-
-        // GIFT CARD PANEL
-        JPanel giftCardPanel = createTransparentPanel();
-        giftCardPanel.setPreferredSize(new Dimension(300, 190));
-        
-        addLabel(giftCardPanel, "Enter Gift card code");
-        giftCardTextField = addTextField(giftCardPanel);
-        addPadding(giftCardPanel, 15);
-        verifyCodeButton = addButton(giftCardPanel, "CONFIRM");
-
-        // Add panels to the right column
-        rightColumn.add(topRightPanel);
-        rightColumn.add(Box.createRigidArea(new Dimension(0, 20))); // Gap between red panels
-        rightColumn.add(giftCardPanel);
-        
-        // ACTION LISTENERS
-        payButton.addActionListener(this);
-        verifyCodeButton.addActionListener(this);
-        
-        // Add main components to Center Panel
-        centerPanel.add(creditCardPanel);
-        centerPanel.add(rightColumn);
-
-        checkoutFrame.add(centerPanel, BorderLayout.CENTER);
-
-        // FRAME SETTINGS
-        checkoutFrame.pack();
-        checkoutFrame.setVisible(true);
-    }
-
-    // Helper to create transparent Panels with BoxLayout
-    private JPanel createTransparentPanel() {
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(new EmptyBorder(15, 15, 15, 15));
-        return panel;
-    }
-    
-    // Helper to create opaque Panels with BoxLayout
-    private JPanel createOpaquePanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Prefab.PANEL_BG);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(new EmptyBorder(15, 15, 15, 15));
-        return panel;
-    }
-
-    // Helper to create Labels
-    private void addLabel(JPanel parent, String text) {
-        JLabel label = Prefab.labelOrbit(text, Font.PLAIN, 14);
-        label.setBorder(new EmptyBorder(3, 0, 3, 0)); // padding adjusted
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
-        parent.add(label);
-        parent.add(Box.createRigidArea(new Dimension(0, 5)));
-    }
-
-    // Helper to create TextFields
-    private JTextField addTextField(JPanel parent) {
-        JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension(200, 30));
-        textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
-        textField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        parent.add(textField);
-        return textField;
-    }
-
-    // Helper to create Purple Buttons
-    private JButton addButton(JPanel parent, String text) {
-        JButton btn = Prefab.buttonOrbit(text, 0, 0);
-        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
-        // Fix for button width in BoxLayout to avoid stretching too wide or staying too small
-        // We wrap it in a panel or set alignment carefully, but BoxLayout respects max size.
-        parent.add(btn);
-        return btn;
-    }
-
-    // Helper for vertical spacing
-    private void addPadding(JPanel parent, int height) {
-        parent.add(Box.createRigidArea(new Dimension(0, height)));
-    }
-    
-    
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == payButton) {
-			User user = FacadeUI.getInstance().getCurrentUser();
-			FacadeUI.getInstance().addGameToLibrary(user, selectedGame);
-			checkoutFrame.dispose();
-			currentShopWindow.updateWindow();
+	public CheckoutPage(Game game) {
+		
+		this.game = game; // Set game as a global variable
+		
+		// FRAME
+		setIconImage(new ImageIcon(new Prefab().ORBIT_ICON).getImage());
+		setTitle("Orbit - Checkout");
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(0, 0, 800, 800);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(20, 18, 23));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		// HEADER
+		
+		JPanel header = new JPanel();
+		header.setBounds(0, 0, 800, 60);
+		header.setAlignmentY(Component.TOP_ALIGNMENT);
+		header.setAlignmentX(Component.LEFT_ALIGNMENT);
+		header.setBackground(new Color(40, 35, 50));
+		FlowLayout fl_header = (FlowLayout) header.getLayout();
+		fl_header.setAlignment(FlowLayout.LEFT);
+		fl_header.setVgap(15);
+		fl_header.setHgap(15);
+		contentPane.add(header);
+		
+		JLabel checkoutLabel = new JLabel("CHECKOUT");
+		checkoutLabel.setForeground(new Color(255, 255, 255));
+		checkoutLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
+		checkoutLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		header.add(checkoutLabel);
+		
+		// CREDIT CARD SECTION
+		
+		JPanel creditCardCheckout = new JPanel();
+		creditCardCheckout.setBackground(new Color(66, 61, 71));
+		creditCardCheckout.setBounds(10, 100, 400, 600);
+		contentPane.add(creditCardCheckout);
+		creditCardCheckout.setLayout(null);
+		
+		JLabel creditCardLabel = new JLabel("CREDIT CARD NUMBER");
+		creditCardLabel.setBounds(20, 20, 189, 17);
+		creditCardLabel.setForeground(new Color(255, 255, 255));
+		creditCardLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		creditCardCheckout.add(creditCardLabel);
+		
+		creditCardField = new JFormattedTextField();
+		try {
+		    // Defines a mask for a credit card number
+		    MaskFormatter creditCardMask = new MaskFormatter("#### #### #### ####");
+		    creditCardMask.setPlaceholderCharacter('-'); // Sets a placeholder symbol
+		    creditCardMask.install(creditCardField); // Applies the mask
+		    creditCardField.setFocusLostBehavior(JFormattedTextField.PERSIST); // Stops Swing from hiding the mask when the field loses focus
+		    creditCardField.setText("---- ---- ---- ----");// Forces the empty mask to display immediately
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+		creditCardField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		creditCardField.setBounds(20, 50, 360, 30);
+		creditCardCheckout.add(creditCardField);
+		creditCardField.setColumns(10);
+		
+		JLabel expDateLabel = new JLabel("EXPIRATION DATE");
+		expDateLabel.setForeground(Color.WHITE);
+		expDateLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		expDateLabel.setBounds(20, 120, 159, 17);
+		creditCardCheckout.add(expDateLabel);
+		
+		expDateField = new JFormattedTextField();
+		try {
+		    // Defines a mask for a credit card number
+		    MaskFormatter expDateMask = new MaskFormatter("##" + "/" + "##");
+		    expDateMask.setPlaceholderCharacter('-'); // Sets a placeholder symbol
+		    expDateMask.install(expDateField); // Applies the mask
+		    expDateField.setFocusLostBehavior(JFormattedTextField.PERSIST); // Stops Swing from hiding the mask when the field loses focus
+		    expDateField.setText("--/--");// Forces the empty mask to display immediately
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+		expDateField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		expDateField.setColumns(10);
+		expDateField.setBounds(20, 150, 360, 30);
+		creditCardCheckout.add(expDateField);
+		
+		JLabel secCodeLabel = new JLabel("SECURITY CODE");
+		secCodeLabel.setForeground(Color.WHITE);
+		secCodeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		secCodeLabel.setBounds(20, 220, 159, 17);
+		creditCardCheckout.add(secCodeLabel);
+		
+		JFormattedTextField secCodeField = new JFormattedTextField();
+		try {
+		    // Defines a mask for a credit card number
+		    MaskFormatter secCodeMask = new MaskFormatter("###");
+		    secCodeMask.setPlaceholderCharacter('-'); // Sets a placeholder symbol
+		    secCodeMask.install(secCodeField); // Applies the mask
+		    secCodeField.setFocusLostBehavior(JFormattedTextField.PERSIST); // Stops Swing from hiding the mask when the field loses focus
+		    secCodeField.setText("---");// Forces the empty mask to display immediately
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+		secCodeField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		secCodeField.setColumns(10);
+		secCodeField.setBounds(20, 250, 360, 30);
+		creditCardCheckout.add(secCodeField);
+		
+		JLabel ownerLabel = new JLabel("CARD OWNER");
+		ownerLabel.setForeground(Color.WHITE);
+		ownerLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		ownerLabel.setBounds(20, 320, 159, 17);
+		creditCardCheckout.add(ownerLabel);
+		
+		ownerField = new JTextField();
+		ownerField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		ownerField.setColumns(10);
+		ownerField.setBounds(20, 350, 360, 30);
+		creditCardCheckout.add(ownerField);
+		
+		payButton = new JButton("PAY NOW");
+		payButton.addActionListener(this);
+		payButton.setFocusable(false);
+		payButton.setBackground(new Color(38, 157, 255));
+		payButton.setForeground(Color.WHITE);
+		payButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+		payButton.setBounds(20, 540, 159, 40);
+		payButton.setFocusPainted(false);
+		payButton.setBorderPainted(false);
+		creditCardCheckout.add(payButton);
+		
+		// BALANCE SECTION
+		
+		JPanel balanceUpdatePanel = new JPanel();
+		balanceUpdatePanel.setBackground(new Color(66, 61, 71));
+		balanceUpdatePanel.setBounds(450, 100, 320, 273);
+		contentPane.add(balanceUpdatePanel);
+		balanceUpdatePanel.setLayout(null);
+		
+		JLabel balanceLabel = new JLabel("ACCOUNT BALANCE: " + currentUser.getBalance() + "€");
+		balanceLabel.setForeground(Color.WHITE);
+		balanceLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		balanceLabel.setBounds(20, 30, 281, 17);
+		balanceUpdatePanel.add(balanceLabel);
+		
+		JLabel paymentLabel = new JLabel("PAYMENT: " + game.getCurrentPrice() + "€");
+		paymentLabel.setForeground(Color.WHITE);
+		paymentLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		paymentLabel.setBounds(20, 80, 281, 17);
+		balanceUpdatePanel.add(paymentLabel);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 150, 300, 4);
+		balanceUpdatePanel.add(separator);
+		
+		double updatedBalance = currentUser.getBalance() - game.getCurrentPrice();
+		if(updatedBalance < 0){
+			updatedBalance = 0;
 		}
 		
-		if(e.getSource() == verifyCodeButton) {
-			if(FacadeUI.getInstance().checkGiftCardCode(giftCardTextField.getText())) {
+		JLabel balanceUpdateLabel = new JLabel("FINAL BALANCE: " + updatedBalance + "€");
+		balanceUpdateLabel.setForeground(Color.WHITE);
+		balanceUpdateLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		balanceUpdateLabel.setBounds(20, 200, 300, 17);
+		balanceUpdatePanel.add(balanceUpdateLabel);
+		
+		// GIFT CARD SECTION
+		
+		JLabel enterGiftCardLabel = new JLabel("ENTER COUPON CODE");
+		enterGiftCardLabel.setBounds(450, 500, 271, 17);
+		contentPane.add(enterGiftCardLabel);
+		enterGiftCardLabel.setForeground(Color.WHITE);
+		enterGiftCardLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 16));
+		
+		
+		giftCardField = new JTextField();
+		giftCardField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		giftCardField.setColumns(10);
+		giftCardField.setBounds(450, 528, 320, 30);
+		contentPane.add(giftCardField);
+
+		applyButton = new JButton("APPLY");
+		applyButton.addActionListener(this);
+		applyButton.setForeground(Color.WHITE);
+		applyButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+		applyButton.setFocusable(false);
+		applyButton.setFocusPainted(false);
+		applyButton.setBorderPainted(false);
+		applyButton.setBackground(new Color(180, 160, 220));
+		applyButton.setBounds(450, 579, 134, 40);
+		contentPane.add(applyButton);
+		
+				balanceButton = new JButton("USE BALANCE");
+				balanceButton.setBounds(450, 394, 189, 40);
+				contentPane.add(balanceButton);
+				balanceButton.addActionListener(this);
+				balanceButton.setForeground(Color.WHITE);
+				balanceButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+				balanceButton.setFocusable(false);
+				balanceButton.setFocusPainted(false);
+				balanceButton.setBorderPainted(false);
+				balanceButton.setBackground(new Color(180, 160, 220));
+		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{creditCardCheckout, header, checkoutLabel, creditCardLabel, creditCardField, expDateLabel, expDateField, ownerLabel, ownerField, payButton, balanceButton, secCodeField, secCodeLabel, balanceUpdatePanel, balanceLabel, paymentLabel, separator, balanceUpdateLabel, enterGiftCardLabel, giftCardField, applyButton}));
+
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == applyButton) {
+			
+			if(FacadeUI.getInstance().checkGiftCardCode(giftCardField.getText())) {
+				currentUser.addGiftCardFunds(giftCardField.getText()); 
+				// update the GUI to show the new balance
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "The inserted code is not valid or has been already used", "Code not valid", JOptionPane.ERROR_MESSAGE);
 			}
+			
+		}
+		
+		if (e.getSource() == balanceButton) {
+			 
+			 try{
+			  		game.buy(currentUser);
+			  		currentUser.removeFunds(game.getCurrentPrice());
+					this.dispose();
+			  }
+			  catch (PaymentFailedException pfe){
+			  		JOptionPane.showMessageDialog(
+			  		null, 
+			  		"The account balance is insufficient. Consider adding funds via gift cards or buying the game directly using a credit card", 
+			  		"Payment failed", 
+			  		JOptionPane.ERROR_MESSAGE
+			 		);
+			 }
+			 	 
+		}
+		
+		if(e.getSource() == payButton) {
+			CreditCard creditCard = new CreditCard(creditCardField.getText(), expDateField.getText(), ownerField.getText());
+			 try{
+				game.buy(currentUser, creditCard);
+				this.dispose();
+				}
+				catch (PaymentFailedException pfe){
+					JOptionPane.showMessageDialog(null, "Something went wrong with the bank system. Retry Later", "Payment failed", JOptionPane.ERROR_MESSAGE);
+				}
+			
 		}
 		
 	}

@@ -21,36 +21,34 @@ public class AccountManager {
 	
 	// Methods
 	
-	public User signup(String nickname, String password) throws UserAlreadyExistException{
+	public boolean signup(String nickname, String password){
 		
 		User user = new User(nickname, password);
 		
-		// we try the registration through the facade
-		FacadeDB.getInstance().signup(user);
-		
-		// if we get here the registration was successful
-		this.currentUser = user; // current user set as logged in
-		
-		System.out.println("Registration successful: " + nickname); // debug
-		
-		return user;
+		try{
+			FacadeDB.getInstance().signup(user);
+			this.currentUser = user;
+			return true;
+		}
+        catch(UserAlreadyExistException uee){
+            return false;
+        }
 	}
 	
-	public void login(String nickname, String password) {
+	public boolean login(String nickname, String password) {
 		try {
-			// call to the method that can handle exceptions
+			// Call to the method that can handle exceptions
 			User foundUser = FacadeDB.getInstance().login(nickname, password);
 			
-			// if no exceptions the login is successful 
+			// If no exceptions the login is successful 
 			this.currentUser = foundUser;
-			
+			return true;
 		} catch (UserNotFoundException e) {
 			// user not found error
-			System.out.println("Errore: " + e.getMessage());
-			
+			return false;
 		} catch (WrongPasswordException e) {
 			// wrong password error
-			System.out.println("Errore: " + e.getMessage());
+			return false;
 		}
 	}
 	

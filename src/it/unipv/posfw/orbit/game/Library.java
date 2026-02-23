@@ -32,7 +32,7 @@ public class Library {
 		gamesLinkedList.remove(game.getId());
 		FacadeDB.getInstance().removeGameFromLibrary(this, game);
 		} else {
-			throw new GameNotFoundException("\n" + "Game not found");
+			throw new GameNotFoundException("Game not found");
 		}
 	}
 	
@@ -40,7 +40,7 @@ public class Library {
 		LinkedList<Game> userGames = new LinkedList<>();
     	LinkedList<Integer> gamesId = FacadeDB.getInstance().getLibrary(owner);
     	for (int gameId : gamesId){
-    		userGames.add(FacadeDB.getInstance().getGameFromId(gameId));
+    		userGames.add(FacadeDB.getInstance().gameFromId(gameId));
     	}
     	
     	return userGames;

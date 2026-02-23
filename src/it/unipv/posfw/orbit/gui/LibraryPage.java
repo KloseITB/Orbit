@@ -1,195 +1,216 @@
 package it.unipv.posfw.orbit.gui;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.net.URL;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
-import javax.swing.*;
+import java.net.URL;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import it.unipv.posfw.orbit.gui.FacadeUI;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.game.Game;
 
-public class LibraryPage implements ActionListener{
-	
-	JPanel gameListPanel;
-	JPanel gameInfoPanel;
-	JFrame libraryFrame = Prefab.frameOrbit("Library", Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT);
-	JButton mainPageButton;
-	JButton shopButton;
-	
+import javax.swing.JScrollPane;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.SwingConstants;
+
+public class LibraryPage extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JPanel gameInfoPanel;
+	private JButton homeButton;
+	private JButton storeButton;
+
 	public LibraryPage() {
 		
-		libraryFrame.setLayout(new BorderLayout());
-			
-			// HEADER PANEL
-			JPanel header = Prefab.headerOrbit(Prefab.DEFAULT_WINDOW_WIDTH);
-			mainPageButton = Prefab.buttonOrbit("MAIN PAGE", 0, 0);
-			header.add(mainPageButton);
-			shopButton = Prefab.buttonOrbit("SHOP", 0, 0);
-			header.add(shopButton);
-			
-			// MAIN PANEL
-			JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-			centerPanel.setOpaque(false);
-			
+		// FRAME
+		
+		setTitle("Orbit - Library");
+		setIconImage(new ImageIcon(new Prefab().ORBIT_ICON).getImage());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, Prefab.DEFAULT_WINDOW_WIDTH, Prefab.DEFAULT_WINDOW_HEIGHT);
+		contentPane = new JPanel();
+		contentPane.setBackground(Prefab.FRAME_BG);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		// HEADER
+		
+		JPanel header = Prefab.createHeader();
+		contentPane.add(header);
+		contentPane.setLayout(null);
 				
-				// GAME LIST PANEL
-				gameListPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 10));
-				gameListPanel.setPreferredSize(new Dimension(700, 590));
-				gameListPanel.setOpaque(false);
-				JLabel ownedGamesLabel = new JLabel("OWNED GAMES");
-				ownedGamesLabel.setPreferredSize(new Dimension(700, 80));
-				ownedGamesLabel.setHorizontalAlignment(JLabel.LEFT);
-				ownedGamesLabel.setVerticalAlignment(JLabel.CENTER);
-				ownedGamesLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
-				ownedGamesLabel.setForeground(Color.WHITE);
-				gameListPanel.add(ownedGamesLabel);
-				populateLibraryPanel(FacadeUI.getInstance().getCurrentUser());
+		homeButton = Prefab.createHeaderButton("HOME");
+		homeButton.addActionListener(this);
+		header.add(homeButton);
+		
+		storeButton = Prefab.createHeaderButton("STORE");
+		storeButton.addActionListener(this);
+		header.add(storeButton);
 				
-				// GAME INFOS PANEL
-				gameInfoPanel = new JPanel();
-				gameInfoPanel.setPreferredSize(new Dimension(500, 590));
-				gameInfoPanel.setBackground(Prefab.PANEL_BG);
-			
-			// ACTION LISTENERS
-			mainPageButton.addActionListener(this);
-			shopButton.addActionListener(this);
+		// GAME CATALOG SECTION
+		
+		contentPane.add(createCatalogScrollPane(50, 120));
 				
-			centerPanel.add(gameListPanel);
-			centerPanel.add(gameInfoPanel);
+		// SELECTED GAME INFO SECTION
 		
-			
-		libraryFrame.add(header, BorderLayout.NORTH);
-		libraryFrame.add(centerPanel);
-		libraryFrame.setVisible(true);
+		gameInfoPanel = new JPanel();
+		gameInfoPanel.setBackground(Prefab.PANEL_BG);
+		gameInfoPanel.setBounds(660, 120, 550, 550);
+		gameInfoPanel.setLayout(null);
+		contentPane.add(gameInfoPanel);
+		
 	}
 	
-	private void populateLibraryPanel(User user) {
-		
-		LinkedList<Game> userGames = FacadeUI.getInstance().getCurrentUserGames();
-		for (Game game : userGames) { 
-			URL gameCoverPath;
-			
-			// if the image reference is null, the placeholder cover is used instead
-			if(game.getCoverPath() == null) {
-				gameCoverPath = new Prefab().COVER_PLACEHOLDER;
-			}
-			else {
-				gameCoverPath = getClass().getResource(game.getCoverPath());
-			}
-			
-			ImageIcon originalIcon = new ImageIcon(gameCoverPath); // original cover reference
-			JButton gameButton = new JButton(new ImageIcon(gameCoverPath));
-			gameButton.setPreferredSize(new Dimension(100, 140));
-			gameButton.setOpaque(false);
-			
-			// button visuals
-			gameButton.setBorderPainted(false);      
-			gameButton.setContentAreaFilled(false);  
-			gameButton.setFocusPainted(false);       
-			gameButton.setOpaque(false);
-			
-			// generate the dark version of the image only when the button is clicked
-			ImageIcon darkIcon = createDarkerIcon(originalIcon);
-			gameButton.setPressedIcon(darkIcon);
-			
-			// for each button I add an action listener that will execute the code in the lambda expression
-			gameButton.addActionListener(e -> {
-				System.out.println("Clicked " + game.getTitle()); // debug
-			    openGamePage(game); // open the relative game's info page 
-			});
-			
-			addToGameListPanel(gameButton); // add the button to gameListPanel
-		}
-
-	}
 	
-	private void addToGameListPanel(JButton button) {
-		gameListPanel.add(button);
-	}
+	// Helpers
 	
-	private ImageIcon createDarkerIcon(ImageIcon original) {
-		
-	    // get the image dimension
-	    int width = original.getIconWidth();
-	    int height = original.getIconHeight();
+	public JScrollPane createCatalogScrollPane(int x, int y) {
+        JPanel gridPanel = new JPanel(new GridLayout(0, 4, 15, 15));
+        gridPanel.setBackground(Prefab.GRAY_BG);
+        gridPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        User user = FacadeUI.getInstance().getCurrentUser();
+        LinkedList<Game> userGameList = user.getLibrary().getGames();
+        
+        // Adding buttons
+        for (Game game : userGameList){
+			ImageIcon coverImage = new ImageIcon(getClass().getResource(game.getCoverPath())); // Retrieve Image Cover
+			
+            JButton button = new JButton();
+            button.setPreferredSize(new Dimension(100, 140));
+            button.setIcon(coverImage);
+            button.setFocusable(false);
+            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            
+            // Visual feedback for User
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBorder(BorderFactory.createLineBorder(Prefab.BUTTON_PURPLE, 2)); 
+                }
 
-	    // creates a new BufferedImage to paint on
-	    BufferedImage darkenedParams = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = darkenedParams.createGraphics();
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); 
+                }
 
-	    // draw the original image
-	    g2.drawImage(original.getImage(), 0, 0, null);
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    button.setBorder(BorderFactory.createLineBorder(Prefab.ACCENT_YELLOW, 3)); 
+                }
 
-	    // adds a dark filter to the image
-	    g2.setColor(new Color(0, 0, 0, 150)); 
-	    g2.fillRect(0, 0, width, height);
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    button.setBorder(BorderFactory.createLineBorder(Prefab.GRAY_BG, 2)); 
+                }
+            });
+            
+            // Action Listener to open the game's info page
+            button.addActionListener(e -> {openGameInfo(game, coverImage);});
+            
+            // Wrapper Panel for the buttons
+            JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            buttonWrapper.setOpaque(false);
+            buttonWrapper.add(button);
+            
+            gridPanel.add(buttonWrapper);
+        }
 
-	    g2.dispose();
-	    
-	    return new ImageIcon(darkenedParams);
-	}
-	
-	private void openGamePage(Game game) {
+        // Wrapper Panel to prevent vertical stretching
+        JPanel wrapperPanel = new JPanel(new BorderLayout());
+        wrapperPanel.setBackground(new Color(25, 25, 30));
+        wrapperPanel.add(gridPanel, BorderLayout.NORTH); 
 
-		gameInfoPanel.removeAll(); // remove all the previous elements from the Panel
+        JScrollPane scrollPane = new JScrollPane(wrapperPanel);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Prefab.GRAY_BG, 1));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(x, y, 600, 550);
+
+        return scrollPane;
+    }
 		
-		gameInfoPanel.setLayout(new BoxLayout(gameInfoPanel, BoxLayout.Y_AXIS));
-		gameInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // 20px padding
+	private void openGameInfo(Game game, ImageIcon coverImage) {
+		gameInfoPanel.removeAll(); // Removes all the previous elements from the Panel
+		gameInfoPanel.setLayout(null);
 		
-		// INFOS
-		JLabel titleLabel = new JLabel(game.getTitle());  // game title
-		titleLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 40));
-		titleLabel.setForeground(Color.WHITE);
+		JLabel gameCover = new JLabel();
+		gameCover.setIcon(coverImage);
+		gameCover.setBounds(225, 30, 100, 140);
+		gameInfoPanel.add(gameCover);
 		
-		JLabel genreLabel = new JLabel("Genre: " + game.getGenre()); // game genre
-		genreLabel.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 18));
-		genreLabel.setForeground(Color.WHITE);
+		JLabel gameTitle = new JLabel(game.getTitle().toUpperCase());
+		gameTitle.setForeground(Color.WHITE);
+		gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		gameTitle.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+		gameTitle.setBounds(25, 190, 500, 24);
+		gameInfoPanel.add(gameTitle);
 		
-		//PLAY BUTTON (not fully implemented for obvious reasons)
-		JButton playButton = Prefab.buttonOrbit("PLAY", 0, 0);
-		playButton.setBackground(new Color(63, 193, 57)); // light green button
+		JLabel gameGenre = new JLabel("Genre: " + game.getGenre().toUpperCase());
+		gameGenre.setForeground(Color.WHITE);
+		gameGenre.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		gameGenre.setBounds(25, 220, 500, 24);
+		gameInfoPanel.add(gameGenre);
+		
+		JLabel gameRating = new JLabel("Rating: " + game.avgRating() + "/5");
+		gameRating.setForeground(Color.WHITE);
+		gameRating.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		gameRating.setBounds(25, 250, 500, 24);
+		gameInfoPanel.add(gameRating);
+		
+		JButton playButton = new JButton("PLAY");
+		playButton.setForeground(Color.WHITE);
+		playButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 16));
+		playButton.setFocusable(false);
+		playButton.setFocusPainted(false);
 		playButton.setBorderPainted(false);
-		playButton.addActionListener(e -> {
-			System.out.println("Executing " + game.getTitle() + "..."); // debug
-			playButton.setBackground(Color.GRAY); // the button changes to a gray color to give feedback to the user
-		});
-		// review button
-		JButton reviewButton = Prefab.buttonOrbit("REVIEW GAME", 0, 0);
+		playButton.setBackground(new Color(56, 209, 36)); // Light Green
+		playButton.setBounds(25, 300, 100, 40);
 		
-		// action listener
-		reviewButton.addActionListener(e -> {
-			System.out.println("User wants to review " + game.getTitle()); // debug
-		    new ReviewPage(FacadeUI.getInstance().getCurrentUser(), game);
+		// Action Listener
+		playButton.addActionListener(e -> {
+			JOptionPane.showMessageDialog(null, game.getTitle().toUpperCase() + " is launching...", "Game Started", JOptionPane.INFORMATION_MESSAGE);
 		});
-	    
-		// add all the elements to the panel
-		gameInfoPanel.add(titleLabel);
-	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
-	    gameInfoPanel.add(genreLabel);
-	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
-	    gameInfoPanel.add(playButton);
-	    gameInfoPanel.add(Box.createVerticalStrut(20)); // blank space
-	    gameInfoPanel.add(reviewButton);
-	    
-	    // DRAW ELEMENTS
-	    gameInfoPanel.revalidate(); // Recalculate the layout
-	    gameInfoPanel.repaint();    // draws on screen the updated UI
-
+		
+		gameInfoPanel.add(playButton);
+		gameInfoPanel.repaint();    // Draws on screen the updated UI
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == mainPageButton) {
-			libraryFrame.dispose();
-			new FrontPage();
+		if(e.getSource() == homeButton) {
+			HomePage frame = new HomePage();
+			frame.setVisible(true);
+			this.dispose();
 		}
 		
-		if(e.getSource() == shopButton) {
-			libraryFrame.dispose();
-			new StorePage();
+		if(e.getSource() == storeButton) {
+			StorePage frame = new StorePage();
+			frame.setVisible(true);
+			this.dispose();
 		}
 		
 	}
