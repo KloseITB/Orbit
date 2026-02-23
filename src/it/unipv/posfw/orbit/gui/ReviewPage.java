@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.Color;
 import javax.swing.JSlider;
 import javax.swing.BorderFactory;
@@ -34,12 +36,13 @@ public class ReviewPage extends JFrame implements ActionListener, ChangeListener
 	private JLabel ratingInfo;
 	private JSlider ratingSlider;
 	private JButton submitButton;
-	JTextArea descriptionPane;
+	private JTextArea descriptionPane;
 	private Game game;
 	
 	public ReviewPage(Game game) {
 		
-		this.game = game; // Set the game as a global variable
+		// Setting the parameter as global variable
+		this.game = game;
 		
 		// FRAME
 		
@@ -125,7 +128,7 @@ public class ReviewPage extends JFrame implements ActionListener, ChangeListener
 		infoPanel.setLayout(null);
 		
 		JLabel gameImage = new JLabel();
-		gameImage.setIcon(new ImageIcon("C:\\Users\\Utente\\eclipse-workspace\\Orbit\\res\\images\\commons\\game_placeholder.png") /* gameReviewed.getCoverImg() */);
+		gameImage.setIcon(game.getCoverImg());
 		gameImage.setBounds(65, 15, 100, 140);
 		infoPanel.add(gameImage);
 		

@@ -190,13 +190,43 @@ public class LibraryPage extends JFrame implements ActionListener{
 		playButton.setBackground(new Color(56, 209, 36)); // Light Green
 		playButton.setBounds(25, 300, 100, 40);
 		
-		// Action Listener
+		JButton reviewButton = new JButton();
+		if (FacadeUI.getInstance().checkReview(game.getId(), FacadeUI.getInstance().getCurrentUser())) {
+			reviewButton.setText("LEAVE A REVIEW");
+			reviewButton.setForeground(Color.WHITE);
+			reviewButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 16));
+			reviewButton.setFocusable(false);
+			reviewButton.setFocusPainted(false);
+			reviewButton.setBorderPainted(false);
+			reviewButton.setBackground(Prefab.BUTTON_PURPLE);
+			reviewButton.setBounds(25, 360, 180, 40);
+		}
+		else {
+			reviewButton.setText("GAME REVIEWED");
+			reviewButton.setEnabled(false);
+			reviewButton.setForeground(Color.WHITE);
+			reviewButton.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 16));
+			reviewButton.setFocusable(false);
+			reviewButton.setFocusPainted(false);
+			reviewButton.setBorderPainted(false);
+			reviewButton.setBackground(Prefab.GRAY_BG);
+			reviewButton.setBounds(25, 360, 180, 40);
+		}
+		
+
+		
+		// Action Listeners
 		playButton.addActionListener(e -> {
 			JOptionPane.showMessageDialog(null, game.getTitle().toUpperCase() + " is launching...", "Game Started", JOptionPane.INFORMATION_MESSAGE);
 		});
+		reviewButton.addActionListener(e -> {
+			ReviewPage frame = new ReviewPage(game);
+			frame.setVisible(true);
+		});
 		
 		gameInfoPanel.add(playButton);
-		gameInfoPanel.repaint();    // Draws on screen the updated UI
+		gameInfoPanel.add(reviewButton);
+		gameInfoPanel.repaint(); // Draws on screen the updated gui
 	}
 	
 	@Override

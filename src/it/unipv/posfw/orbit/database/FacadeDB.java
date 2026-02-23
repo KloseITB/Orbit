@@ -86,4 +86,10 @@ public class FacadeDB {
     public void discardGiftCard(String code) {
         db.discardGiftCard(code);
     }
+    
+    // Review methods
+    
+    public void checkReview(int gameId, User user) throws ReviewNotFoundException{
+    	
+    }
 }

@@ -15,6 +15,8 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
@@ -45,8 +47,8 @@ public class CheckoutPage extends JFrame implements ActionListener{
 	private Game game;
 
 	public CheckoutPage(Game game) {
-		
-		this.game = game; // Set game as a global variable
+		// Setting the parameter as global variable
+		this.game = game;
 		
 		// FRAME
 		setIconImage(new ImageIcon(new Prefab().ORBIT_ICON).getImage());

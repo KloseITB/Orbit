@@ -4,7 +4,7 @@ public class Review {
     
     private int userId;
     private int gameId;
-    private int rating; // 1-5
+    private int rating;
     private String comment;
     
     public Review(int userId, int gameId, int rating, String comment) {

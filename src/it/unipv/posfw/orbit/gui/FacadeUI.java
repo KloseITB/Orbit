@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import it.unipv.posfw.orbit.account.AccountManager;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
+import it.unipv.posfw.orbit.exception.ReviewNotFoundException;
 import it.unipv.posfw.orbit.exception.UserAlreadyExistException;
 import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.game.Game;
@@ -78,6 +79,20 @@ public class FacadeUI {
     public boolean checkGiftCardCode(String code) {
     	
     	return AccountManager.getInstance().getCurrentUser().addGiftCardFunds(code);
+    }
+    
+    public boolean checkReview(int gameId, User user) {
+    	
+    	return false;
+    	/*
+    	try{
+    		checkReview(gameId, user);
+    		return true;
+    	}
+    	catch(ReviewNotFoundException rnfe){
+    		return false;
+    	}
+    	*/
     }
 
     public Game getGameFromId(int id){    
