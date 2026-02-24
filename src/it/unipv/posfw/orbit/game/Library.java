@@ -23,13 +23,11 @@ public class Library {
 	// Class Methods
 	
 	public void addGame(Game game) {
-		gamesLinkedList.add(game.getId());
 		FacadeDB.getInstance().addGameToLibrary(this, game);
 	}
 	
 	public void removeGame(Game game, User user) throws GameNotFoundException{
 		if (gamesLinkedList.contains(game.getId())) {
-		gamesLinkedList.remove(game.getId());
 		FacadeDB.getInstance().removeGameFromLibrary(this, game);
 		} else {
 			throw new GameNotFoundException("Game not found");
@@ -48,6 +46,10 @@ public class Library {
 
 	public User getOwner(){
 		return owner;
+	}
+	
+	public LinkedList<Integer> getGamesIdList(){
+		return gamesLinkedList;
 	}
 
 }

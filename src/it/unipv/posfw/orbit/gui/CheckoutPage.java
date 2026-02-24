@@ -271,7 +271,7 @@ public class CheckoutPage extends JFrame implements ActionListener{
 			 
 			 try{
 			  		game.buy(currentUser);
-			  		currentUser.removeFunds(game.getCurrentPrice());
+			  		//currentUser.removeFunds(game.getCurrentPrice());
 					this.dispose();
 			  }
 			  catch (PaymentFailedException pfe){

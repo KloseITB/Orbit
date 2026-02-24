@@ -52,7 +52,8 @@ public class DatabaseHelper {
                               "nickname TEXT NOT NULL UNIQUE, " +
                               "password TEXT NOT NULL, " +
                               "role TEXT NOT NULL, " +
-                              "balance REAL DEFAULT 0.0)";
+                              "balance REAL DEFAULT 0.0" +
+            				  "is_banned INTEGER DEFAULT 0)";
             stmt.execute(sqlUsers); // execute the query and create the table
 
             String sqlGames = "CREATE TABLE IF NOT EXISTS games (" +
@@ -64,6 +65,7 @@ public class DatabaseHelper {
                               "score REAL DEFAULT 0.0, " +
                               "cover_path TEXT, " +
                               "publisher_id INTEGER, " +
+                              "is_banned INTEGER DEFAULT 0" +
                               "FOREIGN KEY (publisher_id) REFERENCES users(id))";
             stmt.execute(sqlGames);
 
@@ -124,6 +126,7 @@ public class DatabaseHelper {
                 	int id = rs.getInt("id");
                 	String role = rs.getString("role");
                 	double balance = rs.getDouble("balance");
+                	boolean isBanned = rs.getInt("is_banned") == 1;
                 
                 	
                 	// set the user role
@@ -207,6 +210,16 @@ public class DatabaseHelper {
         if (buyer.getBalance() < game.getCurrentPrice()) {
              throw new AmountNotValidException("Saldo insufficiente");
         }
+        
+        // update local memory before the db
+        double originalBalance = buyer.getBalance();
+        boolean addedToLibraryLocally = false;
+        
+        buyer.setBalanceLocal(originalBalance - game.getCurrentPrice());
+        if(!buyer.getLibrary().getGamesIdList().contains(game.getId())) {
+        	buyer.getLibrary().getGamesIdList().add(game.getId());
+        	addedToLibraryLocally = true;
+        }
 
         Connection conn = null; // set the connection as null before using it so that we can manage the exceptions later
         try {
@@ -240,13 +253,16 @@ public class DatabaseHelper {
 
             conn.commit(); // commit in db
             
-            // update also the user memory 
-            buyer.removeFunds(game.getCurrentPrice()); // balance
-            buyer.getLibrary().addGame(game); // library
 
         } catch (SQLException e) { // if the connection was already open, cancel the transaction and print the error
             if (conn != null) try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
             e.printStackTrace();
+            
+            // rollback in case the db update failed
+            buyer.setBalanceLocal(originalBalance); //reset the original balance
+            if (addedToLibraryLocally) {
+            	buyer.getLibrary().getGamesIdList().remove((Integer) game.getId()); //remove the game locally
+            }
         } finally { // this is always done: close the connection and print the error id there's a fail
             if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
@@ -445,11 +461,13 @@ public class DatabaseHelper {
                 double currentPrice = rs.getDouble("currentprice"); // get the current price since it can change
                 String tag = rs.getString("tag");
                 String coverPath = rs.getString("cover_path");
+                boolean isBanned = rs.getInt("is_banned") == 1;
 
                 Game game = new Game(title, basePrice, tag, coverPath);
                 
                 game.setId(gameId); //set the id with the one from the db
                 game.setCurrentPrice(currentPrice); // set the current price
+                game.setBanned(isBanned);
                 
                 return game;
             }
@@ -481,6 +499,14 @@ public class DatabaseHelper {
     
     // method to add a  game to an user library
     public void addGameToLibrary(Library library, Game game) {
+    	
+    	// local update before the db
+    	boolean addedLocally = false;
+    	if(!library.getGamesIdList().contains(game.getId())) {
+    		library.getGamesIdList().add(game.getId());
+    		addedLocally = true;
+    	}
+    	
         String sql = "INSERT INTO library (user_id, game_id) VALUES (?, ?)";
         User user = library.getOwner();
         
@@ -496,11 +522,23 @@ public class DatabaseHelper {
         } catch (SQLException e) {
             // error game already in library
             System.err.println("Error, game already in library " + e.getMessage());
+            
+            // rollback if the db update failed
+            if (addedLocally) {
+            	library.getGamesIdList().remove((Integer) game.getId());
+            }
         }
     }
     
- // method to remove game from a user libary
+ // method to remove game from a user library
     public void removeGameFromLibrary(Library library, Game game) {
+    	
+    	//local update
+    	boolean removedLocally = false;
+    	if(library.getGamesIdList().contains(game.getId())) {
+    		library.getGamesIdList().remove((Integer) game.getId());
+    		removedLocally = true;
+    	}
         String sql = "DELETE FROM library WHERE user_id = ? AND game_id = ?";
         User user = library.getOwner();
 
@@ -513,13 +551,46 @@ public class DatabaseHelper {
             int rowsAffected = pstmt.executeUpdate();
             
             if (rowsAffected > 0) {
-                System.out.println("Game " + game.getTitle() + " remove from " + user.getNickname() + " library");
+                System.out.println("Game " + game.getTitle() + " removed from " + user.getNickname() + " library");
             } else {
                 System.out.println("Error: game already not present");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            
+            // roolback if the db update failed
+            if (removedLocally) {
+            	library.getGamesIdList().add(game.getId());
+            }
+        }
+    }
+    
+ // method to update ban status of a user
+    public void updateUserBanStatus(User user, boolean isBanned) {
+        String sql = "UPDATE users SET is_banned = ? WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, isBanned ? 1 : 0); // 1 = true, 0 = false
+            pstmt.setInt(2, user.getId());
+            pstmt.executeUpdate();
+            System.out.println("Ban status updated for: " + user.getNickname());
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+        }
+    }
+
+    // method to update ban status of a game
+    public void updateGameBanStatus(Game game, boolean isBanned) {
+        String sql = "UPDATE games SET is_banned = ? WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, isBanned ? 1 : 0);
+            pstmt.setInt(2, game.getId());
+            pstmt.executeUpdate();
+            System.out.println("Ban status updated for: " + game.getTitle());
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
         }
     }
     

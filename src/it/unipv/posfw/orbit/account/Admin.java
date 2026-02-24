@@ -1,5 +1,6 @@
 package it.unipv.posfw.orbit.account;
 
+import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.game.Game;
 
 public class Admin extends User {
@@ -19,12 +20,14 @@ public class Admin extends User {
 	// Methods
 	
 	public void banUser (User user) {
-		user.isBanned = true;
+		user.setBanned(true);
+		FacadeDB.getInstance().updateUserBanStatus(user, true);
 	}
 	
 	// Called when a game violates the platform's Term of Service (ex. NSFW content, Scam, AI slop ecc...)
 	public void banPublishedGame(Game game) {
 			game.setBanned(true);
+			FacadeDB.getInstance().updateGameBanStatus(game, true);
 	}
 	
 	

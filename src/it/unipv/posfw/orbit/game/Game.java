@@ -52,11 +52,11 @@ public class Game {
 	
 	// Buy using the user's balance
 	public <U extends User> void buy(U user) throws PaymentFailedException{
-		if(currentPrice < user.getBalance()){
-			user.removeFunds(currentPrice);
-			user.getLibrary().addGame(this);
-			}
-		else throw new PaymentFailedException();
+		try {
+			FacadeDB.getInstance().purchaseGame(user, this);
+		} catch (AmountNotValidException e) {
+			throw new PaymentFailedException("Insufficient balance or system error");
+		}
 	}
 	
 	// Buy the game using the credit card
@@ -71,7 +71,12 @@ public class Game {
 	
 	public void addToReviewList(Review review) {
 		reviewArrayList.add(review);
-		FacadeDB.getInstance().saveReview(review);
+		try {
+			FacadeDB.getInstance().saveReview(review);
+		} catch (Exception e) {
+			reviewArrayList.remove(review); // local rollback
+			System.out.println("Error saving review.");
+		}
 	}
 	
 	public double avgRating() {

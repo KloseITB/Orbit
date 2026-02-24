@@ -109,9 +109,16 @@ public class User {
 		return library;
 	}
 
-
 	public void setLibrary(Library library) {
 		this.library = library;
+	}
+	
+	public void setBalanceLocal(double balance) {
+		this.balance = balance;
+	}
+	
+	public void setBanned(boolean isBanned) {
+		this.isBanned = isBanned;
 	}
 	
 }

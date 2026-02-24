@@ -46,6 +46,10 @@ public class FacadeDB {
     public void removeGameFromLibrary(Library library, Game game) {
         db.removeGameFromLibrary(library, game);
     }
+    
+    public void updateUserBanStatus(User user, boolean isBanned) {
+    	db.updateUserBanStatus(user, isBanned);
+    }
 
     // Game methods
 
@@ -71,6 +75,10 @@ public class FacadeDB {
     
     public void saveReview(Review review) {
     	db.saveReview(review);
+    }
+    
+    public void updateGameBanStatus(Game game, boolean isBanned) {
+    	db.updateGameBanStatus(game, isBanned);
     }
 
     // Gift cards methods
