@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.game.Game;
 
+/**
+ * represents a publisher user who can publish new games on the platform.
+ */
 public class Publisher extends User {
 	
 	// Parameters
@@ -27,6 +30,13 @@ public class Publisher extends User {
 	
 	// Methods
 	
+	/**
+	 * publishes a new game on the store and registers it in the database.
+	 * @param name the title of the game
+	 * @param basePrice the initial price of the game
+	 * @param genre the genre or tag of the game
+	 * @param coverPath the file path to the game's cover image
+	 */
 	public void publishGame (String name, double basePrice, String genre, String coverPath) {
 		
 		Game game = new Game(name, basePrice, genre, coverPath); // Create the new game in memory with temporary id set to 0

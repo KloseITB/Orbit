@@ -5,6 +5,10 @@ import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.exception.*;
 import it.unipv.posfw.orbit.game.*;
 
+/**
+ * facade class that provides a simplified interface to interact with the database helper.
+ * implements the singleton pattern.
+ */
 public class FacadeDB {
     
     private static FacadeDB instance;
@@ -25,7 +29,15 @@ public class FacadeDB {
     }
 
     // Account methods
-
+    
+    /**
+     * authenticates a user by querying the database.
+     * @param nickname the user's nickname
+     * @param password the user's password
+     * @return the populated user object if found
+     * @throws UserNotFoundException if the nickname does not exist
+     * @throws WrongPasswordException if the password does not match
+     */
     public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
         return db.login(nickname, password);
         
@@ -56,7 +68,13 @@ public class FacadeDB {
     public void registerGame(Game game, int publisherId) {
         db.registerGame(game, publisherId);
     }
-
+    
+    /**
+     * executes the purchase transaction of a game safely.
+     * @param buyer the user buying the game
+     * @param game the game to be purchased
+     * @throws AmountNotValidException if the user has insufficient balance
+     */
     public void purchaseGame(User buyer, Game game) throws AmountNotValidException {
         db.executePurchase(buyer, game);
     }

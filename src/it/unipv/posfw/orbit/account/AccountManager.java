@@ -2,6 +2,10 @@ package it.unipv.posfw.orbit.account;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.*;
 
+/**
+ * a singleton class that manages the current active session of the user.
+ * it handles login and signup operations.
+ */
 public class AccountManager {
 	
 	private static AccountManager uniqueInstance;
@@ -21,6 +25,12 @@ public class AccountManager {
 	
 	// Methods
 	
+	/**
+	 * attempts to register a new user in the system.
+	 * @param nickname the chosen username
+	 * @param password the chosen password
+	 * @return true if the registration is successful, false if the user already exists
+	 */
 	public boolean signup(String nickname, String password){
 		
 		User user = new User(nickname, password);
@@ -35,6 +45,12 @@ public class AccountManager {
         }
 	}
 	
+	/**
+	 * attempts to authenticate an existing user.
+	 * @param nickname the username to check
+	 * @param password the password to check
+	 * @return true if credentials are correct, false otherwise
+	 */
 	public boolean login(String nickname, String password) {
 		try {
 			// Call to the method that can handle exceptions

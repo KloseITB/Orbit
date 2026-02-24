@@ -19,6 +19,9 @@ import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 import it.unipv.posfw.orbit.game.Library;
 
+/**
+ * singleton class that handles all direct sqlite database connections and queries.
+ */
 public class DatabaseHelper {
     
     private static DatabaseHelper instance;
@@ -205,8 +208,15 @@ public class DatabaseHelper {
         }
     }
     
-    // method Purchase
-    public void executePurchase(User buyer, Game game) throws AmountNotValidException { // launch the exception if the balance is not enough
+    
+    /**
+     * executes a complete game purchase within a single sql transaction.
+     * rolls back the transaction if any error occurs.
+     * @param buyer the user who is buying
+     * @param game the game being bought
+     * @throws AmountNotValidException if the balance is too low
+     */
+    public void executePurchase(User buyer, Game game) throws AmountNotValidException {
         if (buyer.getBalance() < game.getCurrentPrice()) {
              throw new AmountNotValidException("Saldo insufficiente");
         }

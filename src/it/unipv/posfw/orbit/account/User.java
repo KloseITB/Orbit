@@ -4,6 +4,10 @@ import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.CodeNotFoundException;
 import it.unipv.posfw.orbit.game.Library;
 
+/**
+ * represents a standard user in the orbit platform.
+ * it contains user credentials, balance, library and ban status.
+ */
 public class User {
 	
 	// Parameters
@@ -39,7 +43,11 @@ public class User {
 	
 	// Methods
 	
-	// Adding funds via gift card
+	/**
+	 * adds funds to the user's balance using a gift card code.
+	 * @param giftCardCode the unique code of the gift card
+	 * @return true if the gift card is valid and redeemed, false otherwise
+	 */
 	public boolean addGiftCardFunds (String giftCardCode) { 
 	    
 		try {
@@ -64,7 +72,10 @@ public class User {
 		return true;
 	}
 	
-	
+	/**
+	 * removes a specific amount of funds from the user's balance.
+	 * @param amount the value to deduct from the balance
+	 */
 	public void removeFunds(double amount) {
 		balance -= amount;
 		FacadeDB.getInstance().updateUserBalance(this);

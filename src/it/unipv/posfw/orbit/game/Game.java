@@ -12,6 +12,10 @@ import it.unipv.posfw.orbit.exception.AmountNotValidException;
 import it.unipv.posfw.orbit.exception.PaymentFailedException;
 import it.unipv.posfw.orbit.payment.IPaymentMethod;
 
+/**
+ * represents a video game available on the orbit platform.
+ * it manages price, discounts, reviews and purchasing logic.
+ */
 public class Game {
 	
 	// parameters
@@ -39,6 +43,11 @@ public class Game {
 	
 	
 	// Methods
+	
+	/**
+	 * applies a percentage discount to the current price of the game.
+	 * @param percentage the discount value to apply
+	 */
 	public void discount(double percentage) {
 		double tmp = currentPrice; // Used a temporary variable to avoid any kind of errors related to the pre-discount price of the game
 		try {
@@ -50,7 +59,11 @@ public class Game {
 		currentPrice = tmp;
 	}
 	
-	// Buy using the user's balance
+	/**
+	 * allows a user to buy the game using their account balance.
+	 * @param user the user purchasing the game
+	 * @throws PaymentFailedException if the user does not have enough funds
+	 */
 	public <U extends User> void buy(U user) throws PaymentFailedException{
 		try {
 			FacadeDB.getInstance().purchaseGame(user, this);
@@ -59,7 +72,12 @@ public class Game {
 		}
 	}
 	
-	// Buy the game using the credit card
+	/**
+	 * allows a user to buy the game using a specific payment method.
+	 * @param user the user purchasing the game
+	 * @param paymentMethod the credit card or external payment method used
+	 * @throws PaymentFailedException if the transaction fails
+	 */
 	public <U extends User,P extends IPaymentMethod> void buy(U user, P paymentMethod) throws PaymentFailedException{
 		if(paymentMethod.pay(this.currentPrice)) {
 			user.getLibrary().addGame(this);
@@ -79,6 +97,10 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * calculates the average rating of the game based on user reviews.
+	 * @return the average rating score, or 0 if no reviews exist
+	 */
 	public double avgRating() {
 		
 		double ratingSum = 0;

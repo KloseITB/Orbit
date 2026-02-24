@@ -11,6 +11,10 @@ import it.unipv.posfw.orbit.exception.UserNotFoundException;
 import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 
+/**
+ * facade class that connects the graphical user interface with the backend logic.
+ * implements the singleton pattern.
+ */
 public class FacadeUI {
 	
 	// parameters
@@ -28,7 +32,12 @@ public class FacadeUI {
     
     // Methods
     
-    // Check if the user credentials exist and are correct
+    /**
+     * attempts to log the user in from the gui layer.
+     * @param nickname the input nickname
+     * @param password the input password
+     * @return true if successful, false otherwise
+     */
     public boolean loginUser(String nickname, String password) {
 
 			if(AccountManager.getInstance().login(nickname, password)){
@@ -81,6 +90,12 @@ public class FacadeUI {
     	return AccountManager.getInstance().getCurrentUser().addGiftCardFunds(code);
     }
     
+    /**
+     * checks if a user is allowed to leave a review for a specific game.
+     * @param gameId the id of the game
+     * @param user the user trying to review
+     * @return true if the user has not reviewed the game yet, false if they already did
+     */
     public boolean checkReview(int gameId, User user) {
     	
     	try {

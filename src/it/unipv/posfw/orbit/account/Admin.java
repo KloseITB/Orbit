@@ -3,6 +3,10 @@ package it.unipv.posfw.orbit.account;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.game.Game;
 
+/**
+ * represents an administrator user with special privileges.
+ * an admin can ban users or remove published games from the store.
+ */
 public class Admin extends User {
 
 	// Constructors
@@ -19,12 +23,19 @@ public class Admin extends User {
 	
 	// Methods
 	
+	/**
+	 * bans a specific user from the platform, updating both local memory and database.
+	 * @param user the user object to be banned
+	 */
 	public void banUser (User user) {
 		user.setBanned(true);
 		FacadeDB.getInstance().updateUserBanStatus(user, true);
 	}
 	
-	// Called when a game violates the platform's Term of Service (ex. NSFW content, Scam, AI slop ecc...)
+	/**
+	 * bans a specific game from the platform, making it unavailable for purchase.
+	 * @param game the game object to be banned
+	 */
 	public void banPublishedGame(Game game) {
 			game.setBanned(true);
 			FacadeDB.getInstance().updateGameBanStatus(game, true);
