@@ -103,24 +103,20 @@ public class Game {
 	 */
 	public double avgRating() {
 		
-		double ratingSum = 0;
-		int reviewCount = 0;
-		double avgRating = 0;
+		// if there are no reviews it return 0.0
+		if (reviewArrayList.isEmpty()) {
+			return 0.0;
+		}
 		
-		// For every review, get the rating score
+		double ratingSum = 0;
+		
+		// for every review, get the rating score
 		for (Review review : reviewArrayList) {
 			ratingSum += review.getRating();
-			reviewCount++;
 		}
 		
-		// Try-Catch in case there are no reviews, which means that the code will try to divide 0 by 0
-		try{
-			avgRating = ratingSum / reviewCount;
-			}
-		catch(Exception e) {
-			return 0; // Returning 0 means that the game hasn't been reviewed yet
-		}
-		return avgRating;
+		// calculate and return the average
+		return ratingSum / reviewArrayList.size();
 	}
 	
 	

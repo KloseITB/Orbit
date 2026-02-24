@@ -24,8 +24,8 @@ public class DiscountManager{
 	 */
 	public static double calculateDiscount (double currentPrice, double percentage) throws AmountNotValidException{
 		
-		if(currentPrice <MIN_PERCENTAGE_VALUE || currentPrice > MAX_PERCENTAGE_VALUE) {
-			throw new AmountNotValidException();
+		if(currentPrice < 0) {
+			throw new AmountNotValidException("the game price cannot be negative.");
 		}
 		
 		double clampedPercentage = clampPercentage(percentage);
@@ -33,6 +33,6 @@ public class DiscountManager{
 	}
 	
 	private static double clampPercentage(double percentage) {
-		return Math.clamp(percentage, MAX_PERCENTAGE_VALUE, MIN_PERCENTAGE_VALUE);
+		return Math.max(MIN_PERCENTAGE_VALUE, Math.min(MAX_PERCENTAGE_VALUE, percentage));
 	}
 }

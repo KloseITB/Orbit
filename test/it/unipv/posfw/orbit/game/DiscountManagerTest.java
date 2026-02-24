@@ -27,7 +27,7 @@ public class DiscountManagerTest {
     @Test
     public void testCalculateDiscountInvalidPrice() {
         // create an invalid price below the minimum value
-        double invalidPrice = 0.5;
+        double invalidPrice = -10.0;
         double percentage = 20.0;
 
         // check that the correct exception is thrown
