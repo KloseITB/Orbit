@@ -98,6 +98,9 @@ public class FacadeDB {
     // Review methods
     
     public void checkReview(int gameId, User user) throws ReviewNotFoundException{
-    	
+    	if (!db.hasUserReviewedGame(gameId, user.getId())) {
+            // throw exception of the review doesn't exist, the user can still review the game
+            throw new ReviewNotFoundException("No review found for " + gameId + " by " + user.getNickname());
+        }
     }
 }

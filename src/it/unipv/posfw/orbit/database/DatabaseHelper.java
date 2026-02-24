@@ -96,9 +96,9 @@ public class DatabaseHelper {
             String sqlReviews = "CREATE TABLE IF NOT EXISTS reviews (" +
                               "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                               "game_id INTEGER, " + 
-                              "autore TEXT, " +
-                              "voto INTEGER, " +
-                              "commento TEXT)";
+                              "user_id INTEGER, " +
+                              "rating INTEGER, " +
+                              "comment TEXT)";
             stmt.execute(sqlReviews);
            
 
@@ -592,6 +592,28 @@ public class DatabaseHelper {
         } catch (SQLException e) { 
             e.printStackTrace(); 
         }
+    }
+    
+ // method to check if a user already rated a game
+    public boolean hasUserReviewedGame(int gameId, int userId) {
+        String sql = "SELECT * FROM reviews WHERE game_id = ? AND user_id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, gameId);
+            pstmt.setInt(2, userId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return true; // review already existing
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false; // the user hasn't reviewed the game yet
     }
     
 }

@@ -83,16 +83,15 @@ public class FacadeUI {
     
     public boolean checkReview(int gameId, User user) {
     	
-    	return false;
-    	/*
-    	try{
-    		checkReview(gameId, user);
+    	try {
+    		// check in the DB
+    		FacadeDB.getInstance().checkReview(gameId, user);
+    		// if we get here the exception is not thrown so the review exists
+    		return false;
+    	} catch(ReviewNotFoundException rnfe) {
+    		// the exception was thrown so the review exists
     		return true;
     	}
-    	catch(ReviewNotFoundException rnfe){
-    		return false;
-    	}
-    	*/
     }
 
     public Game getGameFromId(int id){    
