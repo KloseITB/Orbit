@@ -121,4 +121,22 @@ public class FacadeDB {
             throw new ReviewNotFoundException("No review found for " + gameId + " by " + user.getNickname());
         }
     }
+    
+    /**
+	 * checks if a specific game is currently banned from the platform by querying the database.
+	 * @param gameId the unique identifier of the game to check
+	 * @return true if the game exists and is banned, false otherwise
+	 */
+	public boolean findGameById(int gameId) {
+		return db.findGameById(gameId);
+	}
+
+	/**
+	 * checks if a specific user is currently banned from the platform by querying the database.
+	 * @param nickname the unique nickname of the user to check
+	 * @return true if the user exists and is banned, false otherwise
+	 */
+	public boolean findUser(String nickname) {
+		return db.findUser(nickname);
+	}
 }
