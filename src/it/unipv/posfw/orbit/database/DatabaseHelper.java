@@ -131,19 +131,14 @@ public class DatabaseHelper {
                 	double balance = rs.getDouble("balance");
                 	boolean isBanned = rs.getInt("is_banned") == 1;
                 
-                	
-                	// set the user role
-                	switch (role) {
-                    	case "ADMIN":
-                    		Admin admin = new Admin(id, nickname, password, balance);
-                            return admin;
-                    	case "PUBLISHER":
-                    		Publisher publisher = new Publisher(id, nickname, password, balance);
-                            return publisher;
-                    	default:
-                    		User user = new User(id, nickname, password, balance);
-                    		return user;
+                	if(isBanned) {
+                		throw new UserNotFoundException("Banned user, login not doable");
                 	}
+                	
+                	User user = new User(id, nickname, password, balance);
+                	
+                	return user;
+                	
                 } else {
                 	// wrong password
                 	throw new WrongPasswordException("Wrong password");
@@ -625,5 +620,59 @@ public class DatabaseHelper {
         
         return false; // the user hasn't reviewed the game yet
     }
+    
+    /**
+	 * checks if a specific game is currently banned from the platform.
+	 * @param gameId the unique identifier of the game to check
+	 * @return true if the game exists and is banned, false otherwise
+	 */
+	public boolean findGameById(int gameId) {
+		String sql = "SELECT is_banned FROM games WHERE id = ?";
+		
+		try (Connection conn = DriverManager.getConnection(URL);
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setInt(1, gameId);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				// if the game is found we check is_banned field, the equation in return gives true(banned) if is 1, false if is 0. 
+				return rs.getInt("is_banned") == 1;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		// if there are sql or other errors it return false.
+		return false; 
+	}
+
+	/**
+	 * checks if a specific user is currently banned from the platform.
+	 * @param nickname the unique nickname of the user to check
+	 * @return true if the user exists and is banned, false otherwise
+	 */
+	public boolean findUser(String nickname) {
+		String sql = "SELECT is_banned FROM users WHERE nickname = ?";
+		
+		try (Connection conn = DriverManager.getConnection(URL);
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, nickname);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				// once it found the user check the is_banned field and return true(banned) if it's 1 or false if it's 0.
+				return rs.getInt("is_banned") == 1;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		// return false if there are sql or other errors.
+		return false; 
+	}
     
 }

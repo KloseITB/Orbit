@@ -71,7 +71,7 @@ public class AccountManager {
 	
 	// Getters and Setters
 	
-	public <U extends User> U getCurrentUser() {
+	public User getCurrentUser() {
 		
 		// for debug purposes
 		if(currentUser == null) {
