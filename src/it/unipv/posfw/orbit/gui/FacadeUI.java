@@ -21,7 +21,7 @@ public class FacadeUI {
 	
 	// Attributes
     private static FacadeUI instance;
-    private User user = AccountManager.getInstance().getCurrentUser();
+    //private User user = AccountManager.getInstance().getCurrentUser();
     private FacadeDB db = FacadeDB.getInstance();
     private AccountManager accMan = AccountManager.getInstance();
     
@@ -85,16 +85,16 @@ public class FacadeUI {
     }
     
     public User getCurrentUser() {
-        return user;
+        return accMan.getCurrentUser();
     }
     
     public Role getCurrentUserRole() {
-    	return user.getRole();
+    	return accMan.getCurrentUser().getRole();
     }
     
     public boolean checkGiftCardCode(String code) {
     	
-    	return user.addGiftCardFunds(code);
+    	return accMan.getCurrentUser().addGiftCardFunds(code);
     }
     
     /**
@@ -132,7 +132,7 @@ public class FacadeUI {
     }
     
     public void publishGame(Game game) {
-    	Publisher publisher = (Publisher) user;
+    	Publisher publisher = (Publisher) accMan.getCurrentUser();
     	db.registerGame(game, publisher.getId());
     	publisher.getLibrary().addGame(game);
     }

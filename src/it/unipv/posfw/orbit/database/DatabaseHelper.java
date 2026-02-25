@@ -161,7 +161,8 @@ public class DatabaseHelper {
             }
         } catch (SQLException e) {
         	e.printStackTrace();
-        	System.out.println("AIUTOOOO");      	
+        	System.out.println("AIUTOOOO");    
+        	throw new UserNotFoundException("Connection error to the Database");  	
         	}
     }
     
