@@ -54,7 +54,7 @@ public final class Prefab {
 		fl_header.setHgap(20);
 		
 		JLabel logoLabel = new JLabel();
-		logoLabel.setIcon(new ImageIcon("C:\\Users\\Utente\\eclipse-workspace\\Orbit\\res\\images\\commons\\orbit_logo.png") /*ORBIT_LOGO*/);
+		logoLabel.setIcon(new ImageIcon(new Prefab().ORBIT_LOGO));
 		header.add(logoLabel);
 		
 		return header;

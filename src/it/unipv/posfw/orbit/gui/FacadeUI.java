@@ -3,6 +3,7 @@ package it.unipv.posfw.orbit.gui;
 import java.util.LinkedList;
 
 import it.unipv.posfw.orbit.account.AccountManager;
+import it.unipv.posfw.orbit.account.Publisher;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.ReviewNotFoundException;
@@ -123,4 +124,11 @@ public class FacadeUI {
 
         return gameList;
     }
+    
+    public void publishGame(Game game) {
+    	Publisher publisher = (Publisher) AccountManager.getInstance().getCurrentUser();
+    	FacadeDB.getInstance().registerGame(game, publisher.getId());
+    	publisher.getLibrary().addGame(game);
+    }
+    
 }
