@@ -17,6 +17,7 @@ public class User {
 	private String password;
 	protected boolean isBanned;
 	private double balance;
+	protected Role role;
 	
 	// Constructors
 
@@ -25,6 +26,7 @@ public class User {
 		this.nickname = nickname;
 		this.password = password;
 		this.library = new Library(this);
+		role = Role.USER;
 		isBanned = false;
 		balance = 0;
 	}
@@ -35,6 +37,7 @@ public class User {
 		this.nickname = nickname;
 		this.password = password;
 		this.library = new Library(this);
+		role = Role.USER;
 		isBanned = false;
 		this.balance = balance;
 		balance = 0;
@@ -130,6 +133,10 @@ public class User {
 	
 	public void setBanned(boolean isBanned) {
 		this.isBanned = isBanned;
+	}
+	
+	public Role getRole() {
+		return role;
 	}
 	
 }

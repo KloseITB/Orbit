@@ -14,11 +14,13 @@ public class Admin extends User {
 	// Constructors for new Admin
 	public Admin(String nickname, String password) { 
 		super(nickname, password);
+		role = Role.ADMIN;
 	}
 	
 	// Costructor for already existing Admin
 	public Admin(int id, String nickname, String password, double balance) {
 		super(id, nickname, password, balance);
+		role = Role.ADMIN;
 	}
 	
 	// Methods

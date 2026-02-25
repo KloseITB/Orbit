@@ -9,7 +9,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PublishingPage frame = new PublishingPage();
+					LoginPage frame = new LoginPage();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

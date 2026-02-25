@@ -82,7 +82,7 @@ public class FacadeUI {
     	return catalog;
     }
     
-    public User getCurrentUser() {
+    public <U extends User> U getCurrentUser() {
         return AccountManager.getInstance().getCurrentUser();
     }
     
