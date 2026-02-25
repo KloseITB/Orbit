@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import it.unipv.posfw.orbit.account.AccountManager;
 import it.unipv.posfw.orbit.account.Publisher;
+import it.unipv.posfw.orbit.account.Role;
 import it.unipv.posfw.orbit.account.User;
 import it.unipv.posfw.orbit.database.FacadeDB;
 import it.unipv.posfw.orbit.exception.ReviewNotFoundException;
@@ -13,13 +14,16 @@ import it.unipv.posfw.orbit.game.Game;
 import it.unipv.posfw.orbit.game.Review;
 
 /**
- * facade class that connects the graphical user interface with the backend logic.
+ * facade class that connects the graphical user interface with the back-end logic.
  * implements the singleton pattern.
  */
 public class FacadeUI {
 	
-	// parameters
+	// Attributes
     private static FacadeUI instance;
+    private User user = AccountManager.getInstance().getCurrentUser();
+    private FacadeDB db = FacadeDB.getInstance();
+    private AccountManager accMan = AccountManager.getInstance();
     
     // Singleton pattern
     private FacadeUI() {}
@@ -34,29 +38,28 @@ public class FacadeUI {
     // Methods
     
     /**
-     * attempts to log the user in from the gui layer.
+     * attempts to log the user in from the GUI layer.
      * @param nickname the input nickname
      * @param password the input password
      * @return true if successful, false otherwise
      */
     public boolean loginUser(String nickname, String password) {
 
-			if(AccountManager.getInstance().login(nickname, password)){
-                AccountManager.getInstance().setCurrentUser(new User(nickname, password));
+			if(accMan.login(nickname, password)){
+				accMan.setCurrentUser(new User(nickname, password));
                 return true;
             }
             else{
               return false;  
-            } 
-
+            }
     }
     
-    // check if the user nickname is already taken. If not, it creates a new user
+    // Check if the user nickname is already taken. If not, it creates a new user
     // with the inserted credentials
     public boolean signupUser(String nickname, String password) {
     	
-			if(AccountManager.getInstance().signup(nickname, password)){
-                AccountManager.getInstance().setCurrentUser(new User(nickname, password));
+			if(accMan.signup(nickname, password)){
+				accMan.setCurrentUser(new User(nickname, password));
                 return true;
             }
             else{
@@ -65,12 +68,11 @@ public class FacadeUI {
     }
     
     public void addGameToLibrary(User user, Game game) {
-    	User currentUser = AccountManager.getInstance().getCurrentUser();
-    	currentUser.getLibrary().addGame(game);
+    	user.getLibrary().addGame(game);
     }
     
     public boolean saveReview(Review newReview){
-    	Game game = FacadeDB.getInstance().gameFromId(newReview.getGameId()); // Get the game reviewed
+    	Game game = db.gameFromId(newReview.getGameId()); // Get the game reviewed
     	game.addToReviewList(newReview); // Add the review to the game's list
         return true;
     }
@@ -78,17 +80,21 @@ public class FacadeUI {
     // get all the game available to be sold
     public LinkedList<Integer> getIdCatalog(){
     	
-    	LinkedList<Integer> catalog = FacadeDB.getInstance().getAllGameIds();
+    	LinkedList<Integer> catalog = db.getAllGameIds();
     	return catalog;
     }
     
-    public <U extends User> U getCurrentUser() {
-        return AccountManager.getInstance().getCurrentUser();
+    public User getCurrentUser() {
+        return user;
+    }
+    
+    public Role getCurrentUserRole() {
+    	return user.getRole();
     }
     
     public boolean checkGiftCardCode(String code) {
     	
-    	return AccountManager.getInstance().getCurrentUser().addGiftCardFunds(code);
+    	return user.addGiftCardFunds(code);
     }
     
     /**
@@ -101,7 +107,7 @@ public class FacadeUI {
     	
     	try {
     		// check in the DB
-    		FacadeDB.getInstance().checkReview(gameId, user);
+    		db.checkReview(gameId, user);
     		// if we get here the exception is not thrown so the review exists
     		return false;
     	} catch(ReviewNotFoundException rnfe) {
@@ -111,14 +117,14 @@ public class FacadeUI {
     }
 
     public Game getGameFromId(int id){    
-        return FacadeDB.getInstance().gameFromId(id);
+        return db.gameFromId(id);
     }
 
     public LinkedList<Game> getGameFromId(LinkedList<Integer> idList){    
         LinkedList<Game> gameList = new LinkedList<>();
 
         for (int id : idList){
-            Game game = FacadeDB.getInstance().gameFromId(id);
+            Game game = db.gameFromId(id);
             gameList.add(game);
         }
 
@@ -126,8 +132,8 @@ public class FacadeUI {
     }
     
     public void publishGame(Game game) {
-    	Publisher publisher = (Publisher) AccountManager.getInstance().getCurrentUser();
-    	FacadeDB.getInstance().registerGame(game, publisher.getId());
+    	Publisher publisher = (Publisher) user;
+    	db.registerGame(game, publisher.getId());
     	publisher.getLibrary().addGame(game);
     }
     

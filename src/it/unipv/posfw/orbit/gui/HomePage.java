@@ -5,10 +5,12 @@ import java.awt.Font;
 
 import it.unipv.posfw.orbit.account.Admin;
 import it.unipv.posfw.orbit.account.Publisher;
+import it.unipv.posfw.orbit.account.Role;
 import it.unipv.posfw.orbit.account.User;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -28,6 +30,8 @@ public class HomePage extends JFrame implements ActionListener {
 	private JButton storeButton;
 	private User currentUser = FacadeUI.getInstance().getCurrentUser();
 	private JLabel accountType;
+	private JTextField userField;
+	private JTextField gameField;
 
 	public HomePage() {
 
@@ -134,10 +138,60 @@ public class HomePage extends JFrame implements ActionListener {
 	
 	private void getAccountPanel() {
 		
-		if(FacadeUI.getInstance().getCurrentUser() instanceof Admin) {
+		User user = FacadeUI.getInstance().getCurrentUser();
+		
+		if(user.getRole() == Role.ADMIN) {
 			accountType.setText("ADMIN");
+			JLabel userLabel = new JLabel("FIND USER TO BAN");
+			userLabel.setForeground(Color.WHITE);
+			userLabel.setFont(new Font("Arial", Font.BOLD, 18));
+			userLabel.setBounds(20, 80, 200, 20);
+			accountInfoPanel.add(userLabel);
+			
+			userField = new JTextField();
+			userField.setFont(new Font("Arial", Font.PLAIN, 12));
+			userField.setBounds(20, 120, 315, 30);
+			accountInfoPanel.add(userField);
+			userField.setColumns(10);
+			
+			JButton userBanBtn = new JButton("BAN USER");
+			userBanBtn.setForeground(Color.WHITE);
+			userBanBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+			userBanBtn.setFocusable(false);
+			userBanBtn.setFocusPainted(false);
+			userBanBtn.setBorderPainted(false);
+			userBanBtn.setBackground(new Color(180, 160, 220));
+			userBanBtn.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			    	
+			    }
+			});
+			userBanBtn.setBounds(370, 115, 150, 40);
+			accountInfoPanel.add(userBanBtn);
+			
+			JLabel gameLabel = new JLabel("FIND GAME TO BAN");
+			gameLabel.setForeground(Color.WHITE);
+			gameLabel.setFont(new Font("Arial", Font.BOLD, 18));
+			gameLabel.setBounds(20, 190, 200, 20);
+			accountInfoPanel.add(gameLabel);
+			
+			gameField = new JTextField();
+			gameField.setFont(new Font("Arial", Font.PLAIN, 12));
+			gameField.setColumns(10);
+			gameField.setBounds(20, 230, 315, 30);
+			accountInfoPanel.add(gameField);
+			
+			JButton gameBanBtn = new JButton("BAN GAME");
+			gameBanBtn.setForeground(Color.WHITE);
+			gameBanBtn.setFont(new Font("Arial", Font.BOLD, 20));
+			gameBanBtn.setFocusable(false);
+			gameBanBtn.setFocusPainted(false);
+			gameBanBtn.setBorderPainted(false);
+			gameBanBtn.setBackground(new Color(180, 160, 220));
+			gameBanBtn.setBounds(370, 225, 150, 40);
+			accountInfoPanel.add(gameBanBtn);
 		}
-		else if(FacadeUI.getInstance().getCurrentUser() instanceof Publisher) {
+		else if(user.getRole() == Role.PUBLISHER) {
 			accountType.setText("PUBLISHER");
 			
 			JButton PublishGameBtn = new JButton("PUBLISH GAME");
