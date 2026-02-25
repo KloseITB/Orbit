@@ -12,7 +12,8 @@ CREATE TABLE users (
     nickname TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     role TEXT NOT NULL, -- 'ADMIN', 'PUBLISHER', 'USER'
-    balance REAL DEFAULT 0.0
+    balance REAL DEFAULT 0.0,
+    is_banned INTEGER DEFAULT 0
 );
 
 CREATE TABLE games (
@@ -24,6 +25,7 @@ CREATE TABLE games (
     score REAL DEFAULT 0.0,
     cover_path TEXT,
     publisher_id INTEGER,
+    is_banned INTEGER DEFAULT 0,
     FOREIGN KEY (publisher_id) REFERENCES users(id)
 );
 

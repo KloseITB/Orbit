@@ -55,7 +55,7 @@ public class DatabaseHelper {
                               "nickname TEXT NOT NULL UNIQUE, " +
                               "password TEXT NOT NULL, " +
                               "role TEXT NOT NULL, " +
-                              "balance REAL DEFAULT 0.0" +
+                              "balance REAL DEFAULT 0.0," +
             				  "is_banned INTEGER DEFAULT 0)";
             stmt.execute(sqlUsers); // execute the query and create the table
 
@@ -68,7 +68,7 @@ public class DatabaseHelper {
                               "score REAL DEFAULT 0.0, " +
                               "cover_path TEXT, " +
                               "publisher_id INTEGER, " +
-                              "is_banned INTEGER DEFAULT 0" +
+                              "is_banned INTEGER DEFAULT 0," +
                               "FOREIGN KEY (publisher_id) REFERENCES users(id))";
             stmt.execute(sqlGames);
 
