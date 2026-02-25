@@ -18,12 +18,14 @@ public class Publisher extends User {
 	// Constructor for new publisher (no library because is brought by the user)
 	public Publisher(String nickname, String password) {
 		super(nickname, password);
+		role = Role.PUBLISHER;
 		this.publishedGames = new ArrayList<Integer>();
 	}
 
 	// Constructor publisher already existing in the db
 	public Publisher(int id, String nickname, String password, double balance) {
 		super(id, nickname, password, balance);
+		role = Role.PUBLISHER;
 		publishedGames = new ArrayList<Integer>();
 	}
 	
