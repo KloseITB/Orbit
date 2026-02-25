@@ -172,15 +172,18 @@ public class HomePage extends JFrame implements ActionListener {
 			userBanBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
+					// Check if a user with the inserted nickname exists
 					if(FacadeUI.getInstance().findUser(userField.getText())) {
 						// User selectedUser = get the user corresponding to that nickname
-						// adminAccount.banUser(selectedUser)
+						// adminAccount.banUser(selectedUser);
 					}
 					else {
-						JOptionPane.showMessageDialog(null, "The nickname inserted doesn't correspond to any valid user", "User invalid", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(
+								null,
+								"The nickname inserted doesn't correspond to any valid user",
+								"User invalid",
+								JOptionPane.ERROR_MESSAGE);
 					}
-					
-					
 				}
 			});
 			userBanBtn.setBounds(370, 115, 150, 40);
