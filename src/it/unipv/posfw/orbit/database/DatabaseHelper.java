@@ -135,9 +135,21 @@ public class DatabaseHelper {
                 		throw new UserNotFoundException("Banned user, login not doable");
                 	}
                 	
-                	User user = new User(id, nickname, password, balance);
+                	User loggedUser = null;
                 	
-                	return user;
+                	if (role.equalsIgnoreCase("admin")) {
+                	    loggedUser = new Admin(nickname, password);
+                	} else if (role.equalsIgnoreCase("publisher")) {
+                	    loggedUser = new Publisher(nickname, password);
+                	} else {
+                	    loggedUser = new User(nickname, password);
+                	}
+
+                	loggedUser.setId(id);
+                	loggedUser.setBalanceLocal(balance);
+                	loggedUser.setBanned(isBanned);
+                	
+                	return loggedUser;
                 	
                 } else {
                 	// wrong password
