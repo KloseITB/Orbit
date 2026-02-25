@@ -77,7 +77,7 @@ public class FacadeUI {
         return true;
     }
     
-    // get all the game available to be sold
+    // Get all the game available to be sold
     public LinkedList<Integer> getIdCatalog(){
     	
     	LinkedList<Integer> catalog = db.getAllGameIds();
@@ -135,6 +135,14 @@ public class FacadeUI {
     	Publisher publisher = (Publisher) accMan.getCurrentUser();
     	db.registerGame(game, publisher.getId());
     	publisher.getLibrary().addGame(game);
+    }
+    
+    public boolean findUser(String nickname) {
+    	return db.findUser(nickname);
+    }
+    
+    public boolean findGameById(int gameId) {
+    	return db.findGameById(gameId);
     }
     
 }

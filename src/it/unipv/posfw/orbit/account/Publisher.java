@@ -11,7 +11,8 @@ import it.unipv.posfw.orbit.game.Game;
 public class Publisher extends User {
 	
 	// Parameters
-	ArrayList<Integer> publishedGames;
+	private ArrayList<Integer> publishedGames;
+	private boolean hasLicense;
 
 	// Constructors
 	
@@ -20,6 +21,7 @@ public class Publisher extends User {
 		super(nickname, password);
 		role = Role.PUBLISHER;
 		this.publishedGames = new ArrayList<Integer>();
+		hasLicense = false;
 	}
 
 	// Constructor publisher already existing in the db
@@ -27,6 +29,7 @@ public class Publisher extends User {
 		super(id, nickname, password, balance);
 		role = Role.PUBLISHER;
 		publishedGames = new ArrayList<Integer>();
+		hasLicense = false;
 	}
 	
 	
@@ -61,5 +64,13 @@ public class Publisher extends User {
 
 	public ArrayList<Integer> getPublishedGamesId(){
 		return publishedGames;
+	}
+	
+	public boolean getLicense() {
+		return hasLicense;
+	}
+	
+	public void setLicense(boolean hasLicense) {
+		this.hasLicense = hasLicense;
 	}
 }

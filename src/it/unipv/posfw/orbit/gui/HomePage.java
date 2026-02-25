@@ -3,6 +3,8 @@ package it.unipv.posfw.orbit.gui;
 import java.awt.Color;
 import java.awt.Font;
 
+import it.unipv.posfw.orbit.account.Admin;
+import it.unipv.posfw.orbit.account.Publisher;
 import it.unipv.posfw.orbit.account.Role;
 import it.unipv.posfw.orbit.account.User;
 
@@ -13,6 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -33,12 +36,12 @@ public class HomePage extends JFrame implements ActionListener {
 	private JTextField gameField;
 
 	public HomePage() {
-		
-		
+
+
 		User currentUser = FacadeUI.getInstance().getCurrentUser();
 		nickname = currentUser.getNickname();
 		userRole = currentUser.getRole();
-		
+
 		// FRAME
 
 		setIconImage(new ImageIcon(new Prefab().ORBIT_ICON).getImage());
@@ -102,8 +105,8 @@ public class HomePage extends JFrame implements ActionListener {
 		welcomeLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
 		welcomeLabel.setBounds(624, 80, 267, 40);
 		contentPane.add(welcomeLabel);
-		
-        JLabel userNickLabel = new JLabel(nickname.toUpperCase());
+
+		JLabel userNickLabel = new JLabel(nickname.toUpperCase());
 		userNickLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		userNickLabel.setForeground(Prefab.ACCENT_YELLOW);
 		userNickLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 30));
@@ -137,100 +140,154 @@ public class HomePage extends JFrame implements ActionListener {
 		getAccountPanel();
 	}
 
-	
+
 	// Helpers
 
 	private void getAccountPanel() {
 		
-            if(userRole == Role.ADMIN) {
-    			accountType.setText("ADMIN");
-    			JLabel userLabel = new JLabel("FIND USER TO BAN");
-    			userLabel.setForeground(Color.WHITE);
-    			userLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 18));
-    			userLabel.setBounds(20, 80, 200, 20);
-    			accountInfoPanel.add(userLabel);
-    			
-    			userField = new JTextField();
-    			userField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 12));
-    			userField.setBounds(20, 120, 315, 30);
-    			accountInfoPanel.add(userField);
-    			userField.setColumns(10);
-    			
-    			JButton userBanBtn = new JButton("BAN USER");
-    			userBanBtn.setForeground(Color.WHITE);
-    			userBanBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
-    			userBanBtn.setFocusable(false);
-    			userBanBtn.setFocusPainted(false);
-    			userBanBtn.setBorderPainted(false);
-    			userBanBtn.setBackground(new Color(180, 160, 220));
-    			userBanBtn.addActionListener(new ActionListener() {
-    			    public void actionPerformed(ActionEvent e) {
-    			    	
-    			    }
-    			});
-    			userBanBtn.setBounds(370, 115, 150, 40);
-    			accountInfoPanel.add(userBanBtn);
-    			
-    			JLabel gameLabel = new JLabel("FIND GAME TO BAN");
-    			gameLabel.setForeground(Color.WHITE);
-    			gameLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 18));
-    			gameLabel.setBounds(20, 190, 200, 20);
-    			accountInfoPanel.add(gameLabel);
-    			
-    			gameField = new JTextField();
-    			gameField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 12));
-    			gameField.setColumns(10);
-    			gameField.setBounds(20, 230, 315, 30);
-    			accountInfoPanel.add(gameField);
-    			
-    			JButton gameBanBtn = new JButton("BAN GAME");
-    			gameBanBtn.setForeground(Color.WHITE);
-    			gameBanBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
-    			gameBanBtn.setFocusable(false);
-    			gameBanBtn.setFocusPainted(false);
-    			gameBanBtn.setBorderPainted(false);
-    			gameBanBtn.setBackground(new Color(180, 160, 220));
-    			gameBanBtn.setBounds(370, 225, 150, 40);
-    			accountInfoPanel.add(gameBanBtn);
-    		}
-    		else if(userRole == Role.PUBLISHER) {
-    			accountType.setText("PUBLISHER");
-    			
-    			JButton PublishGameBtn = new JButton("PUBLISH GAME");
-    			PublishGameBtn.setForeground(Color.WHITE);
-    			PublishGameBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
-    			PublishGameBtn.setFocusable(false);
-    			PublishGameBtn.setFocusPainted(false);
-    			PublishGameBtn.setBorderPainted(false);
-    			PublishGameBtn.setBackground(Prefab.BUTTON_PURPLE);
-    			PublishGameBtn.addActionListener(new ActionListener() {
-    				public void actionPerformed(ActionEvent e) {
+		User loggedUser = FacadeUI.getInstance().getCurrentUser();
 
-    				}
-    			});
-    			PublishGameBtn.setBounds(20, 100, 200, 40);
-    			accountInfoPanel.add(PublishGameBtn);
+		if(userRole == Role.ADMIN) {
+			accountType.setText("ADMIN");
+			Admin adminAccount = (Admin) loggedUser;
+			JLabel userLabel = new JLabel("INSERT A USER NICKNAME TO BAN");
+			userLabel.setForeground(Color.WHITE);
+			userLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 18));
+			userLabel.setBounds(20, 80, 340, 20);
+			accountInfoPanel.add(userLabel);
 
-    			JButton buyLicenseBtn = new JButton("BUY LICENSE");
-    			buyLicenseBtn.setForeground(Color.WHITE);
-    			buyLicenseBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
-    			buyLicenseBtn.setFocusable(false);
-    			buyLicenseBtn.setFocusPainted(false);
-    			buyLicenseBtn.setBorderPainted(false);
-    			buyLicenseBtn.setBackground(new Color(180, 160, 220));
-    			buyLicenseBtn.addActionListener(new ActionListener() {
-    				public void actionPerformed(ActionEvent e) {
-    					
-    				}
-    			});
-    			buyLicenseBtn.setBounds(20, 160, 200, 40);
-    			accountInfoPanel.add(buyLicenseBtn);
-    		}
-    		else {
-    			accountType.setText("USER");
-    		}		
+			userField = new JTextField();
+			userField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 12));
+			userField.setBounds(20, 120, 315, 30);
+			accountInfoPanel.add(userField);
+			userField.setColumns(10);
+
+			JButton userBanBtn = new JButton("BAN USER");
+			userBanBtn.setForeground(Color.WHITE);
+			userBanBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+			userBanBtn.setFocusable(false);
+			userBanBtn.setFocusPainted(false);
+			userBanBtn.setBorderPainted(false);
+			userBanBtn.setBackground(new Color(180, 160, 220));
+			userBanBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					if(FacadeUI.getInstance().findUser(userField.getText())) {
+						// User selectedUser = get the user corresponding to that nickname
+						// adminAccount.banUser(selectedUser)
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "The nickname inserted doesn't correspond to any valid user", "User invalid", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					
+				}
+			});
+			userBanBtn.setBounds(370, 115, 150, 40);
+			accountInfoPanel.add(userBanBtn);
+
+			JLabel gameLabel = new JLabel("INSERT A GAME ID TO BAN");
+			gameLabel.setForeground(Color.WHITE);
+			gameLabel.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 18));
+			gameLabel.setBounds(20, 190, 300, 20);
+			accountInfoPanel.add(gameLabel);
+
+			gameField = new JTextField();
+			gameField.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 12));
+			gameField.setColumns(10);
+			gameField.setBounds(20, 230, 315, 30);
+			accountInfoPanel.add(gameField);
+
+			JButton gameBanBtn = new JButton("BAN GAME");
+			gameBanBtn.setForeground(Color.WHITE);
+			gameBanBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+			gameBanBtn.setFocusable(false);
+			gameBanBtn.setFocusPainted(false);
+			gameBanBtn.setBorderPainted(false);
+			gameBanBtn.setBackground(Prefab.BUTTON_PURPLE);
+			gameBanBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					int gameId = Integer.parseInt(gameField.getText());
+					
+					if(FacadeUI.getInstance().findGameById(gameId)){
+						adminAccount.banPublishedGame(gameId);
+						JOptionPane.showMessageDialog(
+								null,
+								"Game banned successfully. From now on it will be delisted from the Orbit Catalog",
+								"Game banned",
+								JOptionPane.INFORMATION_MESSAGE
+								);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Insert a valid game ID", "ID not valid", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+			});
+			gameBanBtn.setBounds(370, 225, 150, 40);
+			accountInfoPanel.add(gameBanBtn);
+		}
+		else if(userRole == Role.PUBLISHER) {
+			accountType.setText("PUBLISHER");
+			Publisher publisherAccount = (Publisher) loggedUser;
+
+			JButton PublishGameBtn = new JButton("PUBLISH GAME");
+			PublishGameBtn.setForeground(Color.WHITE);
+			PublishGameBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+			PublishGameBtn.setFocusable(false);
+			PublishGameBtn.setFocusPainted(false);
+			PublishGameBtn.setBorderPainted(false);
+			PublishGameBtn.setBackground(Prefab.BUTTON_PURPLE);
+			PublishGameBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(publisherAccount.getLicense()) {
+						PublishingPage frame = new PublishingPage();
+						frame.setVisible(true);
+					}
+					else {
+						JOptionPane.showMessageDialog(null,
+								"You need to buy a license before being able to publish a game",
+								"License needed",
+								JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+			});
+			PublishGameBtn.setBounds(20, 100, 200, 40);
+			accountInfoPanel.add(PublishGameBtn);
+
+			JButton buyLicenseBtn = new JButton("BUY LICENSE");
+			if(publisherAccount.getLicense()) {
+				buyLicenseBtn.setEnabled(false);
+				buyLicenseBtn.setBackground(Prefab.GRAY_BG);
+			}
+			else {
+				buyLicenseBtn.setEnabled(true);
+				buyLicenseBtn.setBackground(Prefab.BUTTON_PURPLE);
+			}
+			buyLicenseBtn.setForeground(Color.WHITE);
+			buyLicenseBtn.setFont(new Font(Prefab.FONT_NAME, Font.BOLD, 20));
+			buyLicenseBtn.setFocusable(false);
+			buyLicenseBtn.setFocusPainted(false);
+			buyLicenseBtn.setBorderPainted(false);
+			buyLicenseBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					publisherAccount.setLicense(true);
+					buyLicenseBtn.setEnabled(false);
+					buyLicenseBtn.setBackground(Prefab.GRAY_BG);
+					
+				}
+			});
+			buyLicenseBtn.setBounds(20, 160, 200, 40);
+			accountInfoPanel.add(buyLicenseBtn);
+		}
+		else {
+			accountType.setText("USER");
+		}		
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == libraryButton) {

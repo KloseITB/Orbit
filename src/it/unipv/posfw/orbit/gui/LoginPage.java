@@ -142,7 +142,8 @@ public class LoginPage extends JFrame implements ActionListener{
 		
 		if(e.getSource() == signupButton) {
 			
-			if(FacadeUI.getInstance().signupUser(nicknameField.getText(), passwordField.getSelectedText())) {
+			String password = String.valueOf(passwordField.getPassword());
+			if(FacadeUI.getInstance().signupUser(nicknameField.getText(), password)) {
 				System.out.println(passwordField.getSelectedText()); // Debug
 				System.out.println("Signup successful"); // Debug
 				HomePage frame = new HomePage();

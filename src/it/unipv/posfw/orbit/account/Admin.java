@@ -38,7 +38,8 @@ public class Admin extends User {
 	 * bans a specific game from the platform, making it unavailable for purchase.
 	 * @param game the game object to be banned
 	 */
-	public void banPublishedGame(Game game) {
+	public void banPublishedGame(int gameId) {
+			Game game = FacadeDB.getInstance().gameFromId(gameId);
 			game.setBanned(true);
 			FacadeDB.getInstance().updateGameBanStatus(game, true);
 	}
