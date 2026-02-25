@@ -108,10 +108,10 @@ public class DatabaseHelper {
         } catch (SQLException e) { e.printStackTrace(); } // print any error that could pop up
     }
 
-    // method for login of SingletonAccountManager
+    // Method for login of SingletonAccountManager
     public User login(String nickname, String password) throws UserNotFoundException, WrongPasswordException{
     	
-    	// check the nickname
+    	// Check the nickname
         String sql = "SELECT * FROM users WHERE nickname = ?"; 
         
         try (Connection conn = DriverManager.getConnection(URL);
@@ -135,7 +135,7 @@ public class DatabaseHelper {
                 		throw new UserNotFoundException("Banned user, login not doable");
                 	}
                 	
-                	User loggedUser = null;
+                	User loggedUser;
                 	
                 	if (role.equalsIgnoreCase("admin")) {
                 	    loggedUser = new Admin(nickname, password);
@@ -159,9 +159,10 @@ public class DatabaseHelper {
             	// id re.next() is false, the nickname doesn't exist in the db
             	throw new UserNotFoundException("User not found");
             }
-        } catch (SQLException e) { e.printStackTrace(); }
-        
-        return null; // return null if there's an error in the login
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        	System.out.println("AIUTOOOO");      	
+        	}
     }
     
     // method register new user (sign up)

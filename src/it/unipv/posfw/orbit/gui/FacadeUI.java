@@ -46,7 +46,6 @@ public class FacadeUI {
     public boolean loginUser(String nickname, String password) {
 
 			if(accMan.login(nickname, password)){
-				accMan.setCurrentUser(new User(nickname, password));
                 return true;
             }
             else{
@@ -70,6 +69,7 @@ public class FacadeUI {
     public void addGameToLibrary(User user, Game game) {
     	user.getLibrary().addGame(game);
     }
+    
     
     public boolean saveReview(Review newReview){
     	Game game = db.gameFromId(newReview.getGameId()); // Get the game reviewed

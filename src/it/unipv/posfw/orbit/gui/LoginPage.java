@@ -129,8 +129,6 @@ public class LoginPage extends JFrame implements ActionListener{
 			
 			String password = String.valueOf(passwordField.getPassword());
 			if (FacadeUI.getInstance().loginUser(nicknameField.getText(), password)) {
-				System.out.println("Login successful"); // Debug
-				System.out.println(password); // Debug
 				HomePage frame = new HomePage();
 				frame.setVisible(true);
 				this.dispose();

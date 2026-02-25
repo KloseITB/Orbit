@@ -90,7 +90,7 @@ public final class Prefab {
 	public static JPanel createGameUpdateLabel(String updateTitleLabel, String updateDescription) {
 		JPanel panel = new JPanel();
 		panel.setSize(550, 160);
-		ImageIcon gamePlaceholderImage = new ImageIcon("C:\\Users\\Utente\\eclipse-workspace\\Orbit\\res\\images\\commons\\game_placeholder.png")  /*PLACEHOLDER_COVER*/;
+		ImageIcon gamePlaceholderImage = new ImageIcon(new Prefab().PLACEHOLDER_COVER);
 		panel.setLayout(null);
 		panel.setOpaque(false);
 		panel.add(createGameImage(gamePlaceholderImage));
