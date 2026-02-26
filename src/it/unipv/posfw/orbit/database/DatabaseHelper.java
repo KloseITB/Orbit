@@ -291,7 +291,7 @@ public class DatabaseHelper {
     public void registerGame(Game game, int publisherId) {
     	
     	// sql query to add a game, with no id since it will be added by the db
-    	String sql = "INSERT INTO games(title, baseprice, currentprice, tag, cover_path, publisher_id) VALUES(?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO games(title, baseprice, currentprice, tag, cover_path, publisher_id) VALUES(?, ?, ?, ?, ?, ?)";
     	
     	try (Connection conn = DriverManager.getConnection(URL); // we specify that we want back the generated keys
     		 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){

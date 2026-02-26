@@ -101,9 +101,19 @@ public class StorePage extends JFrame implements ActionListener{
         
         // Adding buttons
         for (Game game : gamesNotOwned){
-			ImageIcon coverImage = new ImageIcon(getClass().getResource(game.getCoverPath())); // Retrieve Image Cover
 
-            JButton button = new JButton();
+			// get the image path
+			java.net.URL imgURL = getClass().getResource(game.getCoverPath());
+			ImageIcon coverImage;
+						
+			if (imgURL != null) {
+				coverImage = new ImageIcon(imgURL); // if everything is correct it uses the image
+			} else {
+			// if image path is wrong use placeholder image
+			coverImage = new ImageIcon((new Prefab().PLACEHOLDER_COVER));
+			}
+			
+			JButton button = new JButton();
             button.setPreferredSize(new Dimension(100, 140));
             button.setIcon(coverImage);
             button.setFocusable(false);
