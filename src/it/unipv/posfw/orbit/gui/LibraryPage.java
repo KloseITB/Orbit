@@ -175,10 +175,17 @@ public class LibraryPage extends JFrame implements ActionListener{
 		gameGenre.setBounds(25, 220, 500, 24);
 		gameInfoPanel.add(gameGenre);
 		
+		String id = String.valueOf(game.getId());
+		JLabel gameId = new JLabel("ID: " + id);
+		gameId.setForeground(Color.WHITE);
+		gameId.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		gameId.setBounds(25, 250, 500, 24);
+		gameInfoPanel.add(gameId);
+		
 		JLabel gameRating = new JLabel("Rating: " + game.avgRating() + "/5");
 		gameRating.setForeground(Color.WHITE);
 		gameRating.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
-		gameRating.setBounds(25, 250, 500, 24);
+		gameRating.setBounds(25, 280, 500, 24);
 		gameInfoPanel.add(gameRating);
 		
 		JButton playButton = new JButton("PLAY");
@@ -188,7 +195,11 @@ public class LibraryPage extends JFrame implements ActionListener{
 		playButton.setFocusPainted(false);
 		playButton.setBorderPainted(false);
 		playButton.setBackground(new Color(56, 209, 36)); // Light Green
-		playButton.setBounds(25, 300, 100, 40);
+		playButton.setBounds(25, 330, 100, 40);
+		
+		playButton.addActionListener(e -> {
+			JOptionPane.showMessageDialog(null, game.getTitle().toUpperCase() + " is launching...", "Game Started", JOptionPane.INFORMATION_MESSAGE);
+		});
 		
 		JButton reviewButton = new JButton();
 		if (FacadeUI.getInstance().checkReview(game.getId(), FacadeUI.getInstance().getCurrentUser())) {
@@ -199,7 +210,7 @@ public class LibraryPage extends JFrame implements ActionListener{
 			reviewButton.setFocusPainted(false);
 			reviewButton.setBorderPainted(false);
 			reviewButton.setBackground(Prefab.BUTTON_PURPLE);
-			reviewButton.setBounds(25, 360, 180, 40);
+			reviewButton.setBounds(25, 390, 180, 40);
 		}
 		else {
 			reviewButton.setText("GAME REVIEWED");
@@ -210,15 +221,9 @@ public class LibraryPage extends JFrame implements ActionListener{
 			reviewButton.setFocusPainted(false);
 			reviewButton.setBorderPainted(false);
 			reviewButton.setBackground(Prefab.GRAY_BG);
-			reviewButton.setBounds(25, 360, 180, 40);
+			reviewButton.setBounds(25, 390, 180, 40);
 		}
 		
-
-		
-		// Action Listeners
-		playButton.addActionListener(e -> {
-			JOptionPane.showMessageDialog(null, game.getTitle().toUpperCase() + " is launching...", "Game Started", JOptionPane.INFORMATION_MESSAGE);
-		});
 		reviewButton.addActionListener(e -> {
 			ReviewPage frame = new ReviewPage(game);
 			frame.setVisible(true);

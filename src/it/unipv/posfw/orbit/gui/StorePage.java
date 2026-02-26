@@ -180,10 +180,17 @@ public class StorePage extends JFrame implements ActionListener{
 		gameGenre.setBounds(25, 220, 500, 24);
 		gameInfoPanel.add(gameGenre);
 		
+		String id = String.valueOf(game.getId());
+		JLabel gameId = new JLabel("ID: " + id);
+		gameId.setForeground(Color.WHITE);
+		gameId.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
+		gameId.setBounds(25, 250, 500, 24);
+		gameInfoPanel.add(gameId);
+		
 		JLabel gameRating = new JLabel("Rating: " + game.avgRating() + "/5");
 		gameRating.setForeground(Color.WHITE);
 		gameRating.setFont(new Font(Prefab.FONT_NAME, Font.PLAIN, 14));
-		gameRating.setBounds(25, 250, 500, 24);
+		gameRating.setBounds(25, 280, 500, 24);
 		gameInfoPanel.add(gameRating);
 		
 		// Setup to show only the first two decimal number of the game's price
@@ -195,8 +202,8 @@ public class StorePage extends JFrame implements ActionListener{
 		buyButton.setFocusable(false);
 		buyButton.setFocusPainted(false);
 		buyButton.setBorderPainted(false);
-		buyButton.setBackground(new Color(38, 157, 255));
-		buyButton.setBounds(25, 300, 180, 40);
+		buyButton.setBackground(new Color(38, 157, 255)); // Light blue
+		buyButton.setBounds(25, 330, 180, 40);
 		
 		// Action Listener
 		buyButton.addActionListener(e -> {
