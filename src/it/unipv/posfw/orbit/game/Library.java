@@ -10,8 +10,8 @@ public class Library {
 	
 	// Parameters
 	
-	LinkedList<Integer> gamesLinkedList;
-	User owner;
+	private LinkedList<Integer> gamesLinkedList;
+	private User owner;
 	
 	// Constructors
 	
@@ -26,7 +26,7 @@ public class Library {
 		FacadeDB.getInstance().addGameToLibrary(this, game);
 	}
 	
-	public void removeGame(Game game, User user) throws GameNotFoundException{
+	public void removeGame(Game game) throws GameNotFoundException{
 		if (gamesLinkedList.contains(game.getId())) {
 		FacadeDB.getInstance().removeGameFromLibrary(this, game);
 		} else {
