@@ -142,6 +142,7 @@ public class PublishingPage extends JFrame{
 		    		filePath = "/images/grids/" + imgName + ".png";
 		    		Game game = new Game(titleField.getText(), price, genreField.getText(), filePath);
 		    		FacadeUI.getInstance().publishGame(game);
+		    		disposeFrame();
 		    	}
 		    	catch (NullPointerException npe) {
 		    		JOptionPane.showMessageDialog(null, "Insert valid informations", "Error", JOptionPane.ERROR_MESSAGE);
@@ -278,6 +279,10 @@ public class PublishingPage extends JFrame{
 		pricedbl = Double.valueOf(priceStr);
 		
 		return pricedbl;
+	}
+	
+	private void disposeFrame() {
+		this.dispose();
 	}
 	
 }

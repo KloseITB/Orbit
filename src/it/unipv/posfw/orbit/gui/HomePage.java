@@ -174,8 +174,8 @@ public class HomePage extends JFrame implements ActionListener {
 					
 					// Check if a user with the inserted nickname exists
 					if(FacadeUI.getInstance().findUser(userField.getText())) {
-						// User selectedUser = get the user corresponding to that nickname
-						// adminAccount.banUser(selectedUser);
+						User selectedUser = FacadeUI.getInstance().getUserFromId(userField.getText());
+						adminAccount.banUser(selectedUser);
 					}
 					else {
 						JOptionPane.showMessageDialog(

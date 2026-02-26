@@ -131,6 +131,16 @@ public class FacadeUI {
         return gameList;
     }
     
+public User getUserFromId(String nickname) {
+	try {
+		return db.getUserByNickname(nickname);
+	} catch (UserNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return null;
+	}
+}
+    
     public void publishGame(Game game) {
     	Publisher publisher = (Publisher) accMan.getCurrentUser();
     	db.registerGame(game, publisher.getId());
