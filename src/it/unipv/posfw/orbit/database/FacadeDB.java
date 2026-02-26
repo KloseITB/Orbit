@@ -70,6 +70,16 @@ public class FacadeDB {
     }
     
     /**
+	 * retrieves a User object from the database given their nickname.
+	 * @param nickname the unique nickname of the user to search for
+	 * @return the populated User object
+	 * @throws UserNotFoundException if no user with the given nickname exists
+	 */
+	public User getUserByNickname(String nickname) throws UserNotFoundException {
+		return db.getUserByNickname(nickname);
+	}
+    
+    /**
      * executes the purchase transaction of a game safely.
      * @param buyer the user buying the game
      * @param game the game to be purchased

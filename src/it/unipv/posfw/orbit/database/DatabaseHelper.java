@@ -688,5 +688,56 @@ public class DatabaseHelper {
 		// return false if there are sql or other errors.
 		return false; 
 	}
+	
+	/**
+	 * retrieves a User object from the database given their nickname.
+	 * @param nickname the unique nickname of the user to search for
+	 * @return the populated User object (could be an Admin, Publisher, or standard User)
+	 * @throws UserNotFoundException if no user with the given nickname exists in the database
+	 */
+	public User getUserByNickname(String nickname) throws UserNotFoundException {
+		String sql = "SELECT * FROM users WHERE nickname = ?";
+		
+		try (Connection conn = DriverManager.getConnection(URL);
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, nickname);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				
+				int id = rs.getInt("id");
+				String role = rs.getString("role");
+				double balance = rs.getDouble("balance");
+				boolean isBanned = rs.getInt("is_banned") == 1;
+				String password = rs.getString("password");
+
+				User fetchedUser = null;
+
+				if (role.equalsIgnoreCase("admin")) {
+					fetchedUser = new Admin(nickname, password);
+				} else if (role.equalsIgnoreCase("publisher")) {
+					fetchedUser = new Publisher(nickname, password);
+				} else {
+					fetchedUser = new User(nickname, password);
+				}
+
+				
+				fetchedUser.setId(id);
+				fetchedUser.setBalanceLocal(balance);
+				fetchedUser.setBanned(isBanned);
+				
+
+				return fetchedUser; 
+				
+			} else {
+				throw new UserNotFoundException("User '" + nickname + "' not found.");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new UserNotFoundException("Connection error");
+		}
+	}
     
 }
