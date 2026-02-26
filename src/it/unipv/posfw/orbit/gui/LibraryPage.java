@@ -72,7 +72,7 @@ public class LibraryPage extends JFrame implements ActionListener{
 				
 		// GAME CATALOG SECTION
 		
-		contentPane.add(createCatalogScrollPane(50, 120));
+		contentPane.add(createLibraryScrollPane(50, 120));
 				
 		// SELECTED GAME INFO SECTION
 		
@@ -87,7 +87,7 @@ public class LibraryPage extends JFrame implements ActionListener{
 	
 	// Helpers
 	
-	public JScrollPane createCatalogScrollPane(int x, int y) {
+	public JScrollPane createLibraryScrollPane(int x, int y) {
         JPanel gridPanel = new JPanel(new GridLayout(0, 4, 15, 15));
         gridPanel.setBackground(Prefab.GRAY_BG);
         gridPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -96,7 +96,15 @@ public class LibraryPage extends JFrame implements ActionListener{
         
         // Adding buttons
         for (Game game : userGameList){
-			ImageIcon coverImage = new ImageIcon(getClass().getResource(game.getCoverPath())); // Retrieve Image Cover
+        	
+        	ImageIcon coverImage;
+        	
+        	if (game != null) {
+        		coverImage = new ImageIcon(getClass().getResource(game.getCoverPath())); // Retrieve Image Cover // if everything is correct it uses the image
+			} else {
+			// if image path is wrong use placeholder image
+			coverImage = new ImageIcon((new Prefab().PLACEHOLDER_COVER));
+			}
 			
             JButton button = new JButton();
             button.setPreferredSize(new Dimension(100, 140));
@@ -231,7 +239,7 @@ public class LibraryPage extends JFrame implements ActionListener{
 		
 		gameInfoPanel.add(playButton);
 		gameInfoPanel.add(reviewButton);
-		gameInfoPanel.repaint(); // Draws on screen the updated gui
+		gameInfoPanel.repaint(); // Draws on screen the updated GUI
 	}
 	
 	@Override
