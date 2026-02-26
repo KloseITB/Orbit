@@ -57,10 +57,11 @@ The project follows a modular architecture to ensure scalability, maintainabilit
 ## Technology Stack
 
 * **Language**: Java (JDK 17 or higher recommended)
-* **GUI Framework**: Java Swing / AWT
+* **GUI Framework**: Java Swing / AWT / WindowBuilder
 * **Database**: SQLite
 * **Drivers**: sqlite-jdbc (version 3.51.2.0)
 * **IDE**: Eclipse or IntelliJ IDEA
+* **Testing Framework**: JUnit5
 
 ---
 
